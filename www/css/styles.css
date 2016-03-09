@@ -1,0 +1,61 @@
+.modal{
+  top: 0 ;
+  bottom: 0 ; 
+  left: 0 ;
+  right: 0 ;
+  width: 100% ;
+}
+
+.modal-backdrop-bg {
+    background-color: transparent !important;
+}
+
+img.product {
+    margin: 0 auto;
+    display: block;
+    height: 325px;
+}
+
+.slider-pager .slider-pager-page {
+
+	color: #fff;
+	width: 5px;
+	margin: 0px 7.5px;
+}
+
+.item {
+  border: none;
+  padding: 0;
+}
+
+.ion-item .item {
+  height: 300px !important;
+}
+
+.product-image {
+  display: block;
+  height: 200px;
+}
+
+.feed .ng-binding { 
+  display: block;
+  margin: 7px 0 auto 45px;
+  text-transform: uppercase;
+  font-size: 12px !important;
+}
+
+.feed {
+  border: solid #111 .75px;
+  margin: 5px 2.5px;
+}
+
+.padding {
+  padding: 0;
+} 
+
+h1.title {
+    text-overflow: ellipsis;
+}
+.filter-btn {
+    margin-right: 5px;
+}
