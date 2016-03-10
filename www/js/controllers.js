@@ -1,13 +1,11 @@
 angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','truncate'])
   
-.controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet) {
+.controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate) {
     $rootScope.products = [];
     
-    $ionicPlatform.ready(function() {
-        $state.go('price.splash');
+//     $state.go('signin');
 
-    });
-
+    
     $scope.refresh = function() {
         console.log('refresh products');
         PriceAPI.items.query({ //url params
@@ -106,6 +104,12 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
         // The animation we want to use for the modal entrance
         animation: 'slide-in-up'
     }); 
+    
+    $scope.$on('modal.shown', function(event) {
+        console.log(event);
+//         event.targetScope.modal.scrollTop(true);
+        $ionicScrollDelegate.$getByHandle('modalContent').scrollTop(true);
+    });
 
 })
    
@@ -133,4 +137,16 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
     }
     console.log('loaded item view controller');
     
-}]);
+}])
+.controller('WelcomeCtrl',function($rootScope,$scope) {
+    console.log('loaded welcome controller!'); 
+    $scope.loginFacebook = function() {
+        Ionic.Auth.login('facebook', {'remember': true}).then(function(user) {
+            console.log('user logged in');
+            console.log(user);
+            }, function(e) {
+                console.log('error logging in: ' + e);
+            });
+    } 
+})
+;

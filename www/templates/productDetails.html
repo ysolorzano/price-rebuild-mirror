@@ -6,7 +6,7 @@
           <div class="button button-clear" ng-click="modal.hide()"><span class="detClose ion-close"></span></div>
         </header>
 
-        <ion-content overflow-scroll="true" padding="true" class="has-header">
+        <ion-content overflow-scroll="true" padding="true" class="has-header" delegate-handle="modalContent">
 
             <ion-slide-box>
             <ion-slide ng-repeat="photo in currentProduct.photo_set">

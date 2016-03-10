@@ -1,21 +1,23 @@
-<ion-view title="Feed">
+
+<ion-view title="feedTitle">
     <ion-nav-buttons side="primary">
-     <button class="ion-navicon-round" ng-click="openCategories()">
-     
-      </button>
-     <button class="ion-arrow-down-b filter-btn" ng-click="openFilters()">
-     
-      </button>
+     <button class="stable button-icon icon ion-grid" ng-click="openCategories()"></button>
     </ion-nav-buttons>
+
+        <ion-nav-buttons side="secondary">
+     
+         <button class="stable button-icon icon ion-arrow-graph-up-right filter-btn" ng-click="openFilters()"></button>
+    </ion-nav-buttons>
+
     <ion-content overflow-scroll="true" padding="true" class="has-header">
     <ion-refresher pulling-text="Pull to refresh" on-refresh="refresh()">
     </ion-refresher>
     <ion-item collection-repeat="product in products" item-width="50%" item-height="250">
 <!--     <div class="list card"> -->
             <a ng-click="openProduct(product)">
-              <div class="item item-image">
+              <div class="item item-image feedImage">
 
-                  <img class="product-image" ng-src="{{product.photo_set[0].url_large}}" item-height="280" />
+                  <img ng-src="{{product.photo_set[0].url_large}}" item-height="280" />
 
               </div>
                 </a>

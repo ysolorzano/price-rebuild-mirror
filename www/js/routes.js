@@ -8,9 +8,19 @@ angular.module('app.routes', [])
   // Each state's controller can be found in controllers.js
   $stateProvider
     
+  .state('signin', {
+      url: 'signin',
+      templateUrl: 'templates/welcome.html',
+      controller: 'WelcomeCtrl'
+    })
   
-
-  .state('price.feed', {
+  .state('tabs', {
+    url: '/',
+    templateUrl: 'templates/price.html',
+    abstract:true
+  })
+  
+  .state('tabs.feed', {
     url: 'feed',
     views: {
       'tab5': {
@@ -20,7 +30,7 @@ angular.module('app.routes', [])
     }
   })
 
-  .state('price.favorites', {
+  .state('tabs.favorites', {
     url: 'favorites',
     views: {
       'tab2': {
@@ -30,7 +40,7 @@ angular.module('app.routes', [])
     }
   })
 
-  .state('price.account', {
+  .state('tabs.account', {
     url: 'account',
     views: {
       'tab3': {
@@ -39,23 +49,12 @@ angular.module('app.routes', [])
       }
     }
   })
-  .state('price.item', {
+
+  .state('tabs.item', {
       url: 'product',
       templateUrl: 'templates/productDetails.html',
       controller: 'itemViewCtrl'
-    })
-    
-    .state('price.splash', {
-      url: 'splash',
-      templateUrl: 'templates/welcome.html',
-      controller: 'WelcomeCtrl'
-    })
-
-  .state('price', {
-    url: '/',
-    templateUrl: 'templates/price.html',
-    abstract:true
-  });
+    });
   
 
 
