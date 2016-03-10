@@ -1,51 +1,60 @@
 
     <ion-view title="Product Details">
            <div class="modal">
-        <header class="bar bar-header bar-positive">
-          <h1 class="title">{{currentProduct.title | characters:45}}</h1>
-          <div class="button button-clear" ng-click="modal.hide()"><span class="icon ion-close"></span></div>
+        <header class="bar bar-header bar-dark">
+          <h1 class="title prodDetails">{{currentProduct.title | characters:45}}</h1>
+          <div class="button button-clear" ng-click="modal.hide()"><span class="detClose ion-close"></span></div>
         </header>
 
         <ion-content overflow-scroll="true" padding="true" class="has-header">
 
             <ion-slide-box>
             <ion-slide ng-repeat="photo in currentProduct.photo_set">
-                        <img class="product" ng-src="{{photo.url_large}}">
+            <div class="row photoImage">
+                <img class="product" ng-src="{{photo.url_large}}">
+            </div>
             </ion-slide>
             </ion-slide-box>
-        
-        <hr> 
 
-        <div class="prices row">
-            <div class="retail col col-20">Retail: <br>${{currentProduct.price + currentProduct.amount_saved}}</div>
-            <div class="space col col-20"></div>
-            <div class="actual col col-20">Our Price:<br>{{currentProduct.price | currency}}</div>
-            <div class="space col col-20"></div>
-            <div class="savings col col-20">Savings: <br>${{currentProduct.amount_saved}}</div>
+
+            <div class="row">
+                <div class="col-80"></div>
+                <div class="socialIcons col-20">
+                    <i class="ion-heart"></i>
+                    <i class="ion-share"></i>
+                </div>
+            </div>
+            <!-- <hr>  -->
+
+        <div class="productInfo">
+            <div class="prices row">
+                <div class="retail col col-25">Retail: <br><s>${{currentProduct.price + currentProduct.amount_saved}}</s></div>
+                <div class="actual col col-50">Our Price:<br><h1>{{currentProduct.price | currency}}</h1></div>
+                <div class="savings col col-25">Savings: <br>${{currentProduct.amount_saved}}</div>
+            </div>
+
+            <div class="simulation row">
+    <!--             <div class="col col-50">Finding the best price...</div> -->
+                <div class="col">{{currentProduct.store_name}}</div>
+            </div>
         </div>
 
-        <div class="simulation row">
-<!--             <div class="col col-50">Finding the best price...</div> -->
-            <div class="col col-50">{{currentProduct.store_name}}</div>
+            <!-- <hr> -->
+        <div class="browseSimilar">
+            <h5 class="row">Browse Similar</h5>
+
+            <div class="row">
+                <hscroller>
+                    <hcard ng-repeat="item in currentSuggestions" index="{{$index}}" desc="{{item.title}}" image="{{item.photo_set[0].url_medium}}" ng-click="openProduct(item)"></hcard>
+                </hscroller>
+            </div>
         </div>
 
-        <hr>
-        <h5 class="row">Browse Similar</h5>
+        </ion-content>
 
-        <div class="row">
-            <hscroller>
-                <hcard ng-repeat="item in currentSuggestions" index="{{$index}}" desc="{{item.title}}" image="{{item.photo_set[0].url_thumbnail}}" ng-click="openProduct(item)"></hcard>
-            </hscroller>
-        </div>
-
-        <ion-footer-bar align-title="left" class="bar-dark">
-        <div class="item-icon-left">
-            <i class="icon ion-heart"></i>
-        </div>
-          <div class="buttons">
-            <button class="button button-calm" ng-click='buyNow()'>Buy</button>
-          </div>
+        <ion-footer-bar ng-click='buyNow()' class="bar-balanced">
+          <p class="title buyTitle">get it</p>
         </ion-footer-bar>
-    </ion-content>
+
            </div>
 </ion-view>
