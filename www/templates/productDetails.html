@@ -9,7 +9,7 @@
         <ion-content overflow-scroll="true" padding="true" class="has-header" delegate-handle="modalContent">
 
             <ion-slide-box>
-            <ion-slide ng-repeat="photo in currentProduct.photo_set">
+            <ion-slide ng-repeat="photo in currentProduct.photo_set" active-slide="activeSlide">
             <div class="row photoImage">
                 <img class="product" ng-src="{{photo.url_large}}">
             </div>
@@ -44,7 +44,7 @@
             <h5 class="row">Browse Similar</h5>
 
             <div class="row">
-                <hscroller>
+                <hscroller delegate-handle="suggestionScroller">
                     <hcard ng-repeat="item in currentSuggestions" index="{{$index}}" desc="{{item.title}}" image="{{item.photo_set[0].url_medium}}" ng-click="openProduct(item)"></hcard>
                 </hscroller>
             </div>

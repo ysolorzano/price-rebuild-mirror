@@ -5,6 +5,7 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
     
 //     $state.go('signin');
 
+    $rootScope.currentGender = 'female';
     
     $scope.refresh = function() {
         console.log('refresh products');
@@ -45,9 +46,7 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
     
     $scope.refresh();
 
-    $scope.openCategories = function() {
-        
-    };
+
     
     $scope.openFilters = function() {
         $ionicActionSheet.show({
@@ -103,9 +102,75 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
         animation: 'slide-in-up'
     }); 
     
+    $ionicModal.fromTemplateUrl('templates/categories.html', function($ionicModal) {
+        $scope.catModal = $ionicModal;
+    }, {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }); 
+    
+    $scope.openCategories = function() {
+        $scope.catModal.show();
+        console.log($scope.categories);
+    };
+    $scope.selectedCategory = function(cat) {
+        $scope.catModal.hide();
+        $scope.currentCategory = cat;
+    }
+    
     $scope.$on('modal.shown', function(event) {
         $ionicScrollDelegate.$getByHandle('modalContent').scrollTop(true);
+        $scope.activeSlide = 1;
+        $ionicScrollDelegate.$getByHandle('suggestionScroller').scrollTo(0,0,false);
     });
+    var catImg = [];
+    for(i = 1; i < 6; i++) {
+        catImg.push('img/cats/' + $rootScope.currentGender + '/img' + (i+1).toString() + '.svg');
+    }
+    
+    $scope.categories = {
+        female: [
+            {
+                name: 'sunglasses',
+                img: catImg[0]
+            },{
+                name: 'watches',
+                img: catImg[1]
+            },{
+                name: 'clothing',
+                img: catImg[2]
+            },{
+                name: 'jewelry',
+                img: catImg[3]
+            },{
+                name: 'bags',
+                img: catImg[4]
+            },{
+                name: 'shoes',
+                img: catImg[5]
+            }],
+        male: [
+            {
+                name: 'bags',
+                img: catImg[0]
+            },{
+                name: 'clothing',
+                img: catImg[1]
+            },{
+                name: 'watches',
+                img: catImg[2]
+            },{
+                name: 'shoes',
+                img: catImg[3]
+            },{
+                name: 'jewelry',
+                img: catImg[4]
+            },{
+                name: 'sunglasses',
+                img: catImg[5]
+            }]
+    };
+    
 
 })
    
