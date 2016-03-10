@@ -99,15 +99,11 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
     $ionicModal.fromTemplateUrl('templates/productDetails.html', function($ionicModal) {
         $scope.modal = $ionicModal;
     }, {
-        // Use our scope for the scope of the modal to keep it simple
         scope: $scope,
-        // The animation we want to use for the modal entrance
         animation: 'slide-in-up'
     }); 
     
     $scope.$on('modal.shown', function(event) {
-        console.log(event);
-//         event.targetScope.modal.scrollTop(true);
         $ionicScrollDelegate.$getByHandle('modalContent').scrollTop(true);
     });
 
