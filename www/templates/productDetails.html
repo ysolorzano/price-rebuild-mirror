@@ -45,7 +45,7 @@
 
             <div class="row">
                 <hscroller>
-                    <hcard ng-repeat="item in currentSuggestions" index="{{$index}}" desc="{{item.title}}" image="{{item.photo_set[0].url_medium}}" ng-click="openProduct(item)"></hcard>
+                    <hcard ng-repeat="item in currentSuggestions" index="{{$index}}" desc="{{item.title}}" image="{{item.photo_set[0].url_medium}}" ng-click="openProductWithId(item.pk)"></hcard>
                 </hscroller>
             </div>
         </div>

@@ -16,7 +16,7 @@
     </ion-refresher>
     <ion-item collection-repeat="product in products" item-width="50%" item-height="225">
 <!--     <div class="list card"> -->
-            <a ng-click="openProduct(product)">
+            <a ng-click="openProductWithId(product.id)">
               <div class="item item-image feed-image">
 
                   <img ng-src="{{product.photo_set[0].url_large}}" item-height="280" />

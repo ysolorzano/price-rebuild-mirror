@@ -37,8 +37,8 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
        
     }
 
-    $scope.openProduct = function(product) {
-        $http.get($rootScope.hostUrl + '/item/similar-category/' + product.id + '/').then(function(data) {
+    $scope.openProductWithId = function(id) {
+        $http.get($rootScope.hostUrl + '/item/similar-category/' + id + '/').then(function(data) {
             $rootScope.currentSuggestions = data.data;
             console.log(data.data);
         },function(e) {
