@@ -16,6 +16,10 @@
   margin: 0 auto 60% 0;
 }
 
+a {
+  text-decoration: none
+}
+
 /**********************************
 global CSS
 **********************************/
@@ -230,6 +234,10 @@ feed.html
 /*.item p {
   margin-left: 45px;
 }*/
+
+.item {
+  padding: 0;
+}
 
 .ion-record {
   font-size: 10px;
