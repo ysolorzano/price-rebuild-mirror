@@ -1,11 +1,11 @@
 angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','truncate'])
-  
+
 .controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate) {
     $rootScope.products = [];
-    
+
 //     $state.go('signin');
 
-    
+
     $scope.refresh = function() {
         console.log('refresh products');
         PriceAPI.items.query({ //url params
@@ -17,7 +17,7 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
             product.fields.isFavorite = Favorites.contains(product.fields);
             return product.fields;
             });
-        
+
         $rootScope.currentSuggestions = $rootScope.products;
 
         console.log($rootScope.products);
@@ -29,8 +29,8 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
     $scope.openProduct = function(product) {
         PriceAPI.suggestions.query({id: product.id}, function(data) {
             console.log('suggestions: ' + data);
-            
-            
+
+
 //             $rootScope.currentSuggestions = $rootScope.products;
         });
 
@@ -40,15 +40,15 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
             $scope.modal.show();
         });
 
-        
+
     };
-    
+
     $scope.refresh();
 
     $scope.openCategories = function() {
-        
+
     };
-    
+
     $scope.openFilters = function() {
         $ionicActionSheet.show({
         buttons: [
@@ -79,18 +79,19 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
         }
 
     })};
-    
+
     $scope.favs = Favorites.get();
-    
+
     $scope.favoriteStyle = function(item) {
         return Favorites.contains(item) ? "assertive" : "dark";
     };
     $scope.toggleFav = function(product) {
+        userId = 76 // Should be the user id of logged in User
         if(Favorites.contains(product)) {
-            Favorites.delete(product);
+            Favorites.delete(product, userId);
             product.isFavorite = false;
         } else {
-            Favorites.add(product);
+            Favorites.add(product,userId);
             product.isFavorite = true;
         }
         $scope.favs = Favorites.get();
@@ -101,25 +102,29 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
     }, {
         scope: $scope,
         animation: 'slide-in-up'
-    }); 
-    
+    });
+
     $scope.$on('modal.shown', function(event) {
         $ionicScrollDelegate.$getByHandle('modalContent').scrollTop(true);
     });
 
 })
-   
+
 .controller('favoritesCtrl', function($scope,Favorites) {
     console.log('loaded favs!');
     $scope.products = [];
-    $scope.products = Favorites.get();
-    console.log($scope.products);
+    $scope.products = Favorites.get().query({ //url params
+      user: 76 // Should be the id of the logged in User.
+    },
+    function(data){
+      console.log(data)
+    });
 })
-   
+
 .controller('accountCtrl', function($scope) {
-    
+
 })
-    
+
 .controller('itemViewCtrl',['$stateParams',function($scope,$stateParams,stripe) {
     $scope.card = {
         number: '4242424242424242',
@@ -127,15 +132,15 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
         exp_month: '12',
         exp_year: '19'
     };
-    
+
     $scope.buyNow = function() {
         console.log('buying now!');
     }
     console.log('loaded item view controller');
-    
+
 }])
 .controller('WelcomeCtrl',function($rootScope,$scope) {
-    console.log('loaded welcome controller!'); 
+    console.log('loaded welcome controller!');
     $scope.loginFacebook = function() {
         Ionic.Auth.login('facebook', {'remember': true}).then(function(user) {
             console.log('user logged in');
@@ -143,6 +148,6 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
             }, function(e) {
                 console.log('error logging in: ' + e);
             });
-    } 
+    }
 })
 ;

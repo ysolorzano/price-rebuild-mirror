@@ -5,7 +5,7 @@ angular.module('app.services', ['ngResource','LocalStorageModule'])
 }])
 
 .service('BlankService', [function($http){
-    
+
 }])
 .factory('PriceAPI',function($resource,$rootScope,$http) {
     var hostUrl = $rootScope.hostUrl;
@@ -29,25 +29,34 @@ angular.module('app.services', ['ngResource','LocalStorageModule'])
         })}
     }
 })
+.factory('Favorites',function(localStorageService, $resource, $rootScope) {
+    var hostUrl = $rootScope.hostUrl;
 
-.factory('Favorites',function(localStorageService) {
     if(!localStorageService.get('favs'))
         localStorageService.set('favs',[]);
    return {
         get: function() {
-            return localStorageService.get('favs')
+          url = hostUrl + '/favourites/list/'
+          console.log('Fetching favorites...')
+          return $resource(url, {user: 76}, {
+              query: {method:'POST', isArray:true}
+            });
         },
-        add: function(item) { 
-            console.log('added item!');
-           var favs = localStorageService.get('favs');
-           favs.push(item);
-           localStorageService.set('favs',favs);
+        add: function(item, userId) {
+          url = hostUrl + '/favourites/add'
+          console.log('adding favorite...');
+          console.log(item);
+          return $resource(url, {user: 76, item: 9367}, {
+              query: {method:'GET', params: {user: userId, item: item.id}}
+            });
         },
-        delete: function(item) {
-            var favs = localStorageService.get('favs');
-            var index = favs.indexOf(item);
-            favs.splice(index, 1);
-            localStorageService.set('favs',favs);
+        delete: function(item, userId) {
+          url = hostUrl + '/favourites/delete'
+          console.log('deleting favorite...');
+          console.log(item);
+          return $resource(url, {user: 76, item: 9367}, {
+              query: {method:'POST', params: {user: userId, item: item.id}}
+            });
         },
         contains: function(item) {
             console.log('trying to get favorites!');
