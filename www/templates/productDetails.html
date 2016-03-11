@@ -6,7 +6,7 @@
           <div class="button button-clear" ng-click="modal.hide()"><span class="det-close ion-close"></span></div>
         </header>
 
-        <ion-content overflow-scroll="true" padding="true" class="has-header">
+        <ion-content overflow-scroll="true" padding="true" class="has-header" delegate-handle="modalContent">
 
             <ion-slide-box>
             <ion-slide ng-repeat="photo in currentProduct.photo_set">
@@ -44,8 +44,8 @@
             <h5 class="row">Browse Similar</h5>
 
             <div class="row">
-                <hscroller>
-                    <hcard ng-repeat="item in currentSuggestions" index="{{$index}}" desc="{{item.title}}" image="{{item.photo_set[0].url_medium}}" ng-click="openProductWithId(item.pk)"></hcard>
+                <hscroller delegate-handle="suggestionScroller">
+                    <hcard ng-repeat="item in currentSuggestions" index="{{$index}}" desc="{{item.title}}" image="{{item.photo_set[0].url_medium}}" ng-click="openProduct(item)"></hcard>
                 </hscroller>
             </div>
         </div>
