@@ -2,15 +2,15 @@
     <ion-view title="Product Details">
            <div class="modal">
         <header class="bar bar-header bar-dark">
-          <h1 class="title prodDetails">{{currentProduct.title | characters:45}}</h1>
-          <div class="button button-clear" ng-click="modal.hide()"><span class="detClose ion-close"></span></div>
+          <h1 class="title prod-details">{{currentProduct.title | characters:45}}</h1>
+          <div class="button button-clear" ng-click="modal.hide()"><span class="det-close ion-close"></span></div>
         </header>
 
-        <ion-content overflow-scroll="true" padding="true" class="has-header" delegate-handle="modalContent">
+        <ion-content overflow-scroll="true" padding="true" class="has-header">
 
             <ion-slide-box>
-            <ion-slide ng-repeat="photo in currentProduct.photo_set" active-slide="activeSlide">
-            <div class="row photoImage">
+            <ion-slide ng-repeat="photo in currentProduct.photo_set">
+            <div class="row photo-image">
                 <img class="product" ng-src="{{photo.url_large}}">
             </div>
             </ion-slide>
@@ -19,14 +19,14 @@
 
             <div class="row">
                 <div class="col-80"></div>
-                <div class="socialIcons col-20">
+                <div class="social-icons col-20">
                     <i class="ion-heart"></i>
                     <i class="ion-share"></i>
                 </div>
             </div>
             <!-- <hr>  -->
 
-        <div class="productInfo">
+        <div class="product-info">
             <div class="prices row">
                 <div class="retail col col-25">Retail: <br><s>${{currentProduct.price + currentProduct.amount_saved}}</s></div>
                 <div class="actual col col-50">Our Price:<br><h1>{{currentProduct.price | currency}}</h1></div>
@@ -40,20 +40,22 @@
         </div>
 
             <!-- <hr> -->
-        <div class="browseSimilar">
+        <div class="browse-similar">
             <h5 class="row">Browse Similar</h5>
 
             <div class="row">
-                <hscroller delegate-handle="suggestionScroller">
+                <hscroller>
                     <hcard ng-repeat="item in currentSuggestions" index="{{$index}}" desc="{{item.title}}" image="{{item.photo_set[0].url_medium}}" ng-click="openProduct(item)"></hcard>
                 </hscroller>
             </div>
         </div>
 
+
+
         </ion-content>
 
         <ion-footer-bar ng-click='buyNow()' class="bar-balanced">
-          <p class="title buyTitle">get it</p>
+          <p class="title buy-title">get it</p>
         </ion-footer-bar>
 
            </div>

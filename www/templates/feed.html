@@ -2,7 +2,7 @@
 <ion-view title="">
     <ion-nav-buttons side="primary">
      <button class="stable button-icon icon ion-grid" ng-click="openCategories()"></button>
-     <p class="title logoTitle"><img class="logo icon" src="img/logo.png"></p>
+     <p class="title logo-title"><img class="logo icon" src="img/logo.png"></p>
     </ion-nav-buttons>
 
 
@@ -14,10 +14,10 @@
     <ion-content overflow-scroll="true" padding="true" class="has-header">
     <ion-refresher pulling-text="Pull to refresh" on-refresh="refresh()">
     </ion-refresher>
-    <ion-item collection-repeat="product in products" item-width="50%" item-height="200">
+    <ion-item collection-repeat="product in products" item-width="50%" item-height="225">
 <!--     <div class="list card"> -->
             <a ng-click="openProduct(product)">
-              <div class="item item-image feedImage">
+              <div class="item item-image feed-image">
 
                   <img ng-src="{{product.photo_set[0].url_large}}" item-height="280" />
 

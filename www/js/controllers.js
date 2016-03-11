@@ -4,30 +4,45 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
     $rootScope.products = [];
     
     $rootScope.currentGender = 'female';
-    
+    $rootScope.page_no = 1;
     $scope.refresh = function() {
         console.log('refresh products');
-        PriceAPI.items.query({ //url params
-            'price_min': $rootScope.price_min,
-            'price_max': $rootScope.price_max
-        },
-        function(data) {
-         $rootScope.products = lodash.map(data[0].products,function(product) {
+        $http( {
+            method: 'GET',
+            url: $rootScope.hostUrl + '/item/list/',
+            params: {
+                'price_min' : $rootScope.min_price,
+                'price_max' : $rootScope.max_price,
+                'category' : $rootScope.currentCategory, //$rootScope.category
+                'page': $rootScope.page_no,
+                'show_by': 10,
+                'type' : $rootScope.currentGender //$rootScope.gender
+
+
+            }
+        }).then( function(data) {
+            console.log(data);
+            $rootScope.products = lodash.map(data.data[0].products,function(product) {
             product.fields.isFavorite = Favorites.contains(product.fields);
             return product.fields;
             });
 
-        console.log($rootScope.products);
-         $scope.$broadcast('scroll.refreshComplete');
-//          $scope.$apply()
-    });
+            console.log($rootScope.products);
+            $scope.$broadcast('scroll.refreshComplete');
+
+            },
+            function(e) {
+                console.log(e)
+            });
+       
     }
 
     $scope.openProduct = function(product) {
         $http.get($rootScope.hostUrl + '/item/similar-category/' + product.id + '/').then(function(data) {
             $rootScope.currentSuggestions = data.data;
+            console.log(data.data);
         },function(e) {
-            console.log('error ' + e);
+            console.log(e);
         });
         
 /*
