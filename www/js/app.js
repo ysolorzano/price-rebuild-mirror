@@ -9,7 +9,6 @@ angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.rou
 
 .run(function($ionicPlatform,$rootScope) {
     $rootScope.hostUrl = 'http://staging12.getpriceapp.com';
-    $rootScope.min_price = '400';
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
