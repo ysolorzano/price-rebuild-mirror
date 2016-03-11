@@ -1,0 +1,10 @@
+    <ion-content overflow-scroll="true" padding="true" class="has-header">
+    <ion-item collection-repeat="cat in categories[currentGender]" item-width="33%" item-height="80">
+<!--     <div class="list card"> -->
+            <a ng-click="setCategory(cat.name)">
+              <div class="item item-image cat-img">
+                  <img ng-src="{{cat.img}}" item-height="80" />
+              </div>
+                </a>
+  </ion-item>
+    </ion-content>

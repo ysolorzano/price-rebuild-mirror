@@ -1,3 +1,75 @@
 <ion-view title="Account">
-    <ion-content overflow-scroll="true" padding="true" class="has-header"></ion-content>
+    <ion-content overflow-scroll="true" padding="true" class="has-header">
+
+    <div class="row profile-photo">
+    	<img src="img/adam.jpg" ng-src="{{user.photo.url_large}}">
+    </div>
+
+	<div class="user">
+	    <div class="row user-info">
+	    	<div class="col"><h2>{{user.name}}</h2><p>{{user.name}} // {{user.sex}} // {{user.city}}</p></div>
+	    </div>
+
+		<div class="row user-stats">
+			<div class="user-likes">
+				<h3>{{user.likes}}</h3><p>Likes</p>
+			</div>
+			<div class="user-buys">
+				<h3>{{user.buys}}</h3><p>Buys</p>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<div class="list user-list">
+	  <div class="item item-divider">
+	    Recents
+	  </div>
+
+	<div class="row">Recently Liked</div>
+    <div class="row recently-liked">
+        <hscroller>
+            <hcard ng-repeat="item in user.recentlyLiked" index="{{$index}}" image="{{item.photo_set[0].url_medium}}" ng-click="openProduct(item)"></hcard>
+        </hscroller>
+    </div>
+
+    <div class="row">Recently Bought</div>
+    <div class="row recently-bought">
+        <hscroller>
+            <hcard ng-repeat="item in user.recentlyBought" index="{{$index}}" image="{{item.photo_set[0].url_medium}}" ng-click="openProduct(item)"></hcard>
+        </hscroller>
+    </div>
+
+
+	<div class="item item-divider">
+	    Account
+	</div>
+
+	<a class="item item-icon-left item-icon-right" href="#">
+	    <i class="icon ion-ios-paperplane"></i>
+	    Shipping
+	    <i class="icon ion-ios-arrow-forward"></i>
+	  </a>
+
+	  <a class="item item-icon-left item-icon-right" href="#">
+	    <i class="icon ion-card"></i>
+	   Billing
+	    <i class="icon ion-ios-arrow-forward"></i>
+	  </a>
+
+	<div class="item item-divider">
+	    
+	</div>
+	  <a class="item" href="#">
+    Log Out
+  </a>
+
+</div>
+
+
+
+
+	</ion-content>
 </ion-view>

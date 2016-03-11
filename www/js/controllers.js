@@ -1,39 +1,60 @@
 angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','truncate'])
 
-.controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate) {
+  
+.controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService) {
     $rootScope.products = [];
-
-//     $state.go('signin');
-
-
+    
+	
+    $rootScope.currentGender = 'female';
+    $rootScope.page_no = 1;
+	
     $scope.refresh = function() {
         console.log('refresh products');
-        PriceAPI.items.query({ //url params
-            'price_min': $rootScope.price_min,
-            'price_max': $rootScope.price_max
-        },
-        function(data) {
-         $rootScope.products = lodash.map(data[0].products,function(product) {
+        $http( {
+            method: 'GET',
+            url: $rootScope.hostUrl + '/item/list/',
+            params: {
+                'price_min' : $rootScope.min_price,
+                'price_max' : $rootScope.max_price,
+                'category' : $rootScope.currentCategory, //$rootScope.category
+                'page': $rootScope.page_no,
+                'show_by': 10,
+                'type' : $rootScope.currentGender //$rootScope.gender
+
+
+            }
+        }).then( function(data) {
+            console.log(data);
+            $rootScope.products = lodash.map(data.data[0].products,function(product) {
             product.fields.isFavorite = Favorites.contains(product.fields);
             return product.fields;
             });
 
-        $rootScope.currentSuggestions = $rootScope.products;
+            console.log($rootScope.products);
+            $scope.$broadcast('scroll.refreshComplete');
 
-        console.log($rootScope.products);
-         $scope.$broadcast('scroll.refreshComplete');
-//          $scope.$apply()
-    });
+            },
+            function(e) {
+                console.log(e)
+            });
+       
     }
 
-    $scope.openProduct = function(product) {
-        PriceAPI.suggestions.query({id: product.id}, function(data) {
-            console.log('suggestions: ' + data);
 
-
-//             $rootScope.currentSuggestions = $rootScope.products;
+    $scope.openProductWithId = function(id) {
+        $http.get($rootScope.hostUrl + '/item/similar-category/' + id + '/').then(function(data) {
+            $rootScope.currentSuggestions = data.data;
+            console.log(data.data);
+        },function(e) {
+            console.log(e);
         });
-
+        
+/*
+        PriceAPI.suggestions.get({id: product.id}, function(data) {
+            console.log('suggestions...');
+            console.log(data);            
+        });
+*/
         PriceAPI.item.get({id: product.id},function(data) {
             console.log(data);
             $rootScope.currentProduct = data;
@@ -43,11 +64,19 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
 
     };
 
-    $scope.refresh();
+    
+    var user = Ionic.User.current();
 
-    $scope.openCategories = function() {
-
-    };
+    if (user.isAuthenticated()) {
+        console.log('user logged in!');
+    } else {
+        $state.go('signin');
+    }
+    
+    
+    $scope.$on('$ionicView.beforeEnter', function(){
+        $scope.refresh();
+    });
 
     $scope.openFilters = function() {
         $ionicActionSheet.show({
@@ -103,10 +132,32 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
         scope: $scope,
         animation: 'slide-in-up'
     });
-
+    
+    $ionicModal.fromTemplateUrl('templates/categories.html', function($ionicModal) {
+        $scope.catModal = $ionicModal;
+    }, {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }); 
+    
+    $scope.openCategories = function() {
+        console.log('should open categories');
+        $scope.catModal.show();
+        console.log($scope.categories);
+    };
+    $scope.selectedCategory = function(cat) {
+        $scope.catModal.hide();
+        $scope.currentCategory = cat;
+    }
+    
     $scope.$on('modal.shown', function(event) {
         $ionicScrollDelegate.$getByHandle('modalContent').scrollTop(true);
+        $scope.activeSlide = 1;
+        $ionicScrollDelegate.$getByHandle('suggestionScroller').scrollTo(0,0,false);
     });
+    
+    
+    $scope.categories = PriceAPI.categories;
 
 })
 
@@ -139,12 +190,20 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
     console.log('loaded item view controller');
 
 }])
-.controller('WelcomeCtrl',function($rootScope,$scope) {
-    console.log('loaded welcome controller!');
+
+.controller('WelcomeCtrl',function($rootScope,$scope,$state,localStorageService) {
+    console.log('loaded welcome controller!'); 
+	
     $scope.loginFacebook = function() {
         Ionic.Auth.login('facebook', {'remember': true}).then(function(user) {
             console.log('user logged in');
             console.log(user);
+            Ionic.User.current().save();
+//             localStorageService.set('userId',user.)
+            
+            console.log(Ionic.User.current());
+            
+            $state.go('tabs.feed');
             }, function(e) {
                 console.log('error logging in: ' + e);
             });

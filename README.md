@@ -1,6 +1,11 @@
 # price-rebuild
 Price app, built in Ionic
 
-May need to do `ionic platform ios` and `ionic build ios` to make it build out the platforms. use `android` instead of `ios` respectively.
+Use `ionic state reset` to grab the plugins located in `package.json`
+Then `ionic build ios` to compile the binary
+Then `ionic emulate ios` to run on the emulator
 
-Can be run in the simulator with `ionic emulate ios`
+It should be able to be tested on a local machine by simply opening `index.html`
+
+`ionic serve` will only work if you disable CORS in the browser (`allow-control-allow-origin:*`)
+

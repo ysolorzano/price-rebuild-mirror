@@ -9,7 +9,6 @@ angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.rou
 
 .run(function($ionicPlatform,$rootScope) {
     $rootScope.hostUrl = 'http://staging12.getpriceapp.com';
-    $rootScope.min_price = '400';
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -28,6 +27,14 @@ angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.rou
 //   stripeProvider.setPublishableKey('pk_test_aKantRCo8oXwL3FxinYqdEyn');
 
 }])
-.directive('prUtil',function() {
-    //insert common functions here    
+.directive('prUtil',function($rootScope) {
+    //insert common functions here   
+    $rootScope.range = function(min, max, step) {
+    step = step || 1;
+    var input = [];
+    for (var i = min; i <= max; i += step) {
+        input.push(i);
+    }
+    return input;
+    }; 
 });
