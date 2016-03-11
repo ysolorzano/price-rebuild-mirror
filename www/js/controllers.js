@@ -37,8 +37,10 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
        
     }
 
-    $scope.openProductWithId = function(id) {
-        $http.get($rootScope.hostUrl + '/item/similar-category/' + id + '/').then(function(data) {
+    $scope.openProduct = function(product) {
+        var productId = product.id ? product.id : product.pk;
+        console.log('opening product with id: ' + productId);
+        $http.get($rootScope.hostUrl + '/item/similar-category/' + productId + '/').then(function(data) {
             $rootScope.currentSuggestions = data.data;
             console.log(data.data);
         },function(e) {
@@ -51,10 +53,11 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
             console.log(data);            
         });
 */
-        PriceAPI.item.get({id: product.id},function(data) {
+        PriceAPI.item.get({id: productId},function(data) {
             console.log(data);
             $rootScope.currentProduct = data;
-            $scope.modal.show();
+            resetProductModal();
+            $scope.modal.show(); 
         });
 
         
@@ -64,7 +67,7 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
 
     if (user.isAuthenticated()) {
         console.log('user logged in!');
-    } else {
+    } else if(ionic.Platform.isIOS() || ionic.Platform.isAndroid()) {
         $state.go('signin');
     }
     
@@ -146,11 +149,14 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
     }
     
     $scope.$on('modal.shown', function(event) {
+//         resetProductModal();
+    });
+    
+    function resetProductModal() {
         $ionicScrollDelegate.$getByHandle('modalContent').scrollTop(true);
         $scope.activeSlide = 1;
         $ionicScrollDelegate.$getByHandle('suggestionScroller').scrollTo(0,0,false);
-    });
-    
+    }
     
     $scope.categories = PriceAPI.categories;
     
