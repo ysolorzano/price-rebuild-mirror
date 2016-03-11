@@ -1,10 +1,8 @@
 angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','truncate'])
   
-.controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate) {
+.controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http) {
     $rootScope.products = [];
     
-//     $state.go('signin');
-
     $rootScope.currentGender = 'female';
     
     $scope.refresh = function() {
@@ -18,8 +16,6 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
             product.fields.isFavorite = Favorites.contains(product.fields);
             return product.fields;
             });
-        
-        $rootScope.currentSuggestions = $rootScope.products;
 
         console.log($rootScope.products);
          $scope.$broadcast('scroll.refreshComplete');
@@ -28,13 +24,18 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
     }
 
     $scope.openProduct = function(product) {
-        PriceAPI.suggestions.query({id: product.id}, function(data) {
-            console.log('suggestions: ' + data);
-            
-            
-//             $rootScope.currentSuggestions = $rootScope.products;
+        $http.get($rootScope.hostUrl + '/item/similar-category/' + product.id + '/').then(function(data) {
+            $rootScope.currentSuggestions = data.data;
+        },function(e) {
+            console.log('error ' + e);
         });
-
+        
+/*
+        PriceAPI.suggestions.get({id: product.id}, function(data) {
+            console.log('suggestions...');
+            console.log(data);            
+        });
+*/
         PriceAPI.item.get({id: product.id},function(data) {
             console.log(data);
             $rootScope.currentProduct = data;
@@ -44,8 +45,12 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
         
     };
     
-    $scope.refresh();
-
+//     $state.go('signin');
+    
+    
+    $scope.$on('$ionicView.beforeEnter', function(){
+        $scope.refresh();
+    });
 
     
     $scope.openFilters = function() {
@@ -110,6 +115,7 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
     }); 
     
     $scope.openCategories = function() {
+        console.log('should open categories');
         $scope.catModal.show();
         console.log($scope.categories);
     };
@@ -123,53 +129,9 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
         $scope.activeSlide = 1;
         $ionicScrollDelegate.$getByHandle('suggestionScroller').scrollTo(0,0,false);
     });
-    var catImg = [];
-    for(i = 1; i < 6; i++) {
-        catImg.push('img/cats/' + $rootScope.currentGender + '/img' + (i+1).toString() + '.svg');
-    }
     
-    $scope.categories = {
-        female: [
-            {
-                name: 'sunglasses',
-                img: catImg[0]
-            },{
-                name: 'watches',
-                img: catImg[1]
-            },{
-                name: 'clothing',
-                img: catImg[2]
-            },{
-                name: 'jewelry',
-                img: catImg[3]
-            },{
-                name: 'bags',
-                img: catImg[4]
-            },{
-                name: 'shoes',
-                img: catImg[5]
-            }],
-        male: [
-            {
-                name: 'bags',
-                img: catImg[0]
-            },{
-                name: 'clothing',
-                img: catImg[1]
-            },{
-                name: 'watches',
-                img: catImg[2]
-            },{
-                name: 'shoes',
-                img: catImg[3]
-            },{
-                name: 'jewelry',
-                img: catImg[4]
-            },{
-                name: 'sunglasses',
-                img: catImg[5]
-            }]
-    };
+    
+    $scope.categories = PriceAPI.categories;
     
 
 })
@@ -199,12 +161,13 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
     console.log('loaded item view controller');
     
 }])
-.controller('WelcomeCtrl',function($rootScope,$scope) {
+.controller('WelcomeCtrl',function($rootScope,$scope,$state) {
     console.log('loaded welcome controller!'); 
     $scope.loginFacebook = function() {
         Ionic.Auth.login('facebook', {'remember': true}).then(function(user) {
             console.log('user logged in');
             console.log(user);
+            $state.go('tabs.feed');
             }, function(e) {
                 console.log('error logging in: ' + e);
             });
