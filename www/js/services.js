@@ -11,7 +11,7 @@ angular.module('app.services', ['ngResource','LocalStorageModule'])
     var hostUrl = $rootScope.hostUrl;
     $rootScope.currentGender = 'female';
      var catImg = [];
-    for(i = 1; i < 6; i++)
+    for(i = 0; i < 6; i++)
         catImg.push('img/cats/' + $rootScope.currentGender + '/img' + (i+1).toString() + '.svg');
     return {
         item: $resource(hostUrl + '/item-details/:id/'),

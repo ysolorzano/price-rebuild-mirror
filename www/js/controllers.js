@@ -61,10 +61,10 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
     };
     
     var user = Ionic.User.current();
-
+    
     if (user.isAuthenticated()) {
         console.log('user logged in!');
-    } else {
+    } else if(ionic.Platform.isIOS() || ionic.Platform.isAndroid()) {
         $state.go('signin');
     }
     
