@@ -47,7 +47,8 @@
     <splash src="resources/ios/splash/Default@2x~iphone.png" height="960" width="640"/>
     <splash src="resources/ios/splash/Default~iphone.png" height="480" width="320"/>
   </platform>
-  <allow-navigation href="http://*.stripe.com/*" />
+  <allow-navigation href="https://*.stripe.com/*" />
+  <allow-navigation href="about:blank" />
 <!--
      <plugin name="phonegap-facebook-plugin" spec="~0.12.0">
         <variable name="APP_ID" value="1047876051936088" />

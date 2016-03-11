@@ -9,6 +9,7 @@ angular.module('app.services', ['ngResource','LocalStorageModule'])
 }])
 .factory('PriceAPI',function($resource,$rootScope,$http) {
     var hostUrl = $rootScope.hostUrl;
+    $rootScope.currentGender = 'female';
      var catImg = [];
     for(i = 1; i < 6; i++)
         catImg.push('img/cats/' + $rootScope.currentGender + '/img' + (i+1).toString() + '.svg');

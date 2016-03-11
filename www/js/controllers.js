@@ -1,6 +1,6 @@
 angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','truncate'])
   
-.controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http) {
+.controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService) {
     $rootScope.products = [];
     
     $rootScope.currentGender = 'female';
@@ -60,7 +60,13 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
         
     };
     
-//     $state.go('signin');
+    var user = Ionic.User.current();
+
+    if (user.isAuthenticated()) {
+        console.log('user logged in!');
+    } else {
+        $state.go('signin');
+    }
     
     
     $scope.$on('$ionicView.beforeEnter', function(){
@@ -176,12 +182,17 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
     console.log('loaded item view controller');
     
 }])
-.controller('WelcomeCtrl',function($rootScope,$scope,$state) {
+.controller('WelcomeCtrl',function($rootScope,$scope,$state,localStorageService) {
     console.log('loaded welcome controller!'); 
     $scope.loginFacebook = function() {
         Ionic.Auth.login('facebook', {'remember': true}).then(function(user) {
             console.log('user logged in');
             console.log(user);
+            Ionic.User.current().save();
+//             localStorageService.set('userId',user.)
+            
+            console.log(Ionic.User.current());
+            
             $state.go('tabs.feed');
             }, function(e) {
                 console.log('error logging in: ' + e);
