@@ -18,13 +18,12 @@ angular.module('app.services', ['ngResource','LocalStorageModule'])
             url: hostUrl + '/item/list/',
             params: {
                 'min_price' : $rootScope.min_price,
-                'max_price' : $rootScope.max_price
-            },
-            data: {
-                'category' : 'jewelry', //$rootScope.category
-                'page':$rootScope.page_no,
+                'max_price' : $rootScope.max_price,
+                'category' : $rootScope.currentCategory, //$rootScope.category
+                'page': $rootScope.page_no,
                 'show_by': 10,
                 'type' : 'female' //$rootScope.gender
+
             }
         })}
     }

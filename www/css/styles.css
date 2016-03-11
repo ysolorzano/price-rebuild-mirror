@@ -32,6 +32,13 @@ h1 .title {
     text-overflow: ellipsis;
 }
 
+.logo {
+  width: 50px;
+}
+
+.logoTitle {
+  margin-top: 8% !important;
+}
 
 /**********************************
 productDetails.html
@@ -76,8 +83,9 @@ productDetails.html
 /* social */
 .socialIcons {
   font-size: 25px;
-  color: #555;
-  margin: 5px;
+  color: #ddd;
+  margin: -40px 0 0 0;
+  position: absolute;
 }
 
 /* prices/productInfo */
@@ -85,6 +93,7 @@ productDetails.html
   background-color: #f1f1f1;
   padding: 10px 0;
   margin-bottom: 20px;
+  margin-top: -15px;
 }
 
 .retail, .savings, .actual {
@@ -152,9 +161,10 @@ productFeed.html
 **********************************/
 .feed .ng-binding { 
   display: block;
-  margin: 7px 0 auto 45px;
+  margin: 10px 0 auto 32px;
   text-transform: uppercase;
   font-size: 12px !important;
+  border-bottom: solid #999 1px;
 }
 
 .feed {
@@ -165,10 +175,21 @@ productFeed.html
 .item {
   border: none;
   padding: 0;
+  overflow: visible;
 }
+
+/*.item p {
+  margin-left: 45px;
+}*/
 
 .ion-record {
   font-size: 10px;
+}
+
+
+.ion-heart {
+  font-size: 25px !important;
+  margin-left: -11px;
 }
 
 
@@ -178,7 +199,7 @@ feed.html
 .feedImage {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 150px;
   overflow: hidden;
 }
 
