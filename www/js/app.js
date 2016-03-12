@@ -37,4 +37,9 @@ angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.rou
     }
     return input;
     }; 
+    
+    $rootScope.products = [];
+
+    $rootScope.currentGender = 'female';
+    $rootScope.page_no = 1;
 });

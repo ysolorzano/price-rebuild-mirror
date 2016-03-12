@@ -2,11 +2,8 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
 
   
 .controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService) {
-    $rootScope.products = [];
     
-	
-    $rootScope.currentGender = 'female';
-    $rootScope.page_no = 1;
+
 	
     $scope.refresh = function() {
         console.log('refresh products');
@@ -40,16 +37,11 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
        
     }
 
-<<<<<<< HEAD
 
-    $scope.openProductWithId = function(id) {
-        $http.get($rootScope.hostUrl + '/item/similar-category/' + id + '/').then(function(data) {
-=======
     $scope.openProduct = function(product) {
         var productId = product.id ? product.id : product.pk;
         console.log('opening product with id: ' + productId);
         $http.get($rootScope.hostUrl + '/item/similar-category/' + productId + '/').then(function(data) {
->>>>>>> master
             $rootScope.currentSuggestions = data.data;
             console.log(data.data);
         },function(e) {
@@ -74,11 +66,12 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
 
     
     var user = Ionic.User.current();
-
+        
     if (user.isAuthenticated()) {
         console.log('user logged in!');
     } else if(ionic.Platform.isIOS() || ionic.Platform.isAndroid()) {
-        $state.go('signin');
+        
+        $state.go('login');
     }
     
     
@@ -185,6 +178,9 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
 
 .controller('accountCtrl', function($scope) {
 
+    $scope.logout = function() {
+        Ionic.Auth.logout();
+    }
 })
 
 .controller('itemViewCtrl',['$stateParams',function($scope,$stateParams,stripe) {
@@ -220,4 +216,64 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
             });
     }
 })
-;
+
+
+.controller('LoginCtrl',function($rootScope,$scope,$state,$ionicLoading) {
+    $scope.user = {};
+    $scope.justRegistered = false;
+    
+$scope.login = function(provider) {
+    console.log($scope.user);
+    $ionicLoading.show({template: 'signing in...'});
+    Ionic.Auth.login(authProvider, authSettings, $scope.user)
+      .then(authSuccess, authFailure);
+  };
+  
+  var authProvider = 'basic';
+  var authSettings = { 'remember': $scope.remember };
+
+
+  function authSuccess(user) {
+      console.log(user);
+        $ionicLoading.hide();
+
+      $rootScope.user = user;
+      $state.go('tabs.feed'); 
+      if($scope.justRegistered) {
+//         $state.go('shipping');
+      } else {
+      
+        }
+  };
+  
+  function authFailure(errors) {
+        $ionicLoading.show({template: 'registering...'});
+        Ionic.Auth.signup($scope.user).then(signupSuccess, signupFailure);
+    };
+
+  
+  function signupSuccess(user) {
+    $scope.justRegistered = true;
+    console.log(user);
+    $scope.login();
+  }
+  
+  function signupFailure(response) {
+      console.log('failed to sign up user');
+      console.log(response);
+  }
+
+
+})
+.controller('ShippingCtrl',function($rootScope,$scope,$state) {
+    
+    $scope.saveInfo = function() {
+        $rootScope.user.save().then(function() {
+            console.log('saved user');
+            $state.go('tabs.feed');
+        },function(error) {
+            console.log('error saving user');
+        });
+    }
+    
+})

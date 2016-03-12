@@ -11,10 +11,10 @@
          <button class="stable button-icon icon ion-arrow-graph-up-right filter-btn" ng-click="openFilters()"></button>
     </ion-nav-buttons>
 
-    <ion-content overflow-scroll="true" padding="true" class="has-header">
+    <ion-content overflow-scroll="true" padding="false" class="has-header">
     <ion-refresher pulling-text="Pull to refresh" on-refresh="refresh()">
     </ion-refresher>
-    <ion-item collection-repeat="product in products" item-width="50%" item-height="225">
+    <ion-item collection-repeat="product in products" item-width="50%" item-height="225" class="feed-ion">
 <!--     <div class="list card"> -->
             <a ng-click="openProduct(product)">
               <div class="item item-image feed-image">
@@ -23,8 +23,8 @@
 
               </div>
                 </a>
-                <div class="item item-icon-left assertive feed" href="#" ng-click="toggleFav(product)">
-                    <i class="icon ion-heart" ng-class="{dark:product.isFavorite, assertive:!product.isFavorite}" ></i>
+                <div class="item item-icon-left dark feed" href="#" ng-click="toggleFav(product)">
+                    <i class="icon ion-ios-heart feed-heart" ng-class="{assertive:product.isFavorite, dark:!product.isFavorite}" ></i>
                      <p>{{product.brand}}</p>
                 </div>
   </ion-item>
