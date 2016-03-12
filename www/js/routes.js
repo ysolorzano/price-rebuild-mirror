@@ -13,6 +13,17 @@ angular.module('app.routes', [])
       templateUrl: 'templates/welcome.html',
       controller: 'WelcomeCtrl'
     })
+
+    .state('login', {
+      url: 'login',
+      templateUrl: 'templates/login.html',
+      controller: 'loginCtrl'
+    })
+
+        .state('shipping', {
+      url: '/shipping',
+      templateUrl: 'templates/shipping.html'
+    })
   
   .state('tabs', {
     url: '/',

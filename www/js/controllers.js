@@ -64,11 +64,12 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
     };
     
     var user = Ionic.User.current();
-
+        
     if (user.isAuthenticated()) {
         console.log('user logged in!');
     } else if(ionic.Platform.isIOS() || ionic.Platform.isAndroid()) {
-        $state.go('signin');
+        
+        $state.go('login');
     }
     
     
@@ -205,4 +206,9 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
             });
     } 
 })
-;
+
+.controller('LoginCtrl',function($rootScope,$scope,$state) {
+    $scope.signInUser = function() {
+        //code to sign user in goes here
+    }
+})

@@ -1,3 +1,25 @@
+.facebook-sign-in {
+  background-color: #3B5998 !important;
+  border: none !important;
+  color: #fff !important;
+  top: 80% !important;
+}
+
+.welcome-page {
+  background-image: url("../img/welcome.jpg") !important;
+  background-size: cover !important;
+  height: 100% !important;
+}
+
+.welcome-logo {
+  width: 200px !important;
+  margin: 0 auto 60% 0;
+}
+
+a {
+  text-decoration: none
+}
+
 /**********************************
 global CSS
 **********************************/
@@ -212,6 +234,10 @@ feed.html
 /*.item p {
   margin-left: 45px;
 }*/
+
+.item {
+  padding: 0;
+}
 
 .ion-record {
   font-size: 10px;

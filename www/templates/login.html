@@ -1,7 +1,21 @@
-<ion-view title="Login">
+<ion-view title="login">
     <ion-content overflow-scroll="true" padding="true" class="has-header">
-        <form class="list">
-            <button class="button button-stable button-block ">Log in</button>
-        </form>
+    <div class="list">
+      <label class="item item-input item-floating-label">
+        <span class="input-label">Email</span>
+        <input type="email" placeholder="Email">
+      </label>
+      <label class="item item-input item-floating-label">
+        <span class="input-label">Password</span>
+        <input type="password" placeholder="Password">
+      </label>
+  </div>
+
+  <div class="padding">
+    <a href="#/shipping">
+      <button class="button button-block button-positive" ng-click="signIn(user)">
+      Login
+    </button></a>
+  </div>
     </ion-content>
 </ion-view>
