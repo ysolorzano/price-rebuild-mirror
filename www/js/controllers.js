@@ -1,8 +1,10 @@
 angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','truncate'])
   
 .controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService) {
-    $rootScope.products = [];
     
+    $state.go('login');
+    
+    $rootScope.products = [];
     $rootScope.currentGender = 'female';
     $rootScope.page_no = 1;
     $scope.refresh = function() {
@@ -207,8 +209,62 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
     } 
 })
 
-.controller('LoginCtrl',function($rootScope,$scope,$state) {
-    $scope.signInUser = function() {
-        //code to sign user in goes here
+.controller('LoginCtrl',function($rootScope,$scope,$state,$ionicLoading) {
+    $scope.user = {};
+    $scope.justRegistered = false;
+    
+$scope.login = function(provider) {
+    console.log($scope.user);
+    $ionicLoading.show({template: 'signing in...'});
+    Ionic.Auth.login(authProvider, authSettings, $scope.user)
+      .then(authSuccess, authFailure);
+  };
+  
+  var authProvider = 'basic';
+  var authSettings = { 'remember': true };
+
+
+  function authSuccess(user) {
+      console.log(user);
+        $ionicLoading.hide();
+
+      $rootScope.user = user;
+      $state.go('tabs.feed'); 
+      if($scope.justRegistered) {
+//         $state.go('shipping');
+      } else {
+      
+        }
+  };
+  
+  function authFailure(errors) {
+        $ionicLoading.show({template: 'registering...'});
+        Ionic.Auth.signup($scope.user).then(signupSuccess, signupFailure);
+    };
+
+  
+  function signupSuccess(user) {
+    $scope.justRegistered = true;
+    console.log(user);
+    $scope.login();
+  }
+  
+  function signupFailure(response) {
+      console.log('failed to sign up user');
+      console.log(response);
+  }
+
+
+})
+.controller('ShippingCtrl',function($rootScope,$scope,$state) {
+    
+    $scope.saveInfo = function() {
+        $rootScope.user.save().then(function() {
+            console.log('saved user');
+            $state.go('tabs.feed');
+        },function(error) {
+            console.log('error saving user');
+        });
     }
+    
 })

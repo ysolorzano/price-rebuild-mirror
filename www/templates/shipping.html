@@ -2,22 +2,22 @@
         <ion-content padding="true">
           <div class="list">
             <label class="item item-input item-floating-label">
-              <span class="input-label">Full Name</span>
+              <span class="input-label" ng-model="user.details.name">Full Name</span>
               <input type="text" placeholder="Full Name">
             </label>
             <label class="item item-input item-floating-label">
-              <span class="input-label">Address</span>
+              <span class="input-label" ng-model="user.details.address">Address</span>
               <input type="text" placeholder="Address">
             </label>
             <label class="item item-input item-floating-label">
-              <span class="input-label">City</span>
+              <span class="input-label" ng-model="user.details.city">City</span>
               <input type="text" placeholder="City">
             </label>
             <label class="item item-input item-select">
               <div class="input-label">
                 State
               </div>
-              <select>
+              <select ng-model="user.details.state">
                 <option selected>AK</option>
                 <option>AL</option>
                 <option>AZ</option>
@@ -71,17 +71,17 @@
               </select>
             </label>
             <label class="item item-input item-floating-label">
-              <span class="input-label">Zip</span>
+              <span class="input-label" ng-model="user.details.zip">Zip</span>
               <input type="text" placeholder="Zipcode">
             </label>
           </div>
 
-          <a href="#/forgot-password">
-            <button class="button button-block button-positive" ng-click="signIn(user)">
-            Register
-          </button></a>
-          <p>
-            Return to <a href="#/favorites">Login</a>.
-          </p>
+
+            <button class="button button-block button-positive" ng-click="saveInfo()">
+            Save and Continue
+          </button>
+          <button class="button button-block button-positive" ui-sref="tabs.feed">
+            Skip and start shopping now
+          </button>
         </ion-content>
       </ion-view>

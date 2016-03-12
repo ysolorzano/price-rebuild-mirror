@@ -3,19 +3,18 @@
     <div class="list">
       <label class="item item-input item-floating-label">
         <span class="input-label">Email</span>
-        <input type="email" placeholder="Email">
+        <input type="email" placeholder="Email" ng-model="user.email" />
       </label>
       <label class="item item-input item-floating-label">
         <span class="input-label">Password</span>
-        <input type="password" placeholder="Password">
+        <input type="password" placeholder="Password" ng-model="user.password" />
       </label>
   </div>
 
   <div class="padding">
-    <a href="#/shipping">
-      <button class="button button-block button-positive" ng-click="signIn(user)">
-      Login
-    </button></a>
+      <button class="button button-block button-positive" ng-click="login()">
+      Login / Register
+    </button>
   </div>
     </ion-content>
 </ion-view>
