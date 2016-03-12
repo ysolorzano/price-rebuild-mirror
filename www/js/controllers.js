@@ -2,7 +2,6 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
   
 .controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService) {
     
-    $state.go('login');
     
     $rootScope.products = [];
     $rootScope.currentGender = 'female';
@@ -174,7 +173,9 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
 })
    
 .controller('accountCtrl', function($scope) {
-    
+    $scope.logout = function() {
+        Ionic.Auth.logout();
+    }
 })
     
 .controller('itemViewCtrl',['$stateParams',function($scope,$stateParams,stripe) {
@@ -221,7 +222,7 @@ $scope.login = function(provider) {
   };
   
   var authProvider = 'basic';
-  var authSettings = { 'remember': true };
+  var authSettings = { 'remember': $scope.remember };
 
 
   function authSuccess(user) {
