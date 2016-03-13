@@ -1,4 +1,16 @@
 {
+    "com.phonegap.plugins.facebookconnect": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Telerik-Verified-Plugins/Facebook.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {
+            "APP_ID": "584320658404604",
+            "APP_NAME": "Price"
+        }
+    },
     "cordova-plugin-device": {
         "source": {
             "type": "registry",

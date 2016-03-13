@@ -1,4 +1,4 @@
-angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9UIWebViewPatch'])
+angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9UIWebViewPatch','ngCordova'])
   
 .controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService) {
     
@@ -65,13 +65,29 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     };
     
     var user = Ionic.User.current();
-        
-    if (user.isAuthenticated()) {
+    if(localStorageService.get('accessToken')) {
+        //user already logged in
+    } else {
+        $state.go('signin');
+    }
+
+
+/*
+    $cordovaFacebook.getLoginStatus().then(function(res) {
+        console.log('got login status');
+        console.log(res);
+    });
+*/
+       
+    
+ /*
+   if (user.isAuthenticated()) {
         console.log('user logged in!');
     } else if(ionic.Platform.isIOS() || ionic.Platform.isAndroid()) {
         
-        $state.go('login');
+        $state.go('signin');
     }
+*/
     
     
     $scope.$on('$ionicView.beforeEnter', function(){
@@ -172,9 +188,23 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     console.log($scope.products);
 })
    
-.controller('accountCtrl', function($scope) {
+.controller('accountCtrl', function($scope,$cordovaFacebook,$state,localStorageService) {
+    $scope.user = {};
+    $scope.user.name = localStorageService.get('fullName');
+    
     $scope.logout = function() {
-        Ionic.Auth.logout();
+        console.log('should logout...');
+        $cordovaFacebook.logout().then(function(success) {
+            localStorageService.remove('accessToken');
+            localStorageService.remove('userId');
+            localStorageService.remove('fullName');
+            console.log(success);
+            $state.go('signin');    
+                    
+        },function(error) {
+           console.log('error logging out');
+           console.log(error); 
+        });
     }
 })
     
@@ -192,10 +222,39 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     console.log('loaded item view controller');
     
 }])
-.controller('WelcomeCtrl',function($rootScope,$scope,$state,localStorageService) {
+.controller('WelcomeCtrl',function($rootScope,$scope,$state,localStorageService,$cordovaFacebook) {
     console.log('loaded welcome controller!'); 
+    
+/*
+    $cordovaFacebook.getLoginStatus()
+    .then(function(success) {
+        console.log('got login status');
+        console.log(success);
+    },function(error) {
+        console.log('error checking login status');
+        console.log(error);
+    });
+*/
     $scope.loginFacebook = function() {
+        $cordovaFacebook.login(["public_profile", "email"])
+    .then(function(success) {
+        console.log('logged in!!!');
+            console.log(success);
+            localStorageService.set('accessToken',success.authResponse.accessToken);
+            localStorageService.set('userId',success.authResponse.userID);
+            
+        $cordovaFacebook.api("me", ["public_profile"])
+        .then(function(success) {
+            console.log(success);
+            localStorageService.set('fullName',success.name);
+            $state.go('tabs.feed');
+        }, function (error) {
+            // error
+        });
+        });
+/*
         Ionic.Auth.login('facebook', {'remember': true}).then(function(user) {
+            
             console.log('user logged in');
             console.log(user);
             Ionic.User.current().save();
@@ -207,6 +266,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
             }, function(e) {
                 console.log('error logging in: ' + e);
             });
+*/
     } 
 })
 
