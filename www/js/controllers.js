@@ -1,4 +1,4 @@
-angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','truncate'])
+angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','truncate','ngIOS9UIWebViewPatch'])
   
 .controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService) {
     
