@@ -49,11 +49,7 @@
     </platform>
     <allow-navigation href="https://*.stripe.com/*" />
     <allow-navigation href="about:blank" />
-    <plugin name="phonegap-facebook-plugin" spec="https://github.com/Telerik-Verified-Plugins/Facebook.git">
-        <variable name="APP_ID" value="584320658404604" />
-        <variable name="APP_NAME" value="Price" />
-    </plugin>
-    <plugin name="com.phonegap.plugins.facebookconnect" spec="https://github.com/Telerik-Verified-Plugins/Facebook.git">
+    <plugin name="phonegap-facebook-plugin" spec="src/Facebook">
         <variable name="APP_ID" value="584320658404604" />
         <variable name="APP_NAME" value="Price" />
     </plugin>

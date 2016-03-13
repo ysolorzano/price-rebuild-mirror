@@ -1,9 +1,8 @@
 {
     "com.phonegap.plugins.facebookconnect": {
         "source": {
-            "type": "git",
-            "url": "https://github.com/Telerik-Verified-Plugins/Facebook.git",
-            "subdir": "."
+            "type": "local",
+            "path": "src/Facebook"
         },
         "is_top_level": true,
         "variables": {

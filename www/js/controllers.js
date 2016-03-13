@@ -37,7 +37,8 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
             });
        
     }
-
+    
+    
     $scope.openProduct = function(product) {
         var productId = product.id ? product.id : product.pk;
         console.log('opening product with id: ' + productId);
@@ -242,7 +243,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
             console.log(success);
             localStorageService.set('accessToken',success.authResponse.accessToken);
             localStorageService.set('userId',success.authResponse.userID);
-            
+        
         $cordovaFacebook.api("me", ["public_profile"])
         .then(function(success) {
             console.log(success);
@@ -251,6 +252,8 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         }, function (error) {
             // error
         });
+        
+     
         });
 /*
         Ionic.Auth.login('facebook', {'remember': true}).then(function(user) {

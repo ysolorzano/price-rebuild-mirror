@@ -27,7 +27,7 @@
         "APP_ID": "584320658404604",
         "APP_NAME": "Price"
       },
-      "locator": "https://github.com/Telerik-Verified-Plugins/Facebook.git",
+      "locator": "src/Facebook",
       "id": "com.phonegap.plugins.facebookconnect"
     }
   ],
