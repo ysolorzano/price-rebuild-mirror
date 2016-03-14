@@ -1,4 +1,4 @@
-angular.module('app.services', ['ngResource','LocalStorageModule'])
+angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
 
 .factory('BlankFactory', [function(){
 
@@ -7,7 +7,7 @@ angular.module('app.services', ['ngResource','LocalStorageModule'])
 .service('BlankService', [function($http){
 
 }])
-.factory('PriceAPI',function($resource,$rootScope,$http) {
+.factory('PriceAPI',function($resource,$rootScope,$http,lodash,Favorites) {
     var hostUrl = $rootScope.hostUrl;
     $rootScope.currentGender = 'female';
      var catImg = [];
@@ -15,7 +15,7 @@ angular.module('app.services', ['ngResource','LocalStorageModule'])
         catImg.push('img/cats/' + $rootScope.currentGender + '/img' + (i+1).toString() + '.svg');
     return {
         item: $resource(hostUrl + '/item-details/:id/'),
-        items: $resource(hostUrl + '/item/list/'),
+        items: items,
         suggestions: $resource(hostUrl + '/item/similar-category/:id/'),
         suggestionstoo: function(id) { $http.get(hostUrl + '/item/similar-category/' + id + '/')
         },
@@ -74,6 +74,40 @@ angular.module('app.services', ['ngResource','LocalStorageModule'])
                     img: catImg[5]
                 }]
         }
+    }
+    function items(page) {
+        console.log('refresh products');
+        var request = $http( {
+            method: 'GET',
+            url: $rootScope.hostUrl + '/item/list/',
+            params: {
+                'price_min' : $rootScope.min_price,
+                'price_max' : $rootScope.max_price,
+                'category' : $rootScope.currentCategory, //$rootScope.category
+                'page': page,
+                'show_by': '20',
+                'type' : $rootScope.currentGender //$rootScope.gender
+
+
+            }
+        });
+        return request.then( function(data) {
+            console.log(data);
+            return lodash.map(data.data[0].products,function(product) {
+//                 product.fields.isFavorite = Favorites.contains(product.fields);
+                return product.fields;
+            });
+
+            console.log($rootScope.products);
+            $rootScope.$broadcast('scroll.refreshComplete');
+
+            },
+            function(e) {
+                return e;
+                console.log('error getting items...');
+                console.log(e);
+            });
+       
     }
 })
 .factory('Favorites',function(localStorageService, $resource, $rootScope) {

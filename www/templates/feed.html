@@ -29,5 +29,8 @@
                      <p>{{product.brand}}</p>
                 </div>
   </ion-item>
+  <ion-infinite-scroll
+    on-infinite="loadNextPage()"
+    distance="12%">
     </ion-content>
 </ion-view>

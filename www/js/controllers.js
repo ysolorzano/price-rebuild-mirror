@@ -1,52 +1,39 @@
 
 angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9UIWebViewPatch','ngCordova'])
   
-.controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService,nFavorites) {
+.controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService,$timeout) {
     
     $scope.$on('$ionicView.afterEnter', function(){
         $scope.refresh();
     });
     $ionicPlatform.ready(function(){
-
+    $timeout(function() {
+        $scope.refresh();
+    },250);
     
   });
     
 
     $rootScope.products = [];
     $rootScope.currentGender = 'female';
-    $rootScope.page_no = 1;
-    $scope.refresh = function() {
-        console.log('refresh products');
-        $http( {
-            method: 'GET',
-            url: $rootScope.hostUrl + '/item/list/',
-            params: {
-                'price_min' : $rootScope.min_price,
-                'price_max' : $rootScope.max_price,
-                'category' : $rootScope.currentCategory, //$rootScope.category
-                'page': $rootScope.page_no,
-                'show_by': 10,
-                'type' : $rootScope.currentGender //$rootScope.gender
+    $scope.refresh = function()  {
+        $rootScope.pageNum = 0;
+        $scope.loadNextPage();        
+    };
+    $scope.loadNextPage = function() {
+        console.log('should load next page');
+        $rootScope.pageNum++;
+        PriceAPI.items($rootScope.pageNum).then(function(res) {
+            console.log(res);
+            if($rootScope.pageNum == 1)
+                $rootScope.products = [];
+            $rootScope.products = lodash.concat($rootScope.products,res);
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.$broadcast('scroll.infiniteScrollComplete');
 
-
-            }
-        }).then( function(data) {
-            console.log(data);
-            $rootScope.products = lodash.map(data.data[0].products,function(product) {
-            product.fields.isFavorite = Favorites.contains(product.fields);
-            return product.fields;
-            });
-
-            console.log($rootScope.products);
-            $scope.$broadcast('scroll.refreshComplete');
-
-            },
-            function(e) {
-                console.log(e)
-            });
-       
+        })
+        
     }
-    
     
 
     $scope.openProduct = function(product) {
@@ -86,7 +73,9 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
 
     };
-    
+    $scope.addMoreItems = function() {
+        
+    }
     
     
     if(localStorageService.get('accessToken')) {
