@@ -7,9 +7,10 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.routes', 'app.services','app.directives','ngResource','LocalStorageModule','ionic.contrib.ui.hscrollcards','ngIOS9UIWebViewPatch','ngCordova'])
 
-.run(function($ionicPlatform,$rootScope) {
+.run(function($ionicPlatform,$rootScope,localStorageService) {
     $rootScope.hostUrl = 'http://staging12.getpriceapp.com';
   $ionicPlatform.ready(function() {
+      
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if(window.cordova && window.cordova.plugins.Keyboard) {

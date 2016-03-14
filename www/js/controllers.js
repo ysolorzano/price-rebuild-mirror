@@ -223,7 +223,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     console.log('loaded item view controller');
     
 }])
-.controller('WelcomeCtrl',function($rootScope,$scope,$state,localStorageService,$cordovaFacebook) {
+.controller('WelcomeCtrl',function($rootScope,$scope,$state,localStorageService,$cordovaFacebook,$http) {
     console.log('loaded welcome controller!'); 
     
 /*
@@ -243,15 +243,28 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
             console.log(success);
             localStorageService.set('accessToken',success.authResponse.accessToken);
             localStorageService.set('userId',success.authResponse.userID);
+            $rootScope.user.id = localStorageService.get('userId');
         
         $cordovaFacebook.api("me", ["public_profile"])
         .then(function(success) {
             console.log(success);
             localStorageService.set('fullName',success.name);
+            $rootScope.user.fullName = success.name;
+            
             $state.go('tabs.feed');
         }, function (error) {
             // error
         });
+        
+        $http.get('https://graph.facebook.com/' + $rootScope.user.id + '/picture?redirect=false&width=500').then(function(res) {
+            localStorageService.set('photoUrl',res.data.url);
+            $rootScope.photoUrl = res.data.url;
+              console.log('got photo!');
+              console.log(res);
+          },function(err) {
+              console.log(err);
+          });
+
         
      
         });
