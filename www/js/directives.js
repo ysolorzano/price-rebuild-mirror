@@ -37,7 +37,7 @@ angular.module('app.directives', ['app.controllers'])
       	          toValue: price,
                   fromValue: attrs.retail,
                   easing: 'linear',
-                  duration: 1500,
+                  duration: 2500,
                   delimiter: ',',
                   rounding: 2
                 }

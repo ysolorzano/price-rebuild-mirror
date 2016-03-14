@@ -1,11 +1,12 @@
 
 angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9UIWebViewPatch','ngCordova'])
   
-.controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService,$timeout,$ionicLoading) {
+.controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService,$timeout,$ionicLoading,Favs) {
     
 
     $scope.$on('$ionicView.afterEnter', function(){
         $scope.refresh();
+        $rootScope.favs = Favs.list();
     });
     $ionicPlatform.ready(function(){
     $timeout(function() {
@@ -19,7 +20,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     $rootScope.currentGender = 'female';
     $scope.refresh = function()  {
         $rootScope.pageNum = 0;
-        $scope.loadNextPage();        
+        $scope.loadNextPage();   
     };
     $scope.loadNextPage = function() {
         console.log('should load next page');
@@ -31,7 +32,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
             $rootScope.products = lodash.concat($rootScope.products,res);
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
-
+        $ionicLoading.hide();
         })
         
     }
@@ -81,7 +82,10 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     if(localStorageService.get('accessToken')) {
         //user already logged in
     } else if(ionic.Platform.isIOS() || ionic.Platform.isAndroid()) {
-        $state.go('signin');
+        $rootScope.user.fullName = "RJ Jain";
+        $rootScope.user.photoUrl = 'https://scontent.fsnc1-1.fna.fbcdn.net/hphotos-xla1/t31.0-8/12747354_10154146476332018_18157417964440176_o.jpg';
+        
+//         $state.go('signin');
     }
 
 
@@ -129,13 +133,13 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
     $scope.toggleFav = function(product) {
         if($rootScope.favs.indexOf(product) != -1) {
-            Favorites.delete(product);
+//             Favorites.delete(product);
             idx = $rootScope.favs.indexOf(item);
-$rootScope.favs.splice(idx, 1);
+            $rootScope.favs.splice(idx, 1);
             product.isFavorite = false;
         } else {
             product.isFavorite = true;
-            Favorites.add(product);
+            Favs.add(product);
             $rootScope.favs.push(product);
         }
     };
@@ -160,8 +164,10 @@ $rootScope.favs.splice(idx, 1);
         console.log($scope.categories);
     };
     $scope.setCategory = function(cat) {
+        $rootScope.products = [];
         $scope.catModal.hide();
         $rootScope.currentCategory = cat;
+        $ionicLoading.show();
         $scope.refresh();
     }
 
