@@ -21,7 +21,7 @@
                 <div class="col-80"></div>
                 <div class="social-icons col-20">
                 <a ng-click="toggleFav(product)"> <i class="ion-heart"></i></a>
-                    <i class="ion-share"></i>
+                <i class="ion-share"></i>
                 </div>
             </div>
             <!-- <hr>  -->
@@ -45,7 +45,7 @@
 
             <div class="row">
                 <hscroller delegate-handle="suggestionScroller">
-                    <hcard ng-repeat="item in currentSuggestions" index="{{$index}}" desc="{{item.title}}" image="{{item.photo_set[0].url_medium}}" ng-click="openProduct(item)"></hcard>
+                    <hcard ng-repeat="item in currentSuggestions" index="{{$index}}" desc="{{item.title}}" image="{{item.url_medium}}" ng-click="openProduct(item)"></hcard>
                 </hscroller>
             </div>
         </div>
