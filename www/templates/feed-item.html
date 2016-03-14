@@ -1,0 +1,10 @@
+<a ng-click="openProduct(product)">
+  <div class="item item-image feed-image">
+    <img ng-src="{{product.photo_set[0].url_large}}" item-height="280" />
+  </div>
+</a>
+
+<div class="item item-icon-left dark feed"><a ng-click="toggleFav(product)">
+    <i class="icon ion-ios-heart feed-heart" ng-class="{assertive:product.isFavorite, dark:!product.isFavorite}" ></i></a>
+     <p>{{product.brand}}</p>
+</div>
