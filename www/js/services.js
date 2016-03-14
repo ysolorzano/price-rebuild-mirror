@@ -107,7 +107,7 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
                 console.log('error getting items...');
                 console.log(e);
             });
-       
+
     }
 })
 .factory('Favorites',function(localStorageService, $resource, $rootScope) {
@@ -175,6 +175,3 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
         }
        }
 });
-
-
-

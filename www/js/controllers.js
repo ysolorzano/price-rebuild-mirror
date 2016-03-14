@@ -1,17 +1,20 @@
 
 angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9UIWebViewPatch','ngCordova'])
-  
+
 .controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService,$timeout,$ionicLoading) {
-    
+
 
     $scope.$on('$ionicView.afterEnter', function(){
         $scope.refresh();
+        $scope.favs = []
+        // $scope.favs = Favorites.get().save({}, {user: $rootScope.user.id})
+        // $scope.favs = Favorites.get().query()
     });
     $ionicPlatform.ready(function(){
     $timeout(function() {
         $scope.refresh();
     },250);
-    
+
   });
 
 
@@ -19,7 +22,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     $rootScope.currentGender = 'female';
     $scope.refresh = function()  {
         $rootScope.pageNum = 0;
-        $scope.loadNextPage();        
+        $scope.loadNextPage();
     };
     $scope.loadNextPage = function() {
         console.log('should load next page');
@@ -33,9 +36,9 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         $scope.$broadcast('scroll.infiniteScrollComplete');
 
         })
-        
+
     }
-    
+
 
     $scope.openProduct = function(product) {
         $ionicLoading.show();
@@ -77,7 +80,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
 
     };
-    
+
     if(localStorageService.get('accessToken')) {
         //user already logged in
     } else if(ionic.Platform.isIOS() || ionic.Platform.isAndroid()) {
@@ -131,7 +134,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         if($rootScope.favs.indexOf(product) != -1) {
             Favorites.delete(product);
             idx = $rootScope.favs.indexOf(item);
-$rootScope.favs.splice(idx, 1);
+            $rootScope.favs.splice(idx, 1);
             product.isFavorite = false;
         } else {
             product.isFavorite = true;
@@ -179,9 +182,22 @@ $rootScope.favs.splice(idx, 1);
 
 })
 
-.controller('favoritesCtrl', function($scope,Favorites) {
+.controller('favoritesCtrl', function($scope, Favorites) {
     console.log('loaded fav controller!');
-
+    $scope.toggleFav = function(product){
+      if($scope.favs.indexOf(product) != -1) {
+          Favorites.delete(product);
+          $scope.favs = Favorites.get();
+          // idx = $scope.favs.indexOf(item);
+          // $scope.favs.splice(idx, 1);
+          product.isFavorite = false;
+      } else {
+          Favorites.add(product);
+          $scope.favs = Favorites.get();
+          product.isFavorite = true;
+          // $scope.favs.push(product);
+      }
+    }
 })
 
 

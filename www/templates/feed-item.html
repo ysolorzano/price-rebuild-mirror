@@ -4,7 +4,7 @@
   </div>
 </a>
 
-<div class="item item-icon-left dark feed"><a ng-click="toggleFav(product)">
-    <i class="icon ion-ios-heart feed-heart" ng-class="{assertive:product.isFavorite, dark:!product.isFavorite}" ></i></a>
-     <p>{{product.brand}}</p>
+<div class="item item-icon-left dark feed">
+  <pr-fav-heart item='product'></pr-fav-heart>
+  <p>{{product.brand}}</p>
 </div>
