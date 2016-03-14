@@ -29,26 +29,22 @@ angular.module('app.directives', ['app.controllers'])
 .directive('prNumerator', function () {
     return {
         restrict: 'A', //E = element, A = attribute, C = class, M = comment
-
         link: function ($scope, element, attrs) {
-          console.log('numerating....')
-          console.log(attrs)
-          // $scope.$watch('currentProduct.amount_saved', function(newVal, oldVal){
-          //     if (newVal !== oldVal) {
-          //         // Do stuff ...
-          //         console.log('numerating....')
-          //         console.log(attrs)
-          //     }
-          // });
-          // price = attrs
-          // options = {
-	        //   toValue: price,
-          //   easing: 'linear',
-          //   duration: 2000,
-          //   delimiter: ',',
-          //   rounding: 2
-          // }}
-          // $(element).numerator( options )
+          $scope.$watch('currentProduct.amount_saved', function(newVal, oldVal){
+            if (newVal !== oldVal) {
+                price = attrs.price
+                options = {
+      	          toValue: price,
+                  fromValue: attrs.retail,
+                  easing: 'linear',
+                  duration: 1500,
+                  delimiter: ',',
+                  rounding: 2
+                }
+                $(element).numerator( options )
+              }
+          });
+
         } //DOM manipulation
     }
 });
