@@ -5,7 +5,9 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     $scope.$on('$ionicView.afterEnter', function(){
         $scope.refresh();
     });
-    
+    $ionicPlatform.ready(function(){
+        $scope.refresh();        
+        });
     
     $rootScope.products = [];
     $rootScope.currentGender = 'female';
