@@ -2,6 +2,10 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
   
 .controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService) {
     
+    $scope.$on('$ionicView.afterEnter', function(){
+        $scope.refresh();
+    });
+    
     
     $rootScope.products = [];
     $rootScope.currentGender = 'female';
@@ -91,9 +95,6 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 */
     
     
-    $scope.$on('$ionicView.beforeEnter', function(){
-        $scope.refresh();
-    });
 
     
     $scope.openFilters = function() {
@@ -189,9 +190,8 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     console.log($scope.products);
 })
    
-.controller('accountCtrl', function($scope,$cordovaFacebook,$state,localStorageService) {
-    $scope.user = {};
-    $scope.user.name = localStorageService.get('fullName');
+.controller('accountCtrl', function($scope,$cordovaFacebook,$state,localStorageService,$rootScope) {
+
     
     $scope.logout = function() {
         console.log('should logout...');
@@ -244,7 +244,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
             localStorageService.set('accessToken',success.authResponse.accessToken);
             localStorageService.set('userId',success.authResponse.userID);
             $rootScope.user.id = localStorageService.get('userId');
-        
+            
         $cordovaFacebook.api("me", ["public_profile"])
         .then(function(success) {
             console.log(success);
@@ -257,14 +257,13 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         });
         
         $http.get('https://graph.facebook.com/' + $rootScope.user.id + '/picture?redirect=false&width=500').then(function(res) {
-            localStorageService.set('photoUrl',res.data.url);
-            $rootScope.photoUrl = res.data.url;
+            localStorageService.set('photoUrl',res.data.data.url);
+            $rootScope.user.photoUrl = res.data.data.url;
               console.log('got photo!');
               console.log(res);
           },function(err) {
               console.log(err);
           });
-
         
      
         });

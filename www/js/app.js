@@ -8,9 +8,17 @@
 angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.routes', 'app.services','app.directives','ngResource','LocalStorageModule','ionic.contrib.ui.hscrollcards','ngIOS9UIWebViewPatch','ngCordova'])
 
 .run(function($ionicPlatform,$rootScope,localStorageService) {
-    $rootScope.hostUrl = 'http://staging12.getpriceapp.com';
   $ionicPlatform.ready(function() {
-      
+    $rootScope.hostUrl = 'http://staging12.getpriceapp.com';
+    $rootScope.user = {};
+
+    if(localStorageService.keys()) {
+        $rootScope.user.photoUrl = localStorageService.get('photoUrl');
+        $rootScope.user.id = localStorageService.get('userId');
+        $rootScope.user.accessToken = localStorageService.get('accessToken');
+        $rootScope.user.fullName = localStorageService.get('fullName');
+    }
+
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if(window.cordova && window.cordova.plugins.Keyboard) {

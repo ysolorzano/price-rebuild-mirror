@@ -2,12 +2,12 @@
     <ion-content overflow-scroll="true" padding="true" class="has-header">
 
     <div class="row profile-photo">
-    	<img src="img/adam.jpg" ng-src="{{user.photo.url_large}}">
+    	<img ng-src="{{user.photoUrl}}">
     </div>
 
 	<div class="user">
 	    <div class="row user-info">
-	    	<div class="col"><h2>{{user.name}}</h2><p>{{user.name}} // {{user.sex}} // {{user.city}}</p></div>
+	    	<div class="col"><h2>{{user.fullName}}</h2><p>{{user.sex}} // {{user.city}}</p></div>
 	    </div>
 
 		<div class="row user-stats">
