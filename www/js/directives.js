@@ -38,4 +38,16 @@ angular.module('app.directives', ['app.controllers'])
           // $(element).numerator( options )
         } //DOM manipulation
     }
+})
+.directive('prScrollSimilar', function(){
+  return{
+    restrict: 'A',
+    link: function($scope, element, attrs) {
+      $scope.$watch('currentProduct', function(newVal, oldVal){
+        if (newVal !== oldVal) {
+            $(element).scrollLeft(0);
+        }
+      });
+    }
+  }
 });
