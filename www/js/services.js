@@ -5,7 +5,7 @@ angular.module('app.services', ['ngResource','LocalStorageModule'])
 }])
 
 .service('BlankService', [function($http){
-    
+
 }])
 .factory('PriceAPI',function($resource,$rootScope,$http) {
     var hostUrl = $rootScope.hostUrl;
@@ -35,27 +35,27 @@ angular.module('app.services', ['ngResource','LocalStorageModule'])
         categories: {
             female: [
                 {
-                    name: 'sunglasses',
+                    name: 'bags',
                     img: catImg[0]
                 },{
-                    name: 'watches',
+                    name: 'clothing',
                     img: catImg[1]
                 },{
-                    name: 'clothing',
+                    name: 'watches',
                     img: catImg[2]
                 },{
-                    name: 'jewelry',
+                    name: 'shoes',
                     img: catImg[3]
                 },{
-                    name: 'bags',
+                    name: 'jewelry',
                     img: catImg[4]
                 },{
-                    name: 'shoes',
+                    name: 'sunglasses',
                     img: catImg[5]
                 }],
             male: [
                 {
-                    name: 'bags',
+                    name: 'electronics',
                     img: catImg[0]
                 },{
                     name: 'clothing',
@@ -67,7 +67,7 @@ angular.module('app.services', ['ngResource','LocalStorageModule'])
                     name: 'shoes',
                     img: catImg[3]
                 },{
-                    name: 'jewelry',
+                    name: 'gear',
                     img: catImg[4]
                 },{
                     name: 'sunglasses',
@@ -76,25 +76,63 @@ angular.module('app.services', ['ngResource','LocalStorageModule'])
         }
     }
 })
+.factory('Favorites',function(localStorageService, $resource, $rootScope) {
+    var hostUrl = $rootScope.hostUrl;
 
-.factory('Favorites',function(localStorageService) {
+   return {
+        get: function() {
+          console.log('Fetching favorites...');
+          return $resource(hostUrl + '/favourites/list/',
+          {user: $rootScope.user.id})
+          .query();
+        },
+        add: function(item) {
+            return $resource(hostUrl + '/favourites/add',
+            {item: '@item',user: $rootScope.user.id})
+            .post({item : item});
+        },
+        delete: function(item) {
+            console.log('deleting favorite...');
+            return $resource(hostUrl + '/favourites/delete',
+            {item:'@item',user: $rootScope.user.id})
+            .post({item:item});
+        },
+        contains: function(item) {
+            console.log('trying to get favorites!');
+            var favs = localStorageService.get('favs');
+            return favs.indexOf(item) != -1;
+        }
+       }
+})
+
+.factory('nFavorites',function(localStorageService, $resource, $rootScope) {
+    var hostUrl = $rootScope.hostUrl;
+
     if(!localStorageService.get('favs'))
         localStorageService.set('favs',[]);
    return {
         get: function() {
-            return localStorageService.get('favs')
+          url = hostUrl + '/favourites/list/'
+          console.log('Fetching favorites...')
+          return $resource(url, {user: 76}, {
+              query: {method:'POST', isArray:true}
+            });
         },
-        add: function(item) { 
-            console.log('added item!');
-           var favs = localStorageService.get('favs');
-           favs.push(item);
-           localStorageService.set('favs',favs);
+        add: function(item, userId) {
+          url = hostUrl + '/favourites/add'
+          console.log('adding favorite...');
+          console.log(item);
+          return $resource(url, {user: 76, item: 9367}, {
+              query: {method:'GET', params: {user: userId, item: item.id}}
+            });
         },
-        delete: function(item) {
-            var favs = localStorageService.get('favs');
-            var index = favs.indexOf(item);
-            favs.splice(index, 1);
-            localStorageService.set('favs',favs);
+        delete: function(item, userId) {
+          url = hostUrl + '/favourites/delete'
+          console.log('deleting favorite...');
+          console.log(item);
+          return $resource(url, {user: 76, item: 9367}, {
+              query: {method:'POST', params: {user: userId, item: item.id}}
+            });
         },
         contains: function(item) {
             console.log('trying to get favorites!');
@@ -103,3 +141,6 @@ angular.module('app.services', ['ngResource','LocalStorageModule'])
         }
        }
 });
+
+
+

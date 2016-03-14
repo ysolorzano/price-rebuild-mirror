@@ -21,7 +21,15 @@
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
     "ionic-plugin-keyboard",
-    "cordova-plugin-inappbrowser"
+    "cordova-plugin-inappbrowser",
+    {
+      "variables": {
+        "APP_ID": "584320658404604",
+        "APP_NAME": "Price"
+      },
+      "locator": "src/Facebook",
+      "id": "com.phonegap.plugins.facebookconnect"
+    }
   ],
   "cordovaPlatforms": [
     "ios"

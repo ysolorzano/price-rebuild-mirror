@@ -1,7 +1,6 @@
 <ion-view title="Favorites">
     <ion-content overflow-scroll="true" padding="true" class="has-header">
-    <div>hello there!</div>
-    <ion-item collection-repeat="product in products" item-width="50%" item-height="300">
+    <ion-item collection-repeat="product in favs" item-width="50%" item-height="300">
 <!--     <div class="list card"> -->
             <a ng-click="openProduct(product)">
               <div class="item item-image">
@@ -10,7 +9,7 @@
 
               </div>
                 </a>
-                <div class="item item-icon-left assertive" href="#" ng-click="toggleFav(product)">
+                <div class="item item-icon-left assertive" ng-click="toggleFav(product)">
                     <i class="icon ion-heart"></i>
                      <p>{{product.brand}}</p>
                 </div>

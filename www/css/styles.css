@@ -1,3 +1,46 @@
+.facebook-sign-in {
+  background-color: #3B5998 !important;
+  border: none !important;
+  color: #fff !important;
+  top: 80% !important;
+}
+
+.welcome-page {
+  background-image: url("../img/welcome.jpg") !important;
+  background-size: cover !important;
+  height: 100% !important;
+}
+
+.welcome-logo {
+  width: 200px !important;
+  margin: 0 auto 60% 0;
+}
+
+a {
+  text-decoration: none
+}
+
+.feed-ion .item {
+  border: none;
+}
+
+.feed-ion .feed {
+  padding: 0;
+}
+
+.feed-ion:nth-child(n+1) {
+  border-right: none;
+}
+
+.feed-heart {
+  font-size: 20px !important;
+  margin-left: -11px;
+}
+
+.ion-heart {
+
+}
+
 /**********************************
 global CSS
 **********************************/
@@ -198,7 +241,7 @@ feed.html
 
 .feed .ng-binding { 
   display: block;
-  margin: 10px 0 auto 32px;
+  margin: 0 0 auto 32px;
   text-transform: uppercase;
   font-size: 12px !important;
 /*  border-bottom: solid #999 1px;*/
@@ -219,15 +262,14 @@ feed.html
   margin-left: 45px;
 }*/
 
+.item {
+  padding: 0;
+}
+
 .ion-record {
   font-size: 10px;
 }
 
-
-.ion-heart {
-  font-size: 25px !important;
-  margin-left: -11px;
-}
 
 
 /**********************************

@@ -1,8 +1,18 @@
-angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','truncate'])
+
+angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9UIWebViewPatch','ngCordova'])
   
-.controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService) {
-    $rootScope.products = [];
+.controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService,nFavorites) {
     
+    $scope.$on('$ionicView.afterEnter', function(){
+        $scope.refresh();
+    });
+    $ionicPlatform.ready(function(){
+
+    
+  });
+    
+
+    $rootScope.products = [];
     $rootScope.currentGender = 'female';
     $rootScope.page_no = 1;
     $scope.refresh = function() {
@@ -36,14 +46,36 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
             });
        
     }
+    
+    
 
     $scope.openProduct = function(product) {
-        $http.get($rootScope.hostUrl + '/item/similar-category/' + product.id + '/').then(function(data) {
+        var productId = product.id ? product.id : product.pk;
+
+
+        console.log('opening product with id: ' + productId);
+        
+        $http.get($rootScope.hostUrl + '/item-details/' + productId+'/').then(function(res) {
+            console.log('should get item data...');
+            console.log(res);
+            $rootScope.currentProduct = res.data;
+            resetProductModal();
+            $scope.modal.show(); 
+
+        })
+        
+        
+        PriceAPI.item.get({id: productId},function(data) {
+            
+        });
+
+        $http.get($rootScope.hostUrl + '/item/similar-category/' + productId + '/').then(function(data) {
             $rootScope.currentSuggestions = data.data;
             console.log(data.data);
         },function(e) {
             console.log(e);
         });
+        
         
 /*
         PriceAPI.suggestions.get({id: product.id}, function(data) {
@@ -51,29 +83,19 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
             console.log(data);            
         });
 */
-        PriceAPI.item.get({id: product.id},function(data) {
-            console.log(data);
-            $rootScope.currentProduct = data;
-            $scope.modal.show();
-        });
 
-        
+
     };
     
-    var user = Ionic.User.current();
     
-    if (user.isAuthenticated()) {
-        console.log('user logged in!');
+    
+    if(localStorageService.get('accessToken')) {
+        //user already logged in
     } else if(ionic.Platform.isIOS() || ionic.Platform.isAndroid()) {
         $state.go('signin');
     }
     
-    
-    $scope.$on('$ionicView.beforeEnter', function(){
-        $scope.refresh();
-    });
 
-    
     $scope.openFilters = function() {
         $ionicActionSheet.show({
         buttons: [
@@ -105,20 +127,28 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
 
     })};
     
-    $scope.favs = Favorites.get();
+ /*
+   $scope.addFavorite = function(product) {
+        $http({
+            method:'POST',
+            url: $rootScope.hostUrl + 'favourites/add',
+            data: {
+                user:$rootScope.
+            }            
+        }
+*/
     
-    $scope.favoriteStyle = function(item) {
-        return Favorites.contains(item) ? "assertive" : "dark";
-    };
     $scope.toggleFav = function(product) {
-        if(Favorites.contains(product)) {
+        if($rootScope.favs.indexOf(product) != -1) {
             Favorites.delete(product);
+            idx = $rootScope.favs.indexOf(item);
+$rootScope.favs.splice(idx, 1);
             product.isFavorite = false;
         } else {
-            Favorites.add(product);
             product.isFavorite = true;
+            Favorites.add(product);
+            $rootScope.favs.push(product);
         }
-        $scope.favs = Favorites.get();
     };
 
     $ionicModal.fromTemplateUrl('templates/productDetails.html', function($ionicModal) {
@@ -126,7 +156,7 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
     }, {
         scope: $scope,
         animation: 'slide-in-up'
-    }); 
+    });
     
     $ionicModal.fromTemplateUrl('templates/categories.html', function($ionicModal) {
         $scope.catModal = $ionicModal;
@@ -140,34 +170,50 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
         $scope.catModal.show();
         console.log($scope.categories);
     };
-    $scope.selectedCategory = function(cat) {
+    $scope.setCategory = function(cat) {
         $scope.catModal.hide();
-        $scope.currentCategory = cat;
+        $rootScope.currentCategory = cat;
+        $scope.refresh();
     }
     
     $scope.$on('modal.shown', function(event) {
+//         resetProductModal();
+    });
+    
+    function resetProductModal() {
         $ionicScrollDelegate.$getByHandle('modalContent').scrollTop(true);
         $scope.activeSlide = 1;
         $ionicScrollDelegate.$getByHandle('suggestionScroller').scrollTo(0,0,false);
-    });
-    
+    }
     
     $scope.categories = PriceAPI.categories;
-    
 
 })
-   
+
 .controller('favoritesCtrl', function($scope,Favorites) {
-    console.log('loaded favs!');
-    $scope.products = [];
-    $scope.products = Favorites.get();
-    console.log($scope.products);
+    console.log('loaded fav controller!');
+    
 })
+
    
-.controller('accountCtrl', function($scope) {
-    
+.controller('accountCtrl', function($scope,$cordovaFacebook,$state,localStorageService,$rootScope) {
+
+    $scope.logout = function() {
+        console.log('should logout...');
+        $cordovaFacebook.logout().then(function(success) {
+            localStorageService.remove('accessToken');
+            localStorageService.remove('userId');
+            localStorageService.remove('fullName');
+            console.log(success);
+            $state.go('signin');    
+                    
+        },function(error) {
+           console.log('error logging out');
+           console.log(error); 
+        });
+    }
 })
-    
+
 .controller('itemViewCtrl',['$stateParams',function($scope,$stateParams,stripe) {
     $scope.card = {
         number: '4242424242424242',
@@ -175,28 +221,108 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
         exp_month: '12',
         exp_year: '19'
     };
-    
+
     $scope.buyNow = function() {
         console.log('buying now!');
     }
     console.log('loaded item view controller');
-    
+
 }])
-.controller('WelcomeCtrl',function($rootScope,$scope,$state,localStorageService) {
+
+.controller('WelcomeCtrl',function($rootScope,$scope,$state,localStorageService,$cordovaFacebook,$http) {
     console.log('loaded welcome controller!'); 
+    
     $scope.loginFacebook = function() {
-        Ionic.Auth.login('facebook', {'remember': true}).then(function(user) {
-            console.log('user logged in');
-            console.log(user);
-            Ionic.User.current().save();
-//             localStorageService.set('userId',user.)
+        $cordovaFacebook.login(["public_profile", "email"])
+    .then(function(success) {
+        console.log('logged in!!!');
+            console.log(success);
+            localStorageService.set('accessToken',success.authResponse.accessToken);
+            localStorageService.set('userId',success.authResponse.userID);
+            $rootScope.user.id = localStorageService.get('userId');
             
-            console.log(Ionic.User.current());
+        $cordovaFacebook.api("me", ["public_profile"])
+        .then(function(success) {
+            console.log(success);
+            localStorageService.set('fullName',success.name);
+            $rootScope.user.fullName = success.name;
             
             $state.go('tabs.feed');
-            }, function(e) {
-                console.log('error logging in: ' + e);
-            });
+        }, function (error) {
+            // error
+        });
+        
+        $http.get('https://graph.facebook.com/' + $rootScope.user.id + '/picture?redirect=false&width=500').then(function(res) {
+            localStorageService.set('photoUrl',res.data.data.url);
+            $rootScope.user.photoUrl = res.data.data.url;
+              console.log('got photo!');
+              console.log(res);
+          },function(err) {
+              console.log(err);
+          });
+        
+     
+        });
     } 
+
 })
-;
+
+.controller('LoginCtrl',function($rootScope,$scope,$state,$ionicLoading) {
+    $scope.user = {};
+    $scope.justRegistered = false;
+    
+$scope.login = function(provider) {
+    console.log($scope.user);
+    $ionicLoading.show({template: 'signing in...'});
+    Ionic.Auth.login(authProvider, authSettings, $scope.user)
+      .then(authSuccess, authFailure);
+  };
+  
+  var authProvider = 'basic';
+  var authSettings = { 'remember': $scope.remember };
+
+
+  function authSuccess(user) {
+      console.log(user);
+        $ionicLoading.hide();
+
+      $rootScope.user = user;
+      $state.go('tabs.feed'); 
+      if($scope.justRegistered) {
+//         $state.go('shipping');
+      } else {
+      
+        }
+  };
+  
+  function authFailure(errors) {
+        $ionicLoading.show({template: 'registering...'});
+        Ionic.Auth.signup($scope.user).then(signupSuccess, signupFailure);
+    };
+
+  
+  function signupSuccess(user) {
+    $scope.justRegistered = true;
+    console.log(user);
+    $scope.login();
+  }
+  
+  function signupFailure(response) {
+      console.log('failed to sign up user');
+      console.log(response);
+  }
+
+
+})
+.controller('ShippingCtrl',function($rootScope,$scope,$state) {
+    
+    $scope.saveInfo = function() {
+        $rootScope.user.save().then(function() {
+            console.log('saved user');
+            $state.go('tabs.feed');
+        },function(error) {
+            console.log('error saving user');
+        });
+    }
+    
+})
