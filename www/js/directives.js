@@ -13,6 +13,19 @@ angular.module('app.directives', ['app.controllers'])
         } //DOM manipulation
     }
 })
+.directive('prFeedItem', function(){
+  return {
+    restrict: 'E', //<feed-item></feed-item>
+    link: function($scope, element, attrs){
+      console.log('feed-item...')
+    },
+    scope: {
+      product: '=item'
+    },
+    templateUrl: 'templates/feed-item.html',
+    controller: 'feedCtrl'
+  }
+})
 .directive('prNumerator', function () {
     return {
         restrict: 'A', //E = element, A = attribute, C = class, M = comment
