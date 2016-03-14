@@ -7,6 +7,11 @@
         "files": {}
     },
     "installed_plugins": {
+        "com.phonegap.plugins.facebookconnect": {
+            "APP_ID": "584320658404604",
+            "APP_NAME": "Price",
+            "PACKAGE_NAME": "com.LogicSquare.Price"
+        },
         "cordova-plugin-device": {
             "PACKAGE_NAME": "com.LogicSquare.Price"
         },

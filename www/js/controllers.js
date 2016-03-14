@@ -1,10 +1,20 @@
-angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','truncate'])
 
+angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9UIWebViewPatch','ngCordova'])
   
 .controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService) {
     
+    $scope.$on('$ionicView.afterEnter', function(){
+        $scope.refresh();
+    });
+    $ionicPlatform.ready(function(){
+        $scope.refresh();    
+        $rootScope.favs = Favorites.get();
+        });
+    
 
-	
+    $rootScope.products = [];
+    $rootScope.currentGender = 'female';
+    $rootScope.page_no = 1;
     $scope.refresh = function() {
         console.log('refresh products');
         $http( {
@@ -36,11 +46,29 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
             });
        
     }
-
+    
+    
 
     $scope.openProduct = function(product) {
         var productId = product.id ? product.id : product.pk;
+
+
         console.log('opening product with id: ' + productId);
+        
+        $http.get($rootScope.hostUrl + '/item-details/' + productId+'/').then(function(res) {
+            console.log('should get item data...');
+            console.log(res);
+            $rootScope.currentProduct = res.data;
+            resetProductModal();
+            $scope.modal.show(); 
+
+        })
+        
+        
+        PriceAPI.item.get({id: productId},function(data) {
+            
+        });
+
         $http.get($rootScope.hostUrl + '/item/similar-category/' + productId + '/').then(function(data) {
             $rootScope.currentSuggestions = data.data;
             console.log(data.data);
@@ -48,36 +76,43 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
             console.log(e);
         });
         
+        
 /*
         PriceAPI.suggestions.get({id: product.id}, function(data) {
             console.log('suggestions...');
             console.log(data);            
         });
 */
-        PriceAPI.item.get({id: productId},function(data) {
-            console.log(data);
-            $rootScope.currentProduct = data;
-            resetProductModal();
-            $scope.modal.show(); 
-        });
 
 
     };
 
     
-    var user = Ionic.User.current();
-        
-    if (user.isAuthenticated()) {
+    if(localStorageService.get('accessToken')) {
+        //user already logged in
+    } else {
+        $state.go('signin');
+    }
+
+
+/*
+    $cordovaFacebook.getLoginStatus().then(function(res) {
+        console.log('got login status');
+        console.log(res);
+    });
+*/
+       
+    
+ /*
+   if (user.isAuthenticated()) {
         console.log('user logged in!');
     } else if(ionic.Platform.isIOS() || ionic.Platform.isAndroid()) {
         
-        $state.go('login');
+        $state.go('signin');
     }
+*/
     
     
-    $scope.$on('$ionicView.beforeEnter', function(){
-        $scope.refresh();
-    });
 
     $scope.openFilters = function() {
         $ionicActionSheet.show({
@@ -109,22 +144,19 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
         }
 
     })};
-
-    $scope.favs = Favorites.get();
-
-    $scope.favoriteStyle = function(item) {
-        return Favorites.contains(item) ? "assertive" : "dark";
-    };
+    
+    
     $scope.toggleFav = function(product) {
-        userId = 76 // Should be the user id of logged in User
-        if(Favorites.contains(product)) {
-            Favorites.delete(product, userId);
+        if($rootScope.favs.indexOf(product) != -1) {
+            Favorites.delete(product);
+            idx = $rootScope.favs.indexOf(item);
+$rootScope.favs.splice(idx, 1);
             product.isFavorite = false;
         } else {
-            Favorites.add(product,userId);
             product.isFavorite = true;
+            Favorites.add(product);
+            $rootScope.favs.push(product);
         }
-        $scope.favs = Favorites.get();
     };
 
     $ionicModal.fromTemplateUrl('templates/productDetails.html', function($ionicModal) {
@@ -167,19 +199,27 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
 
 .controller('favoritesCtrl', function($scope,Favorites) {
     console.log('loaded favs!');
-    $scope.products = [];
-    $scope.products = Favorites.get().query({ //url params
-      user: 76 // Should be the id of the logged in User.
-    },
-    function(data){
-      console.log(data)
-    });
+    $scope.favs = [];
+    $scope.favs = Favorites.get();
+    
 })
 
-.controller('accountCtrl', function($scope) {
+   
+.controller('accountCtrl', function($scope,$cordovaFacebook,$state,localStorageService,$rootScope) {
 
     $scope.logout = function() {
-        Ionic.Auth.logout();
+        console.log('should logout...');
+        $cordovaFacebook.logout().then(function(success) {
+            localStorageService.remove('accessToken');
+            localStorageService.remove('userId');
+            localStorageService.remove('fullName');
+            console.log(success);
+            $state.go('signin');    
+                    
+        },function(error) {
+           console.log('error logging out');
+           console.log(error); 
+        });
     }
 })
 
@@ -198,25 +238,43 @@ angular.module('app.controllers', ['app.services','angular-stripe','ngLodash','t
 
 }])
 
-.controller('WelcomeCtrl',function($rootScope,$scope,$state,localStorageService) {
+.controller('WelcomeCtrl',function($rootScope,$scope,$state,localStorageService,$cordovaFacebook,$http) {
     console.log('loaded welcome controller!'); 
-	
+    
     $scope.loginFacebook = function() {
-        Ionic.Auth.login('facebook', {'remember': true}).then(function(user) {
-            console.log('user logged in');
-            console.log(user);
-            Ionic.User.current().save();
-//             localStorageService.set('userId',user.)
+        $cordovaFacebook.login(["public_profile", "email"])
+    .then(function(success) {
+        console.log('logged in!!!');
+            console.log(success);
+            localStorageService.set('accessToken',success.authResponse.accessToken);
+            localStorageService.set('userId',success.authResponse.userID);
+            $rootScope.user.id = localStorageService.get('userId');
             
-            console.log(Ionic.User.current());
+        $cordovaFacebook.api("me", ["public_profile"])
+        .then(function(success) {
+            console.log(success);
+            localStorageService.set('fullName',success.name);
+            $rootScope.user.fullName = success.name;
             
             $state.go('tabs.feed');
-            }, function(e) {
-                console.log('error logging in: ' + e);
-            });
-    }
-})
+        }, function (error) {
+            // error
+        });
+        
+        $http.get('https://graph.facebook.com/' + $rootScope.user.id + '/picture?redirect=false&width=500').then(function(res) {
+            localStorageService.set('photoUrl',res.data.data.url);
+            $rootScope.user.photoUrl = res.data.data.url;
+              console.log('got photo!');
+              console.log(res);
+          },function(err) {
+              console.log(err);
+          });
+        
+     
+        });
+    } 
 
+})
 
 .controller('LoginCtrl',function($rootScope,$scope,$state,$ionicLoading) {
     $scope.user = {};
