@@ -23,6 +23,7 @@ a {
 .feed-ion .item {
   border: none;
   padding: 0 !important;
+  margin: 0 !important;
 }
 
 .feed-ion {
@@ -109,6 +110,10 @@ scroll/category CSS
 
 .scroll-button {
   border: none;
+}
+
+.scroll-icon img {
+	height: 20px;
 }
 
 /**********************************
