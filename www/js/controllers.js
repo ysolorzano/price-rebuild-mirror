@@ -142,21 +142,29 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         }
 
     })};
-    $scope.userMinPrice = 5;
-    $scope.userMinPrice = 1000;
     
-    $scope.minPrice = 5;
-    $scope.maxPrice = 1000;
+    $scope.slider = {
+        min: 5,
+        max: 1000,
+        options: {
+            floor: 5,
+            ceil: 1000,
+            step: 5
+        }
+    };    
 
     $scope.applyFilters = function() {
-        $rootScope.min_price = $scope.userMinPrice;
-        $rootScope.max_price = $scope.userMaxPrice;
+        $scope.filtersModal.hide();
+        $rootScope.min_price = $scope.slider.min;
+        $rootScope.max_price = $scope.slider.max;
         $scope.refresh();
+
     }
     
     $scope.cancelFilters = function() {
-        $scope.userMinPrice = $rootScope.min_price;
-        $scope.userMaxPrice = $rootScope.max_price;
+        $scope.slider.min = $rootScope.min_price;
+        $scope.slider.max = $rootScope.max_price;
+        $scope.filtersModal.hide();
     }
 
 

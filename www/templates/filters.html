@@ -1,8 +1,12 @@
       <header class="bar bar-header bar-dark">
-          <div class="button button-clear" ng-click="filtersModal.hide()">Cancel</div>
-          <div class="button button-clear" ng-click="cancelFilters()">Apply</div>
+          <div class="button button-clear" ng-click="cancelFilters()">Cancel</div>
+          <div class="button button-clear" ng-click="applyFilters()">Apply</div>
         </header>
 <ion-content overflow-scroll="false" padding="true" class="has-header" scroll="false">
+<rzslider
+    rz-slider-model="slider.min"
+    rz-slider-high="slider.max"
+    rz-slider-options="slider.options"></rzslider>
 <div range-slider min="minPrice" max="maxPrice" model-min="userMinPrice" model-max="userMaxPrice" step="5" filter="currency"></div>
     <p>this is some content</p>
 </ion-content>
