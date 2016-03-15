@@ -68,11 +68,6 @@ angular.module('app.routes', [])
       templateUrl: 'templates/productDetails.html',
       controller: 'itemViewCtrl'
     })
-  .state('share', {
-      url: "/share",
-      templateUrl: "templates/share.html",
-      controller: 'shareCtrl'
-    })
 
 
 
