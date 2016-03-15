@@ -19,6 +19,8 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
 
   });
+  $scope.testArray = ["poop",
+  "crap","feces"];
 
   $scope.canReload = true;
     $rootScope.products = [];
