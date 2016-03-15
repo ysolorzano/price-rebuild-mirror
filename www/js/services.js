@@ -89,7 +89,7 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
             console.log('got list data...');
             console.log(data);
             return lodash.map(data.data[0].products,function(product) {
-                product.fields.isFavorite = Favs.contains(product.fields);        
+                product.fields.isFavorite = Favs.contains(product.fields.item_id);        
                 return product.fields;
             });
 
@@ -114,13 +114,13 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
       contains:contains
     }
     
-    function contains(product) {
+    function contains(item_id) {
         return lodash.some($rootScope.favs,function(fav) {
-            return fav.itemID == product.item_id;
+            return fav.itemID == item_id;
         });
     }
 
-    function add(item) {
+    function add(item_id) {
       var config = {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
@@ -128,11 +128,12 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
       }
       var data = $.param({
         user: '76',
-        item: item.item_id
+        item: item_id
       });
       var request = $http.post($rootScope.hostUrl + '/favourites/add', data, config);
       return (request.then(function(res) {
         console.log(res);
+        getList();
         return res.data;
       }, function(err) {
         return err;
@@ -144,7 +145,14 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
       $http.get('http://staging12.getpriceapp.com' + '/favourites/list?user=76').then(function(res) {
           console.log('got favs...');
           console.log(res);
+          
           $rootScope.favs = res.data;
+        // $rootScope.favs[0].isFavorite = true;
+          for(item in $rootScope.favs){
+            item.isFavorite = true; // ideally it can be set at server side
+          }
+          console.log($rootScope.favs);
+          console.log('****')
       },function(err) {
           console.log(err);
       });
@@ -162,16 +170,18 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
 
     }
     
-    function remove(item) {
+    function remove(item_id) {
         $.ajax({
             url: "http://staging12.getpriceapp.com/favourites/delete/",
             data: {
-                'id': item,
+                'user': 76,
+                'id': item_id
             },
             type: "POST",
             dataType: "json",
             success: function(data){
-                console.log(data)
+                console.log(data);
+                getList();
                 },
             error: function(data){
                 console.log(data)
