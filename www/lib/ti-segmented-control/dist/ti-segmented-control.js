@@ -32,8 +32,8 @@ angular.module('ti-segmented-control', []
         scope: {
             title: '='
         },
-        template: '<a class=\"button button-outline ti-segmented-control\">{{title}}</a>',
-        link: function(scope, element, attr, segmentedControlCtrl){
+        template: '<a class=\"button button-outline ti-segmented-control\"><img ng-src="{{title}}"/></a>',
+        link: function(scope, element, attr, segmentedControlCtrl){#fff8e8
             segmentedControlCtrl.buttons.push(scope.title);
             if(attr.selected != undefined) element.addClass('active');
 
