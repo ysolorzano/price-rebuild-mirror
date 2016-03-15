@@ -37,7 +37,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     $rootScope.products = [];
     $rootScope.currentGender = 'female';
     $scope.refresh = function()  {
-//         $ionicLoading.show();
+        $ionicLoading.show();
         $rootScope.pageNum = 0;
         $scope.loadNextPage();
         $scope.canReload = false;
