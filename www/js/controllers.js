@@ -179,6 +179,10 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     $scope.openFilters = function() {
         $scope.filtersModal.show();
     }
+    
+    $scope.applyFilters = function() {
+        
+    }
 
     $scope.openCategories = function() {
         console.log('should open categories');
