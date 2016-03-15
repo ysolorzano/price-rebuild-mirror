@@ -2,15 +2,26 @@
 angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9UIWebViewPatch','ngCordova','app.directives'])  
 .controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService,$timeout,$ionicLoading,Favs) {
     
-
+    $scope.$on('$ionicView.beforeEnter',function() {
+        $ionicLoading.show();        
+    })
+    
     $scope.$on('$ionicView.afterEnter', function(){
-        $ionicLoading.show();
-        $rootScope.favs = Favs.list();
-
-        $scope.refresh();
-                    console.log('getting favs...');
-        console.log('got favs!');
-        console.log($rootScope.favs);    
+        //for some reason...
+        //Favs.getList() doesn't work here...
+         $http.get('http://staging12.getpriceapp.com' + '/favourites/list?user=76').then(function(res) {
+          console.log('got favs...');
+          console.log(res);
+          $rootScope.favs = res.data;
+          // the feed is loaded after the favs
+          // because each item in the feed
+          // is compared to the favs
+          // to add the isFavorite property
+          // someday we'll do it a better way...
+          $scope.refresh();
+      },function(err) {
+          console.log(err);
+      });
 
     });
     
@@ -52,7 +63,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
     $scope.openProduct = function(product) {
         $ionicLoading.show();
-        var productId = product.id ? product.id : product.pk;
+        var productId = product.item_id ? product.item_id : product.pk;
 
         console.log('opening product with id: ' + productId);
 
@@ -70,7 +81,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         PriceAPI.item.get({id: productId},function(data) {
 
         });
-
+        
         $http.get($rootScope.hostUrl + '/item/similar-category/' + productId + '/').then(function(data) {
             // $rootScope.currentSuggestions = data.data;
             $scope.currentSuggestions = data.data;
@@ -143,22 +154,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         }
 */
 
-    $scope.toggleFav = function(product) {
-        var foundIt = false;
-        lodash.each($rootScope.favs,function(fav) {
-            foundIt = (fav.itemID === product.id);
-            if(foundIt) return;
-                $rootScope.favs = lodash.without($rootScope.favs,product);
-            });
-            
-        if(!foundIt) {
-            product.isFavorite = false;
-        } else {
-            product.isFavorite = true;
-            Favs.add(product);
-            $rootScope.favs.push(product);
-        }
-    };
+
 
     $ionicModal.fromTemplateUrl('templates/productDetails.html', function($ionicModal) {
         $scope.modal = $ionicModal;
@@ -180,11 +176,16 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         console.log($scope.categories);
     };
     $scope.setCategory = function(cat) {
+        if(cat === 'all') cat = '';
         $rootScope.products = [];
         $scope.catModal.hide();
         $rootScope.currentCategory = cat;
         $ionicLoading.show();
         $scope.refresh();
+    }
+    $scope.selectedCategory = function(idx) {
+        console.log('selected category: ' + $scope.catNames[idx]);
+        $scope.setCategory($scope.catNames[idx]);
     }
 
     $scope.$on('modal.shown', function(event) {
@@ -198,41 +199,39 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     }
 
     $scope.categories = PriceAPI.categories;
+    console.log($scope.categories);
+   
+ $scope.catNames = lodash.map(PriceAPI.categories[$rootScope.currentGender],function(cat) {
+        return cat.name;
+    });
+    $scope.catNames.splice(0,0,'all');
 
 })
+.controller('heartCtrl',function($scope,$rootScope,Favs,lodash) {
+    
+     $scope.toggleFav = function(product) {
+        console.log('should toggle fav');
+//         console.log($rootScope.favs);
 
-.controller('favoritesCtrl', function($scope, Favs,$rootScope,$http,lodash) {
-    
-        $scope.$on('$ionicView.beforeEnter', function(){
-             var request = $http.get('http://staging12.getpriceapp.com' + '/favourites/list?user=76');
-      request.then(function(res) {
-          console.log('fetched favs...');
-        console.log(res);
-        $rootScope.favs = res.data;
-      }, function(err) {
-        console.log(err);
-      });
-    $rootScope.favs = Favs.list();
-    });
-    
-    console.log('loaded fav controller!');
-    $scope.toggleFav = function(product) {
-        var foundIt = false;
-        lodash.each($rootScope.favs,function(fav) {
-            foundIt = (fav.itemID === product.id);
-            if(foundIt) return;
-                $rootScope.favs = lodash.without($rootScope.favs,product);
-            });
-            
-        if(!foundIt) {
-            product.isFavorite = false;
-        } else {
-            product.isFavorite = true;
+        var foundIt = Favs.contains(product);
+        if(!foundIt) { //favorite not found; add it
+            console.log('should add fav');
             Favs.add(product);
-            $rootScope.favs.push(product);
+        } else { //favorite found; delete it
+            console.log('should remove fav');
+            Favs.remove(product);
         }
+        product.isFavorite = !foundIt;
+        Favs.getList();
     };
+    
+})
 
+.controller('favoritesCtrl', function($scope, Favs) {
+    $scope.$on('$ionicView.beforeEnter', function(){ 
+        Favs.getList();
+    });
+    console.log('loaded fav controller!');
 })
 
 

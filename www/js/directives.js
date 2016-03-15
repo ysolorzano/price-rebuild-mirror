@@ -58,6 +58,6 @@ angular.module('app.directives', ['app.controllers'])
     },
     link: function($scope, element, attrs){
     },
-    controller: 'favoritesCtrl'
+    controller: 'heartCtrl'
   }
 });
