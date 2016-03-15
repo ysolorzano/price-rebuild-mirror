@@ -7,39 +7,32 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     })
 
     $scope.$on('$ionicView.afterEnter', function(){
-        //for some reason...
-        //Favs.getList() doesn't work here...
-         $http.get('http://staging12.getpriceapp.com' + '/favourites/list?user=76').then(function(res) {
-          console.log('got favs...');
-          console.log(res);
-          $rootScope.favs = res.data;
-          // the feed is loaded after the favs
-          // because each item in the feed
-          // is compared to the favs
-          // to add the isFavorite property
-          // someday we'll do it a better way...
-          $scope.refresh();
-      },function(err) {
-          console.log(err);
+      Favs.getList();
+      $scope.shouldRefresh = true;
+      $rootScope.$watch('favs', function(newVal, oldVal){
+        if (newVal !== oldVal) {
+            if($scope.shouldRefresh){
+              $scope.refresh();
+              $scope.shouldRefresh = false;
+            }
+          }
       });
-
     });
-
+    
     $ionicPlatform.ready(function(){
-
+        
   });
 
   $scope.canReload = true;
     $rootScope.products = [];
     $rootScope.currentGender = 'female';
     $scope.refresh = function()  {
-        $ionicLoading.show();
-        $rootScope.pageNum = 0;
-        $scope.loadNextPage();
-        $scope.canReload = false;
-        $timeout(function() {
-            $scope.canReload = true;
-        },1000);
+      $rootScope.pageNum = 0;
+      $scope.loadNextPage();
+      $scope.canReload = false;
+      $timeout(function() {
+          $scope.canReload = true;
+      },1000);
     };
     $scope.loadNextPage = function() {
         console.log('should load next page');
@@ -54,6 +47,48 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         $ionicLoading.hide();
         })
     }
+
+    $scope.openProduct = function(product) {
+        $ionicLoading.show();
+        var productId = product.item_id ? product.item_id : product.pk;
+
+        console.log('opening product with id: ' + productId);
+
+        $http.get($rootScope.hostUrl + '/item-details/' + productId+'/').then(function(res) {
+            console.log('should get item data...');
+            console.log(res);
+            // $rootScope.currentProduct = res.data;
+            $scope.currentProduct = res.data;
+            $scope.currentProduct.isFavorite = Favs.contains($scope.currentProduct.id);
+            resetProductModal();
+            $scope.modal.show();
+
+        })
+
+
+        PriceAPI.item.get({id: productId},function(data) {
+
+        });
+
+        $http.get($rootScope.hostUrl + '/item/similar-category/' + productId + '/').then(function(data) {
+            // $rootScope.currentSuggestions = data.data;
+            $scope.currentSuggestions = data.data;
+            console.log(data.data);
+            $ionicLoading.hide();
+        },function(e) {
+            console.log(e);
+        });
+
+
+/*
+        PriceAPI.suggestions.get({id: product.id}, function(data) {
+            console.log('suggestions...');
+            console.log(data);
+        });
+*/
+
+
+    };
 
     if(localStorageService.get('accessToken')) {
         //user already logged in
@@ -171,18 +206,17 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
      $scope.toggleFav = function(product) {
         console.log('should toggle fav');
-//         console.log($rootScope.favs);
-
-        var foundIt = Favs.contains(product);
+        id = product.item_id
+        if(id == undefined) 
+          id = product.id
+        var foundIt = Favs.contains(id);
         if(!foundIt) { //favorite not found; add it
-            console.log('should add fav');
-            Favs.add(product);
+            Favs.add(id);
         } else { //favorite found; delete it
-            console.log('should remove fav');
-            Favs.remove(product);
+            Favs.remove(id);
         }
         product.isFavorite = !foundIt;
-        Favs.getList();
+
     };
 
 })
