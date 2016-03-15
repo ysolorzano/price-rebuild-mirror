@@ -169,6 +169,16 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         scope: $scope,
         animation: 'slide-in-up'
     });
+    
+    $ionicModal.fromTemplateUrl('templates/filters.html',function($ionicModal) {
+        $scope.filtersModal = $ionicModal;
+    }, {
+        scope: $scope,
+        animation: 'slide-in-down'
+    });
+    $scope.openFilters = function() {
+        $scope.filtersModal.show();
+    }
 
     $scope.openCategories = function() {
         console.log('should open categories');
