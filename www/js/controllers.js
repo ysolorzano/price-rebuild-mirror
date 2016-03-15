@@ -1,26 +1,36 @@
 
-angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9UIWebViewPatch','ngCordova'])
-  
-.controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,Favorites,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService,$timeout,$ionicLoading,Favs) {
+angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9UIWebViewPatch','ngCordova','app.directives'])  
+.controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService,$timeout,$ionicLoading,Favs) {
     
 
     $scope.$on('$ionicView.afterEnter', function(){
-        $scope.refresh();
+        $ionicLoading.show();
         $rootScope.favs = Favs.list();
-    });
-    $ionicPlatform.ready(function(){
-    $timeout(function() {
+
         $scope.refresh();
-    },250);
+                    console.log('getting favs...');
+        console.log('got favs!');
+        console.log($rootScope.favs);    
+
+    });
     
+    $ionicPlatform.ready(function(){
+        
+
+
   });
 
-
+  $scope.canReload = true;
     $rootScope.products = [];
     $rootScope.currentGender = 'female';
     $scope.refresh = function()  {
+        
         $rootScope.pageNum = 0;
-        $scope.loadNextPage();   
+        $scope.loadNextPage();
+        $scope.canReload = false;
+        $timeout(function() {
+            $scope.canReload = true;
+        },1000);
     };
     $scope.loadNextPage = function() {
         console.log('should load next page');
@@ -34,9 +44,9 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         $scope.$broadcast('scroll.infiniteScrollComplete');
         $ionicLoading.hide();
         })
-        
+
     }
-    
+
 
     $scope.openProduct = function(product) {
         $ionicLoading.show();
@@ -78,7 +88,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
 
     };
-    
+
     if(localStorageService.get('accessToken')) {
         //user already logged in
     } else if(ionic.Platform.isIOS() || ionic.Platform.isAndroid()) {
@@ -132,10 +142,14 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 */
 
     $scope.toggleFav = function(product) {
-        if($rootScope.favs.indexOf(product) != -1) {
-//             Favorites.delete(product);
-            idx = $rootScope.favs.indexOf(item);
-            $rootScope.favs.splice(idx, 1);
+        var foundIt = false;
+        lodash.each($rootScope.favs,function(fav) {
+            foundIt = (fav.itemID === product.id);
+            if(foundIt) return;
+                $rootScope.favs = lodash.without($rootScope.favs,product);
+            });
+            
+        if(!foundIt) {
             product.isFavorite = false;
         } else {
             product.isFavorite = true;
@@ -185,8 +199,37 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
 })
 
-.controller('favoritesCtrl', function($scope,Favorites) {
+.controller('favoritesCtrl', function($scope, Favs,$rootScope,$http,lodash) {
+    
+        $scope.$on('$ionicView.beforeEnter', function(){
+             var request = $http.get('http://staging12.getpriceapp.com' + '/favourites/list?user=76');
+      request.then(function(res) {
+          console.log('fetched favs...');
+        console.log(res);
+        $rootScope.favs = res.data;
+      }, function(err) {
+        console.log(err);
+      });
+    $rootScope.favs = Favs.list();
+    });
+    
     console.log('loaded fav controller!');
+    $scope.toggleFav = function(product) {
+        var foundIt = false;
+        lodash.each($rootScope.favs,function(fav) {
+            foundIt = (fav.itemID === product.id);
+            if(foundIt) return;
+                $rootScope.favs = lodash.without($rootScope.favs,product);
+            });
+            
+        if(!foundIt) {
+            product.isFavorite = false;
+        } else {
+            product.isFavorite = true;
+            Favs.add(product);
+            $rootScope.favs.push(product);
+        }
+    };
 
 })
 

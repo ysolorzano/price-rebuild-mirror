@@ -47,4 +47,17 @@ angular.module('app.directives', ['app.controllers'])
 
         } //DOM manipulation
     }
+})
+.directive('prFavHeart', function(){
+  return {
+    restrict: 'E',
+    templateUrl: 'templates/fav-heart.html',
+    replace: true,
+    scope: {
+      product: '=item'
+    },
+    link: function($scope, element, attrs){
+    },
+    controller: 'favoritesCtrl'
+  }
 });

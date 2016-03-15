@@ -1,13 +1,7 @@
 angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
 
-.factory('BlankFactory', [function(){
 
-}])
-
-.service('BlankService', [function($http){
-
-}])
-.factory('PriceAPI',function($resource,$rootScope,$http,lodash,Favorites) {
+.factory('PriceAPI',function($resource,$rootScope,$http,lodash) {
     var hostUrl = $rootScope.hostUrl;
     $rootScope.currentGender = 'female';
      var catImg = [];
@@ -94,7 +88,9 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
         return request.then( function(data) {
             console.log(data);
             return lodash.map(data.data[0].products,function(product) {
-//                 product.fields.isFavorite = Favorites.contains(product.fields);
+    product.fields.isFavorite = lodash.some($rootScope.favs,function(fav) {
+            return fav.itemID === product.fields.id;
+        });        
                 return product.fields;
             });
 
@@ -107,74 +103,44 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
                 console.log('error getting items...');
                 console.log(e);
             });
-       
+
     }
 })
-.factory('Favorites',function(localStorageService, $resource, $rootScope) {
-    var hostUrl = $rootScope.hostUrl;
+.service('Favs', function($http,$rootScope) {
+    return {
+      add: add,
+      list: list
+    }
 
-   return {
-        get: function() {
-          console.log('Fetching favorites...');
-          return $resource(hostUrl + '/favourites/list/',
-          {user: $rootScope.user.id})
-          .query();
-        },
-        add: function(item) {
-            return $resource(hostUrl + '/favourites/add',
-            {item: '@item',user: $rootScope.user.id})
-            .post({item : item});
-        },
-        delete: function(item) {
-            console.log('deleting favorite...');
-            return $resource(hostUrl + '/favourites/delete',
-            {item:'@item',user: $rootScope.user.id})
-            .post({item:item});
-        },
-        contains: function(item) {
-            console.log('trying to get favorites!');
-            var favs = localStorageService.get('favs');
-            return favs.indexOf(item) != -1;
+    function add(item) {
+      var config = {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
         }
-       }
-})
+      }
+      var data = $.param({
+        user: '76',
+        item: item.id
+      });
+      var request = $http.post($rootScope.hostUrl + '/favourites/add', data, config);
+      return (request.then(function(res) {
+        console.log(res);
+        return res.data;
+      }, function(err) {
+        return err;
+      }));
 
-.factory('nFavorites',function(localStorageService, $resource, $rootScope) {
-    var hostUrl = $rootScope.hostUrl;
+    }
 
-    if(!localStorageService.get('favs'))
-        localStorageService.set('favs',[]);
-   return {
-        get: function() {
-          url = hostUrl + '/favourites/list/'
-          console.log('Fetching favorites...')
-          return $resource(url, {user: 76}, {
-              query: {method:'POST', isArray:true}
-            });
-        },
-        add: function(item, userId) {
-          url = hostUrl + '/favourites/add'
-          console.log('adding favorite...');
-          console.log(item);
-          return $resource(url, {user: 76, item: 9367}, {
-              query: {method:'GET', params: {user: userId, item: item.id}}
-            });
-        },
-        delete: function(item, userId) {
-          url = hostUrl + '/favourites/delete'
-          console.log('deleting favorite...');
-          console.log(item);
-          return $resource(url, {user: 76, item: 9367}, {
-              query: {method:'POST', params: {user: userId, item: item.id}}
-            });
-        },
-        contains: function(item) {
-            console.log('trying to get favorites!');
-            var favs = localStorageService.get('favs');
-            return favs.indexOf(item) != -1;
-        }
-       }
+    function list() {
+      var request = $http.get('http://staging12.getpriceapp.com' + '/favourites/list?user=76');
+      return (request.then(function(res) {
+          console.log('fetched favs...');
+        console.log(res);
+        return res.data;
+      }, function(err) {
+        return err;
+      }));
+
+    }
 });
-
-
-

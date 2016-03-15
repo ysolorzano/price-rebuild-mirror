@@ -37,7 +37,7 @@ angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.rou
 
 }])
 .directive('prUtil',function($rootScope) {
-    //insert common functions here   
+    //insert common functions here
     $rootScope.range = function(min, max, step) {
     step = step || 1;
     var input = [];
@@ -45,8 +45,8 @@ angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.rou
         input.push(i);
     }
     return input;
-    }; 
-    
+    };
+
     $rootScope.products = [];
 
     $rootScope.currentGender = 'female';
