@@ -22,10 +22,21 @@ a {
 
 .feed-ion .item {
   border: none;
+  padding: 0 !important;
+}
+
+.feed-ion {
+  padding: 0 !important;
+  border: none;
 }
 
 .feed-ion .feed {
-  padding: 0;
+  padding: 0 !important;
+  position: relative !important;
+  top: 5px !important;
+  left: 3% !important;
+  width: 90%;
+  overflow: hidden;
 }
 
 .feed-ion:nth-child(n+1) {
@@ -81,7 +92,6 @@ h1 .title {
 
 .logo-title {
   position: absolute !important;
-  top: 30% !important;
 }
 
 .cat-btn {
@@ -89,6 +99,17 @@ h1 .title {
 }
 
 
+/**********************************
+scroll/category CSS
+**********************************/
+.scroll-ion {
+  border: none;
+  margin: 10px 0 !important;
+}
+
+.scroll-button {
+  border: none;
+}
 
 /**********************************
 productDetails.html
