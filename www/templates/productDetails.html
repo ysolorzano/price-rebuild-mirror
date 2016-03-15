@@ -29,7 +29,7 @@
         <div class="product-info">
             <div class="prices row">
                 <div class="retail col col-25"><div ng-show='currentProduct.amount_saved > 0'>Retail: <br><s>${{currentProduct.price + currentProduct.amount_saved}}</s></div></div>
-                <div class="actual col col-50" >Our Price:<br><h1 pr-numerator=true data-price='{{currentProduct.price}}' data-retail='{{currentProduct.price + currentProduct.amount_saved}}'>{{currentProduct.price | currency}}</h1></div>
+                <div class="actual col col-50" >Our Price:<br><h1>$<span  pr-numerator=true data-price='{{currentProduct.price}}' data-retail='{{currentProduct.price + currentProduct.amount_saved}}'>{{currentProduct.price | currency}}</span></h1></div>
                 <div class="savings col col-25"><div ng-show='currentProduct.amount_saved > 0'>Savings: <br>${{currentProduct.amount_saved}}</div></div>
             </div>
 
