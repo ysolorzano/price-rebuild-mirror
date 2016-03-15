@@ -144,15 +144,11 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
     function getList() {
       $http.get('http://staging12.getpriceapp.com' + '/favourites/list?user=76').then(function(res) {
           console.log('got favs...');
-          console.log(res);
           
           $rootScope.favs = res.data;
-        // $rootScope.favs[0].isFavorite = true;
           for(item in $rootScope.favs){
             item.isFavorite = true; // ideally it can be set at server side
           }
-          console.log($rootScope.favs);
-          console.log('****')
       },function(err) {
           console.log(err);
       });

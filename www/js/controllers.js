@@ -10,43 +10,27 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
       Favs.getList();
       $scope.shouldRefresh = true;
       $rootScope.$watch('favs', function(newVal, oldVal){
-        console.log('Watching....')
         if (newVal !== oldVal) {
-          console.log('Changed.....')
             if($scope.shouldRefresh){
               $scope.refresh();
               $scope.shouldRefresh = false;
             }
           }
       });
-
-      //    $http.get('http://staging12.getpriceapp.com' + '/favourites/list?user=76').then(function(res) {
-      //     console.log('got favs...');
-      //     console.log(res);
-      //     $rootScope.favs = res.data;
-      //     $scope.refresh();
-      // },function(err) {
-      //     console.log(err);
-      // });
     });
-    
     $ionicPlatform.ready(function(){
-        
-
-
   });
 
   $scope.canReload = true;
     $rootScope.products = [];
     $rootScope.currentGender = 'female';
     $scope.refresh = function()  {
-        
-        $rootScope.pageNum = 0;
-        $scope.loadNextPage();
-        $scope.canReload = false;
-        $timeout(function() {
-            $scope.canReload = true;
-        },1000);
+      $rootScope.pageNum = 0;
+      $scope.loadNextPage();
+      $scope.canReload = false;
+      $timeout(function() {
+          $scope.canReload = true;
+      },1000);
     };
     $scope.loadNextPage = function() {
         console.log('should load next page');
@@ -60,9 +44,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         $scope.$broadcast('scroll.infiniteScrollComplete');
         $ionicLoading.hide();
         })
-
     }
-
 
     $scope.openProduct = function(product) {
         $ionicLoading.show();
@@ -204,21 +186,13 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     
      $scope.toggleFav = function(product) {
         console.log('should toggle fav');
-//         console.log($rootScope.favs);
-        // console.log("prod: =-=-=- " + JSON.stringify(product));
-        console.log(product)
         id = product.item_id
         if(id == undefined) 
           id = product.id
         var foundIt = Favs.contains(id);
-        console.log("found: =-=-=-=-= " + foundIt);
         if(!foundIt) { //favorite not found; add it
-            console.log('should add fav');
-            console.log(product);
-            console.log(id );
             Favs.add(id);
         } else { //favorite found; delete it
-            console.log('should remove fav');
             Favs.remove(id);
         }
         product.isFavorite = !foundIt;
