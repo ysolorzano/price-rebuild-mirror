@@ -112,7 +112,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     }
 
 
-    $scope.openFilters = function() {
+    $scope.openPriceFilters = function() {
         $ionicActionSheet.show({
         buttons: [
             {text: 'Above $300'},
@@ -142,18 +142,22 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         }
 
     })};
+    $scope.userMinPrice = 5;
+    $scope.userMinPrice = 1000;
+    
+    $scope.minPrice = 5;
+    $scope.maxPrice = 1000;
 
- /*
-   $scope.addFavorite = function(product) {
-        $http({
-            method:'POST',
-            url: $rootScope.hostUrl + 'favourites/add',
-            data: {
-                user:$rootScope.
-            }
-        }
-*/
-
+    $scope.applyFilters = function() {
+        $rootScope.min_price = $scope.userMinPrice;
+        $rootScope.max_price = $scope.userMaxPrice;
+        $scope.refresh();
+    }
+    
+    $scope.cancelFilters = function() {
+        $scope.userMinPrice = $rootScope.min_price;
+        $scope.userMaxPrice = $rootScope.max_price;
+    }
 
 
     $ionicModal.fromTemplateUrl('templates/productDetails.html', function($ionicModal) {
@@ -180,9 +184,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         $scope.filtersModal.show();
     }
     
-    $scope.applyFilters = function() {
-        
-    }
+  
 
     $scope.openCategories = function() {
         console.log('should open categories');
