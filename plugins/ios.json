@@ -32,6 +32,9 @@
         },
         "cordova-plugin-inappbrowser": {
             "PACKAGE_NAME": "com.LogicSquare.Price"
+        },
+        "cordova-plugin-x-socialsharing": {
+            "PACKAGE_NAME": "com.LogicSquare.Price"
         }
     },
     "dependent_plugins": {}

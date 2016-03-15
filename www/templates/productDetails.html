@@ -1,6 +1,6 @@
 
     <ion-view title="Product Details">
-           <div class="modal">
+      <div class="modal">
         <header class="bar bar-header bar-dark">
           <h1 class="title prod-details">{{currentProduct.title | characters:45}}</h1>
           <div class="button button-clear" ng-click="modal.hide()"><span class="det-close ion-close"></span></div>
@@ -21,7 +21,7 @@
                 <div class="col-80"></div>
                 <div class="social-icons col-20">
                 <pr-fav-heart item='currentProduct'></pr-fav-heart>
-                <i class="ion-share"></i>
+                <a ng-click="openSharing(currentProduct)"><i class="ion-share"></i></a>
                 </div>
             </div>
             <!-- <hr>  -->

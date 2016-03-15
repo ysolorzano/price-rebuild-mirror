@@ -1,11 +1,11 @@
 
-angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9UIWebViewPatch','ngCordova','app.directives'])  
+angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9UIWebViewPatch','ngCordova','app.directives'])
 .controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService,$timeout,$ionicLoading,Favs) {
-    
+
     $scope.$on('$ionicView.beforeEnter',function() {
-        $ionicLoading.show();        
+        $ionicLoading.show();
     })
-    
+
     $scope.$on('$ionicView.afterEnter', function(){
          $http.get('http://staging12.getpriceapp.com' + '/favourites/list?user=76').then(function(res) {
           console.log('got favs...');
@@ -17,9 +17,9 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
       });
 
     });
-    
+
     $ionicPlatform.ready(function(){
-        
+
 
 
   });
@@ -28,7 +28,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     $rootScope.products = [];
     $rootScope.currentGender = 'female';
     $scope.refresh = function()  {
-        
+
         $rootScope.pageNum = 0;
         $scope.loadNextPage();
         $scope.canReload = false;
@@ -98,7 +98,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     } else if(ionic.Platform.isIOS() || ionic.Platform.isAndroid()) {
         $rootScope.user.fullName = "RJ Jain";
         $rootScope.user.photoUrl = 'https://scontent.fsnc1-1.fna.fbcdn.net/hphotos-xla1/t31.0-8/12747354_10154146476332018_18157417964440176_o.jpg';
-        
+
 //         $state.go('signin');
     }
 
@@ -161,6 +161,13 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         animation: 'slide-in-up'
     });
 
+    $ionicModal.fromTemplateUrl('templates/share.html', function($ionicModal) {
+        $scope.shareModal = $ionicModal;
+    }, {
+        scope: $scope,
+        animation: 'slide-in-up'
+    });
+
     $scope.openCategories = function() {
         console.log('should open categories');
         $scope.catModal.show();
@@ -183,12 +190,28 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         $scope.activeSlide = 1;
         $ionicScrollDelegate.$getByHandle('suggestionScroller').scrollTo(0,0,false);
     }
-
+    $scope.openSharing = function(product){
+      console.log('Sharing.....')
+      $scope.shareModal.show();
+    };
+    $scope.facebookShare = function(product){
+      console.log('Sharing to fb...');
+      window.plugins.socialsharing.shareViaFacebook(product.itle, product.photo_set[0].url_large, null /* url */, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})
+    };
+    $scope.twitterShare = function(product){
+      window.plugins.socialsharing.shareViaTwitter(product.itle, product.photo_set[0].url_large, null /* url */, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})
+    };
+    $scope.instagramShare = function(product){
+      window.plugins.socialsharing.shareViaInstagram(product.itle, product.photo_set[0].url_large, null /* url */, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})
+    };
+    $scope.pintrestShare = function(product){
+      window.plugins.socialsharing.shareViaPintrest(product.itle, product.photo_set[0].url_large, null /* url */, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})
+    };
     $scope.categories = PriceAPI.categories;
 
 })
 .controller('heartCtrl',function($scope,$rootScope,Favs,lodash) {
-    
+
      $scope.toggleFav = function(product) {
         console.log('should toggle fav');
 //         console.log($rootScope.favs);
@@ -204,11 +227,11 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         product.isFavorite = !foundIt;
         Favs.getList();
     };
-    
+
 })
 
 .controller('favoritesCtrl', function($scope, Favs) {
-    $scope.$on('$ionicView.beforeEnter', function(){ 
+    $scope.$on('$ionicView.beforeEnter', function(){
         Favs.getList();
     });
     console.log('loaded fav controller!');
@@ -243,9 +266,8 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
     $scope.buyNow = function() {
         console.log('buying now!');
-    }
+    };
     console.log('loaded item view controller');
-
 }])
 
 .controller('WelcomeCtrl',function($rootScope,$scope,$state,localStorageService,$cordovaFacebook,$http) {
@@ -331,7 +353,6 @@ $scope.login = function(provider) {
       console.log(response);
   }
 
-
 })
 .controller('ShippingCtrl',function($rootScope,$scope,$state) {
 
@@ -345,3 +366,6 @@ $scope.login = function(provider) {
     }
 
 })
+.controller('shareCtrl',['$scope',function($scope) {
+
+}])

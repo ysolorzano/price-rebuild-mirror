@@ -420,3 +420,11 @@ Heart animation CSS
     transform: scale3d(1, 1, 1);
   }
 }
+
+.social-btns{
+  padding-top: 60px!important;
+  border-bottom: 2px solid #000;
+}
+.social-btns .scroll{
+  padding: 0 15px;
+}

@@ -19,7 +19,7 @@
     <feature name="StatusBar">
         <param name="ios-package" onload="true" value="CDVStatusBar" />
     </feature>
-     <platform name="android">
+    <platform name="android">
         <icon density="ldpi" src="res/android/ldpi.png" />
         <icon density="mdpi" src="res/android/mdpi.png" />
         <icon density="hdpi" src="res/android/hdpi.png" />
@@ -59,4 +59,5 @@
         <variable name="APP_ID" value="584320658404604" />
         <variable name="APP_NAME" value="Price" />
     </plugin>
+    <plugin name="cordova-plugin-x-socialsharing" spec="https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git" />
 </widget>

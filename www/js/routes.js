@@ -7,7 +7,7 @@ angular.module('app.routes', [])
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
   $stateProvider
-    
+
   .state('signin', {
       url: 'signin',
       templateUrl: 'templates/welcome.html',
@@ -24,15 +24,15 @@ angular.module('app.routes', [])
       url: '/shipping',
       templateUrl: 'templates/shipping.html',
       controller: 'ShippingCtrl'
-      
+
     })
-  
+
   .state('tabs', {
     url: '/',
     templateUrl: 'templates/price.html',
     abstract:true
   })
-  
+
   .state('tabs.feed', {
     url: 'feed',
     views: {
@@ -67,12 +67,17 @@ angular.module('app.routes', [])
       url: 'product',
       templateUrl: 'templates/productDetails.html',
       controller: 'itemViewCtrl'
-    });
-  
+    })
+  .state('share', {
+      url: "/share",
+      templateUrl: "templates/share.html",
+      controller: 'shareCtrl'
+    })
+
 
 
 $urlRouterProvider.otherwise('feed')
 
-  
+
 
 });
