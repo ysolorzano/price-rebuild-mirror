@@ -152,6 +152,8 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
             step: 5
         }
     };    
+    $rootScope.min_price = 5;
+    $rootScope.max_price = 1000;
 
     $scope.applyFilters = function() {
         $scope.filtersModal.hide();

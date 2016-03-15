@@ -420,3 +420,8 @@ Heart animation CSS
     transform: scale3d(1, 1, 1);
   }
 }
+
+
+.filters-modal {
+    background-color: rgba(116, 116, 116, 0.70);
+}
