@@ -162,7 +162,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     console.log($scope.categories);
 
     $scope.catNames = lodash.map(PriceAPI.categories[$rootScope.currentGender],function(cat) {
-        return cat.name;
+        return cat.img;
     });
     $scope.catNames.splice(0,0,'all');
 
