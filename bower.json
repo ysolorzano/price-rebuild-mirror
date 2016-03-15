@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "angular-resource": "^1.5.0",
-    "angular-stripe": "^4.2.11"
+    "angular-stripe": "^4.2.11",
+    "jquery": "^2.2.1"
   }
 }

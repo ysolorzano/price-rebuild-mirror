@@ -1,10 +1,10 @@
 <a ng-click="openProduct(product)">
   <div class="item item-image feed-image">
-    <img ng-src="{{product.itemLargeURL ? product.itemLargeURL : product.photo_set[0].url_medium}}" item-height="280" />
+    <img ng-src="{{product.itemLargeURL ? product.itemLargeURL : product.url_medium}}" item-height="280" />
   </div>
 </a>
 
 <div class="item item-icon-left dark feed">
   <pr-fav-heart item="product"></pr-fav-heart>
-  <p>{{product.brand}}</p>
+  <p>{{product.title}}</p>
 </div>
