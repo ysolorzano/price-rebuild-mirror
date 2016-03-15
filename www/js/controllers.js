@@ -7,10 +7,17 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     })
     
     $scope.$on('$ionicView.afterEnter', function(){
+        //for some reason...
+        //Favs.getList() doesn't work here...
          $http.get('http://staging12.getpriceapp.com' + '/favourites/list?user=76').then(function(res) {
           console.log('got favs...');
           console.log(res);
           $rootScope.favs = res.data;
+          // the feed is loaded after the favs
+          // because each item in the feed
+          // is compared to the favs
+          // to add the isFavorite property
+          // someday we'll do it a better way...
           $scope.refresh();
       },function(err) {
           console.log(err);
@@ -72,7 +79,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         PriceAPI.item.get({id: productId},function(data) {
 
         });
-
+        
         $http.get($rootScope.hostUrl + '/item/similar-category/' + productId + '/').then(function(data) {
             // $rootScope.currentSuggestions = data.data;
             $scope.currentSuggestions = data.data;
