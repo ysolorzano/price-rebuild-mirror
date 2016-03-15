@@ -23,7 +23,7 @@ angular.module('app.directives', ['app.controllers'])
       product: '=item'
     },
     templateUrl: 'templates/feed-item.html',
-    controller: 'feedCtrl'
+    controller: 'feedItemCtrl'
   }
 })
 .directive('prNumerator', function () {
