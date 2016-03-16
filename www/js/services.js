@@ -8,14 +8,14 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
     for(i = 0; i < 6; i++)
         catImg.push('img/cats/' + $rootScope.currentGender + '/img' + (i+1).toString() + '.svg');
     return {
-        item: $resource(hostUrl + '/item-details/:id/'),
+        item: $resource('http://staging12.getpriceapp.com' + '/item-details/:id/'),
         items: items,
         suggestions: $resource(hostUrl + '/item/similar-category/:id/'),
-        suggestionstoo: function(id) { $http.get(hostUrl + '/item/similar-category/' + id + '/')
+        suggestionstoo: function(id) { $http.get('http://staging12.getpriceapp.com' + '/item/similar-category/' + id + '/')
         },
         itemList: function() { $http( {
             method: 'GET',
-            url: hostUrl + '/item/list/',
+            url: 'http://staging12.getpriceapp.com' + '/item/list/',
             params: {
                 'min_price' : $rootScope.min_price,
                 'max_price' : $rootScope.max_price,
@@ -73,7 +73,7 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
         console.log('refresh products');
         var request = $http( {
             method: 'GET',
-            url: $rootScope.hostUrl + '/item/list/',
+            url: 'http://staging12.getpriceapp.com' + '/item/list/',
             params: {
                 'price_min' : $rootScope.min_price,
                 'price_max' : $rootScope.max_price,
@@ -130,7 +130,7 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
         user: '76',
         item: item_id
       });
-      var request = $http.post($rootScope.hostUrl + '/favourites/add', data, config);
+      var request = $http.post('http://staging12.getpriceapp.com' + '/favourites/add', data, config);
       return (request.then(function(res) {
         console.log(res);
         getList();

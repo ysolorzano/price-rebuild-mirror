@@ -1,0 +1,28 @@
+<ion-view view-title="Share">
+    <div class="modal">
+      <header class="bar bar-header bar-dark">
+        <h1 class="title prod-details">Share</h1>
+        <div class="button button-clear" ng-click="shareModal.hide()"><span class="det-close ion-close"></span></div>
+      </header>
+
+    <ion-content class='social-btns'>
+
+      <button class="button button-block button-royal item-icon-left" ng-click="facebookShare(currentProduct)">
+        <i class="icon ion-social-facebook"></i>
+            Facebook
+      </button>
+      <button class="button button-block button-royal item-icon-left" ng-click="twitterShare(currentProduct)">
+        <i class="icon ion-social-twitter"></i>
+            Twitter
+      </button>
+      <!-- <button class="button button-block button-royal item-icon-left" ng-click="pintrestShare(currentProduct)">
+        <i class="icon ion-social-pintrest"></i>
+            Pintrest
+      </button> -->
+      <button class="button button-block button-royal item-icon-left" ng-click="instagramShare(currentProduct)">
+        <i class="icon ion-social-instagram"></i>
+            Instagram
+      </button>
+    </ion-content>
+  </div>
+</ion-view>

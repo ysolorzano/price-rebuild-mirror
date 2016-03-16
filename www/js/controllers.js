@@ -1,31 +1,53 @@
 
 angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9UIWebViewPatch','ngCordova','app.directives'])
-.controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService,$timeout,$ionicLoading,Favs) {
+.controller('feedCtrl', function($scope,$rootScope,$state,$ionicModal,$q,$filter,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$ionicScrollDelegate,$http,localStorageService,$timeout,$ionicLoading,Favs) {
 
+    console.log('loaded feed controller...');
+    
     $scope.$on('$ionicView.beforeEnter',function() {
-        $ionicLoading.show();
-    })
+        console.log('before enter...');
+        if(localStorageService.get('accessToken')) { 
+            //user already logged in
+        } else { 
+            //set up some dummy data before for web dev
 
+/*
+            $rootScope.user.fullName = "RJ Jain";
+            $rootScope.user.photoUrl = 'https://scontent.fsnc1-1.fna.fbcdn.net/hphotos-xla1/t31.0-8/12747354_10154146476332018_18157417964440176_o.jpg';
+*/
+    
+            $state.go('signin'); //this is commented out to support web dev
+        }
+    })
+    
     $scope.$on('$ionicView.afterEnter', function(){
+        
+     });
+
+    $ionicPlatform.ready(function(){
+        console.log('platform ready...');
+        $ionicLoading.show();
+        $scope.canReload = true;
+        $rootScope.products = [];
+        $rootScope.currentGender = 'female';
+        
+           console.log('after enter...');
       Favs.getList();
       $scope.shouldRefresh = true;
       $rootScope.$watch('favs', function(newVal, oldVal){
         if (newVal !== oldVal) {
             if($scope.shouldRefresh){
+                console.log('trying to refresh again');
               $scope.refresh();
               $scope.shouldRefresh = false;
             }
           }
       });
-    });
-    
-    $ionicPlatform.ready(function(){
-        
+      loadModals();
+
   });
 
-  $scope.canReload = true;
-    $rootScope.products = [];
-    $rootScope.currentGender = 'female';
+
     $scope.refresh = function()  {
       $rootScope.pageNum = 0;
       $scope.loadNextPage();
@@ -33,6 +55,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
       $timeout(function() {
           $scope.canReload = true;
       },1000);
+
     };
     $scope.loadNextPage = function() {
         console.log('should load next page');
@@ -66,9 +89,11 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         })
 
 
-        PriceAPI.item.get({id: productId},function(data) {
+   /*
+     PriceAPI.item.get({id: productId},function(data) {
 
         });
+*/
 
         $http.get($rootScope.hostUrl + '/item/similar-category/' + productId + '/').then(function(data) {
             // $rootScope.currentSuggestions = data.data;
@@ -79,25 +104,9 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
             console.log(e);
         });
 
-
-/*
-        PriceAPI.suggestions.get({id: product.id}, function(data) {
-            console.log('suggestions...');
-            console.log(data);
-        });
-*/
-
-
     };
 
-    if(localStorageService.get('accessToken')) {
-        //user already logged in
-    } else if(ionic.Platform.isIOS() || ionic.Platform.isAndroid()) {
-        $rootScope.user.fullName = "RJ Jain";
-        $rootScope.user.photoUrl = 'https://scontent.fsnc1-1.fna.fbcdn.net/hphotos-xla1/t31.0-8/12747354_10154146476332018_18157417964440176_o.jpg';
 
-//         $state.go('signin');
-    }
 
 
     $scope.openPriceFilters = function() {
@@ -157,22 +166,30 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         $scope.filtersModal.hide();
     }
 
-
-    $ionicModal.fromTemplateUrl('templates/categories.html', function($ionicModal) {
-        $scope.catModal = $ionicModal;
-    }, {
-        scope: $scope,
-        animation: 'slide-in-up'
-    });
-
-    $ionicModal.fromTemplateUrl('templates/filters.html',function($ionicModal) {
-        $scope.filtersModal = $ionicModal;
-    }, {
-        scope: $scope,
-        animation: 'slide-in-down'
-    });
-    $scope.openFilters = function() {
-        $scope.filtersModal.show();
+    function loadModals() {
+        $ionicModal.fromTemplateUrl('templates/categories.html', function($ionicModal) {
+            $scope.catModal = $ionicModal;
+        }, {
+            scope: $scope,
+            animation: 'slide-in-up'
+        });
+    
+        $ionicModal.fromTemplateUrl('templates/filters.html',function($ionicModal) {
+            $scope.filtersModal = $ionicModal;
+        }, {
+            scope: $scope,
+            animation: 'slide-in-down'
+        });
+        $scope.openFilters = function() {
+            $scope.filtersModal.show();
+        }
+    
+        $ionicModal.fromTemplateUrl('templates/share.html', function($ionicModal) {
+            $scope.shareModal = $ionicModal;
+        }, {
+            scope: $scope,
+            animation: 'slide-in-up'
+        });
     }
 
     $scope.openCategories = function() {
@@ -192,7 +209,25 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         console.log('selected category: ' + $scope.catNames[idx]);
         $scope.setCategory($scope.catNames[idx]);
     }
-
+    $scope.openSharing = function(product){
+      console.log('Sharing.....')
+      $scope.shareModal.show();
+    };
+    
+    $scope.facebookShare = function(product){
+      console.log('Sharing to fb...');
+      window.plugins.socialsharing.shareViaFacebook(product.title, product.photo_set[0].url_large, null /* url */, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})
+    };
+    $scope.twitterShare = function(product){
+      window.plugins.socialsharing.shareViaTwitter(product.title, product.photo_set[0].url_large, null /* url */, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})
+    };
+    $scope.instagramShare = function(product){
+      window.plugins.socialsharing.shareViaInstagram(product.title, product.photo_set[0].url_large, null /* url */, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})
+    };
+    $scope.pintrestShare = function(product){
+      window.plugins.socialsharing.shareViaPinterest(product.title, product.photo_set[0].url_large, null /* url */, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})
+    };
+    
     $scope.categories = PriceAPI.categories;
     console.log($scope.categories);
 
@@ -223,6 +258,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
 .controller('favoritesCtrl', function($scope, Favs) {
     $scope.$on('$ionicView.beforeEnter', function(){
+        console.log('shoud get favs...');
         Favs.getList();
     });
     console.log('loaded fav controller!');
@@ -247,7 +283,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     }
 })
 
-.controller('itemViewCtrl',['$stateParams',function($scope,$stateParams,stripe) {
+.controller('itemViewCtrl',['$stateParams',function($scope,$stateParams) {
     $scope.card = {
         number: '4242424242424242',
         cvc: '123',
@@ -257,9 +293,8 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
     $scope.buyNow = function() {
         console.log('buying now!');
-    }
+    };
     console.log('loaded item view controller');
-
 }])
 
 .controller('WelcomeCtrl',function($rootScope,$scope,$state,localStorageService,$cordovaFacebook,$http) {
@@ -345,7 +380,6 @@ $scope.login = function(provider) {
       console.log(response);
   }
 
-
 })
 .controller('ShippingCtrl',function($rootScope,$scope,$state) {
 
@@ -361,7 +395,8 @@ $scope.login = function(provider) {
 })
 
 .controller('feedItemCtrl',function($rootScope,$scope,$state,$ionicLoading,$scope,$http,PriceAPI,$ionicModal,$ionicScrollDelegate) {
-
+    
+    console.log('loaded feedItemCtrl...');
   $ionicModal.fromTemplateUrl('templates/productDetails.html', function($ionicModal) {
       $scope.modal = $ionicModal;
   }, {
@@ -371,7 +406,7 @@ $scope.login = function(provider) {
 
   function resetProductModal() {
       $ionicScrollDelegate.$getByHandle('modalContent').scrollTop(true);
-      $scope.activeSlide = 1;
+      $rootScope.activeSlide = 1;
       $ionicScrollDelegate.$getByHandle('suggestionScroller').scrollTo(0,0,false);
   }
 
@@ -405,3 +440,8 @@ $scope.login = function(provider) {
 
   }
 })
+
+.controller('shareCtrl',['$scope',function($scope) {
+
+}])
+

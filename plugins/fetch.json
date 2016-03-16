@@ -1,4 +1,21 @@
 {
+    "cordova-plugin-x-socialsharing": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-device": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-device@~1.1.1"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
     "com.phonegap.plugins.facebookconnect": {
         "source": {
             "type": "local",
@@ -9,14 +26,6 @@
             "APP_ID": "584320658404604",
             "APP_NAME": "Price"
         }
-    },
-    "cordova-plugin-device": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-device@~1.1.1"
-        },
-        "is_top_level": true,
-        "variables": {}
     },
     "cordova-plugin-console": {
         "source": {
