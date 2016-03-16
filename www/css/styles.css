@@ -130,6 +130,14 @@ scroll/category CSS
 	padding: 0 !important;
 }
 
+.scroll-div .active {
+	opacity: 1 !important;
+}
+
+.scroll-div .active img {
+	background-color: #555;
+}
+
 .scroll-div:active {
 	background-color: transparent !important;
 }
