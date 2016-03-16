@@ -78,7 +78,7 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
                 'price_min' : $rootScope.min_price ? $rootScope.min_price : 0,
                 'price_max' : $rootScope.max_price ? $rootScope.max_price : '',
                 'category' : $rootScope.currentCategory ? $rootScope.currentCategory : '', //$rootScope.category
-                'page': page,
+                'page': $rootScope.page_no,
                 'show_by': '20',
                 'type' : $rootScope.currentGender ? $rootScope.currentGender : 'female' //$rootScope.gender
 

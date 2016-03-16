@@ -16,7 +16,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
             $rootScope.user.photoUrl = 'https://scontent.fsnc1-1.fna.fbcdn.net/hphotos-xla1/t31.0-8/12747354_10154146476332018_18157417964440176_o.jpg';
 */
     
-            $state.go('signin'); //this is commented out to support web dev
+            // $state.go('signin'); //this is commented out to support web dev
         }
     })
     
