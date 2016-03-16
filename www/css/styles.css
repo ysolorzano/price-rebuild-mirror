@@ -179,6 +179,8 @@ feed-item.html
   position: absolute;
   left: 50%;
   top: 50%;
+  filter: contrast(1);
+  -webkit-filter: contrast(1);
   height: auto;
   width: 100%;
   -webkit-transform: translate(-50%,-50%);
@@ -259,6 +261,8 @@ productDetails.html
 
 .photo-image img {
   position: absolute;
+   filter: contrast(2);
+  -webkit-filter: contrast(2);
   left: 50%;
   top: 50%;
   height: auto;
@@ -289,9 +293,8 @@ productDetails.html
 
 /* prices/productInfo */
 .product-info {
-  background-color: #f1f1f1;
+/*   background-color: #f1f1f1; */
   padding: 10px 0;
-  margin-bottom: 20px;
   margin-top: -15px;
 }
 
