@@ -393,7 +393,7 @@ $scope.login = function(provider) {
 
 })
 
-.controller('feedItemCtrl',function($rootScope,$scope,$state,$ionicLoading,$scope,$http,PriceAPI,$ionicModal,$ionicScrollDelegate) {
+.controller('feedItemCtrl',function($rootScope,$scope,$state,$ionicLoading,$scope,$http,PriceAPI,$ionicModal,$ionicScrollDelegate, $cordovaInAppBrowser) {
 
     console.log('loaded feedItemCtrl...');
   $ionicModal.fromTemplateUrl('templates/productDetails.html', function($ionicModal) {
@@ -403,6 +403,24 @@ $scope.login = function(provider) {
       animation: 'slide-in-up'
   });
 
+  $scope.buyNow = function(product){
+    console.log(product);
+
+    var options = {
+      location: 'yes',
+      clearcache: 'yes',
+      toolbar: 'yes',
+      title: product.title
+    };
+    $cordovaInAppBrowser.open(product.purchase_url, '_blank', options)
+    .then(function(event) {
+      // success
+    })
+    .catch(function(event) {
+      // error
+    });
+
+  }
   function resetProductModal() {
       $ionicScrollDelegate.$getByHandle('modalContent').scrollTop(true);
       $rootScope.activeSlide = 1;
