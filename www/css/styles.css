@@ -136,18 +136,18 @@ feed.html
 /* ionic item */
 .feed-ion {
   padding: 0 !important;
-  border: none;
+  border: none! important;
 }
 
 .feed-ion .item {
-  border: none;
   padding: 0 !important;
   margin: 0 !important;
+  border-right: none !important;
  
 }
 
 .feed-ion:nth-child(n+1) {
-  border-right: none;
+  border-right: none !important;
 }
 
 
@@ -160,6 +160,7 @@ feed-item.html
   width: 100%;
   height: 160px;
   overflow: hidden;
+    border: none !important;
 }
 
 .feed-image img {
@@ -171,6 +172,7 @@ feed-item.html
   -webkit-transform: translate(-50%,-50%);
       -ms-transform: translate(-50%,-50%);
           transform: translate(-50%,-50%);
+          
 }
 
 /* content under the image */
@@ -181,19 +183,18 @@ feed-item.html
 /*   left: 3% !important; */
   width: 100%;
   overflow: hidden;
-  border: none;
-  background-color: #eee !important;
+/*   background-color: #eee !important; */
 }
 
 /* text */
 .feed-content .ng-binding {
   display: block;
   margin: 0 32px auto 0;
-  padding: 6px 10px;
+  padding: 6px 13px;
   text-transform: uppercase;
   font-size: 13px !important;
   font-weight: 200;
-  background-color: #eee;
+/*   background-color: #eee; */
 /*  border-bottom: solid #999 1px;*/
 }
 
@@ -206,6 +207,19 @@ fave-heart.html
   margin-right: -10px;
   font-weight: 600;
 }
+
+/**********************************
+favorites.html
+**********************************/
+.favorites-ion {
+	border: none !important;
+}
+
+.favorites-item {
+	padding: 0 !important;
+	border: none !important;
+}
+
 
 /**********************************
 productDetails.html
@@ -331,7 +345,8 @@ productDetails.html
 /**********************************
 account.html
 **********************************/
-.profile-photo {
+
+.account-photo {
   position: relative;
   width: 100%;
   height: 35%;
@@ -339,10 +354,10 @@ account.html
   background-color: #000;
 }
 
-.profile-photo img {
+.account-photo img {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 90%;
   opacity: 0.7;
   height: auto;
   width: 100%;
@@ -351,36 +366,36 @@ account.html
           transform: translate(-50%,-50%);
 }
 
-.user {
+.account-userdiv {
   position: absolute;
   top: 10%;
 }
 
-.user-info {
+.account-userinfo {
   text-transform: uppercase;
 }
 
-.user-info h2, .user-info p {
+.account-userinfo h2, .account-userinfo p {
   color: #fff;
 }
 
-.user-info h2 {
+.account-userinfo h2 {
   margin: 0;
   padding: 0;
   font-size: 1.8em;
 }
 
-.user-stats div {
+.account-userstats div {
   margin: 0 15px;
 }
 
-.user-likes h3, .user-buys h3,
-.user-likes p, .user-buys p {
+.account-userlikes h3, .account-userbuys h3,
+.account-userlikes p, .account-userbuys p {
   margin: 0;
   color: #fff;
 }
 
-.user-list {
+.account-userlist {
   height: 100%;
 }
 
