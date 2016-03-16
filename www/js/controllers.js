@@ -68,9 +68,10 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     $scope.openPriceFilters = function() {
         $ionicActionSheet.show({
         buttons: [
-            {text: 'Above $300'},
-            {text: '$100 - 300'},
-            {text: 'Below $100'}
+            {text: 'Most Expensive'},
+            {text: 'Least Expensive'},
+            {text: 'Most Popular'},
+            {text: 'Biggest Savings'}
         ],
         buttonClicked: function(index) {
             console.log('clicked button');
