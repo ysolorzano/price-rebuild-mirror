@@ -3,25 +3,26 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 .controller('feedCtrl', function($scope,$rootScope,$state,$ionicModal,$q,$filter,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$ionicScrollDelegate,$http,localStorageService,$timeout,$ionicLoading,Favs) {
 
     console.log('loaded feed controller...');
-    
+
     $scope.$on('$ionicView.beforeEnter',function() {
         console.log('before enter...');
-        if(localStorageService.get('accessToken')) { 
+        if(true) {
+        // if(localStorageService.get('accessToken')) {
             //user already logged in
-        } else { 
+        } else {
             //set up some dummy data before for web dev
 
 /*
             $rootScope.user.fullName = "RJ Jain";
             $rootScope.user.photoUrl = 'https://scontent.fsnc1-1.fna.fbcdn.net/hphotos-xla1/t31.0-8/12747354_10154146476332018_18157417964440176_o.jpg';
 */
-    
+
             $state.go('signin'); //this is commented out to support web dev
         }
     })
-    
+
     $scope.$on('$ionicView.afterEnter', function(){
-        
+
      });
 
     $ionicPlatform.ready(function(){
@@ -30,7 +31,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         $scope.canReload = true;
         $rootScope.products = [];
         $rootScope.currentGender = 'female';
-        
+
            console.log('after enter...');
       Favs.getList();
       $scope.shouldRefresh = true;
@@ -174,7 +175,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
             scope: $scope,
             animation: 'slide-in-up'
         });
-    
+
         $ionicModal.fromTemplateUrl('templates/filters.html',function($ionicModal) {
             $scope.filtersModal = $ionicModal;
         }, {
@@ -184,7 +185,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         $scope.openFilters = function() {
             $scope.filtersModal.show();
         }
-    
+
         $ionicModal.fromTemplateUrl('templates/share.html', function($ionicModal) {
             $scope.shareModal = $ionicModal;
         }, {
@@ -214,7 +215,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
       console.log('Sharing.....')
       $scope.shareModal.show();
     };
-    
+
     $scope.facebookShare = function(product){
       console.log('Sharing to fb...');
       window.plugins.socialsharing.shareViaFacebook(product.title, product.photo_set[0].url_large, null /* url */, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})
@@ -228,7 +229,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     $scope.pintrestShare = function(product){
       window.plugins.socialsharing.shareViaPinterest(product.title, product.photo_set[0].url_large, null /* url */, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})
     };
-    
+
     $scope.categories = PriceAPI.categories;
     console.log($scope.categories);
 
@@ -240,7 +241,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
      $scope.toggleFav = function(product) {
         console.log('should toggle fav');
         id = product.item_id
-        if(id == undefined) 
+        if(id == undefined)
           id = product.id
         var foundIt = Favs.contains(id);
         if(!foundIt) { //favorite not found; add it
@@ -393,8 +394,9 @@ $scope.login = function(provider) {
 })
 
 .controller('feedItemCtrl',function($rootScope,$scope,$state,$ionicLoading,$scope,$http,PriceAPI,$ionicModal,$ionicScrollDelegate) {
-    
-    console.log('loaded feedItemCtrl...');
+
+  console.log('loaded feedItemCtrl...');
+  $scope.loadTimeout = false;
   $ionicModal.fromTemplateUrl('templates/productDetails.html', function($ionicModal) {
       $scope.modal = $ionicModal;
   }, {
@@ -409,11 +411,19 @@ $scope.login = function(provider) {
   }
 
   $scope.openProduct = function(product) {
+    $scope.loadTimeout = false
+
     $ionicLoading.show();
     var productId = product.item_id ? product.item_id : product.pk;
 
     console.log('opening product with id: ' + productId);
+    $scope.loadTimeout = false;
+    
+    setTimeout(function(){
+      if !$scope.loadTimeout
+        $scope.loadTimeout = true
 
+    }, 5000);
     $http.get($rootScope.hostUrl + '/item-details/' + productId+'/').then(function(res) {
       console.log('should get item data...');
       console.log(res);
@@ -421,6 +431,7 @@ $scope.login = function(provider) {
       $scope.currentProduct = res.data;
       resetProductModal();
       $scope.modal.show();
+      $scope.loadTimeout = false
     })
 
 
@@ -442,4 +453,3 @@ $scope.login = function(provider) {
 .controller('shareCtrl',['$scope',function($scope) {
 
 }])
-
