@@ -16,7 +16,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
             $rootScope.user.photoUrl = 'https://scontent.fsnc1-1.fna.fbcdn.net/hphotos-xla1/t31.0-8/12747354_10154146476332018_18157417964440176_o.jpg';
 */
     
-            $state.go('signin'); //this is commented out to support web dev
+            // $state.go('signin'); //this is commented out to support web dev
         }
     })
     
@@ -49,7 +49,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
 
     $scope.refresh = function()  {
-      $rootScope.pageNum = 0;
+      $rootScope.page_no = 1;
       $scope.loadNextPage();
       $scope.canReload = false;
       $timeout(function() {
@@ -59,10 +59,10 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     };
     $scope.loadNextPage = function() {
         console.log('should load next page');
-        $rootScope.pageNum++;
-        PriceAPI.items($rootScope.pageNum).then(function(res) {
+        $rootScope.page_no++;
+        PriceAPI.items($rootScope.page_no).then(function(res) {
             console.log(res);
-            if($rootScope.pageNum == 1)
+            if($rootScope.page_no == 1)
                 $rootScope.products = [];
             $rootScope.products = lodash.concat($rootScope.products,res);
         $scope.$broadcast('scroll.refreshComplete');
@@ -73,7 +73,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
     $scope.openProduct = function(product) {
         $ionicLoading.show();
-        var productId = product.item_id ? product.item_id : product.pk;
+        var productId = product.itemID ? product.itemID : product.id;
 
         console.log('opening product with id: ' + productId);
 
@@ -239,7 +239,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
      $scope.toggleFav = function(product) {
         console.log('should toggle fav');
-        id = product.item_id
+        id = product.itemID
         if(id == undefined) 
           id = product.id
         var foundIt = Favs.contains(id);
@@ -410,7 +410,7 @@ $scope.login = function(provider) {
 
   $scope.openProduct = function(product) {
     $ionicLoading.show();
-    var productId = product.item_id ? product.item_id : product.pk;
+    var productId = product.itemID ? product.itemID : product.id;
 
     console.log('opening product with id: ' + productId);
 
