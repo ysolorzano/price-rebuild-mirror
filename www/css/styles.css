@@ -139,7 +139,7 @@ scroll/category CSS
 	opacity: 1 !important;
 }
 
-.scroll-div .active img {
+.scroll-div .active .scroll-imgdiv {
 	background-color: #555;
 }
 
