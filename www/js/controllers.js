@@ -185,12 +185,14 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     
     $scope.slideCount = 0;
     		    
-       		$scope.checkSlider = function() {
-           		$scope.slideCount++;
-           		if($scope.slideCount == $rootScope.vendors.length) {
+       		$rootScope.checkSlider = function() {
+           		$rootScope.slideCount++;
+           		if($rootScope.slideCount == $rootScope.vendors.length+1) {
                	     $('.slick-slider').slick('slickPause');
-               	     $scope.slideCount = 0;
+               	     $rootScope.slideCount = 0;
                	     $('.vendor-name').text($rootScope.currentProduct.store_name);
+               	     
+               	     //add code to show buy button here!
            		}
     		}
 
