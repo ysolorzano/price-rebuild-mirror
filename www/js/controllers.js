@@ -6,14 +6,14 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
     $scope.$on('$ionicView.beforeEnter',function() {
         console.log('before enter...');
-        if(true){
-        // if(localStorageService.get('accessToken')) {
+        
+        if(localStorageService.get('accessToken')) {
             //user already logged in
-        } else {
-            //set up some dummy data before for web dev
+        } else if(Ionic.Platform.isIOS() || Ionic.Platform.isAndroid())  {
+
             $state.go('signin'); //this is commented out to support web dev
 
-/*
+/*            //set up some dummy data before for web dev
             $rootScope.user.fullName = "RJ Jain";
             $rootScope.user.photoUrl = 'https://scontent.fsnc1-1.fna.fbcdn.net/hphotos-xla1/t31.0-8/12747354_10154146476332018_18157417964440176_o.jpg';
 */
@@ -53,6 +53,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     $scope.refresh = function()  {
 
       $rootScope.page_no = 0;
+
       $scope.loadNextPage();
       $scope.canReload = false;
       $timeout(function() {
@@ -395,7 +396,8 @@ $scope.login = function(provider) {
 
 .controller('feedItemCtrl',function($rootScope,$scope,$state,$ionicLoading,$scope,$http,PriceAPI,$ionicModal,$ionicScrollDelegate, $cordovaInAppBrowser) {
 
-    console.log('loaded feedItemCtrl...');
+  console.log('loaded feedItemCtrl...');
+  $scope.loadTimeout = false;
   $ionicModal.fromTemplateUrl('templates/productDetails.html', function($ionicModal) {
       $scope.modal = $ionicModal;
   }, {
@@ -428,11 +430,21 @@ $scope.login = function(provider) {
   }
 
   $scope.openProduct = function(product) {
+    $scope.loadTimeout = false
+
     $ionicLoading.show();
     var productId = product.itemID ? product.itemID : product.id;
 
     console.log('opening product with id: ' + productId);
+    $scope.loadTimeout = false;
 
+    setTimeout(function(){
+      if(!$scope.itemLoaded){
+        $scope.loadTimeout = true
+      }
+    }, 5000);
+    $scope.itemLoaded = false
+    $scope.loadTimeout = false
     $http.get($rootScope.hostUrl + '/item-details/' + productId+'/').then(function(res) {
       console.log('should get item data...');
       console.log(res);
@@ -440,6 +452,7 @@ $scope.login = function(provider) {
       $scope.currentProduct = res.data;
       resetProductModal();
       $scope.modal.show();
+      $scope.itemLoaded = true
     })
 
 

@@ -7,7 +7,8 @@
         </header>
 
         <ion-content overflow-scroll="true" padding="true" class="has-header" delegate-handle="modalContent">
-
+          <div ng-show='loadTimeout'><p class='text-danger'>Loading Error... Please check back later</p></div>
+          <div ng-show='!loadTimeout'>
             <ion-slide-box>
             <ion-slide ng-repeat="photo in currentProduct.photo_set">
             <div class="row photo-image">
@@ -52,8 +53,13 @@
 
 
         </ion-content>
+<<<<<<< HEAD
 
         <ion-footer-bar ng-click='buyNow(currentProduct)' class="bar-balanced">
+=======
+      </div>
+        <ion-footer-bar ng-click='buyNow()' class="bar-balanced">
+>>>>>>> feature/product-details-timeout
           <p class="title buy-title">get it</p>
         </ion-footer-bar>
 
