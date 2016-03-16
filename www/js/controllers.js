@@ -418,12 +418,11 @@ $scope.login = function(provider) {
 
     console.log('opening product with id: ' + productId);
     $scope.loadTimeout = false;
-    
-    setTimeout(function(){
-      if !$scope.loadTimeout
-        $scope.loadTimeout = true
 
-    }, 5000);
+    setTimeout(function(){
+      if(!$scope.loadTimeout)
+        $scope.loadTimeout = true
+    }, 100);
     $http.get($rootScope.hostUrl + '/item-details/' + productId+'/').then(function(res) {
       console.log('should get item data...');
       console.log(res);

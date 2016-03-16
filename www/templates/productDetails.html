@@ -6,7 +6,7 @@
           <div class="button button-clear" ng-click="modal.hide()"><span class="det-close ion-close"></span></div>
         </header>
         <div><p class='danger text' ng-show='loadTimeout'>Loading Error... Please check back later</p></div>
-        <ion-content overflow-scroll="true" padding="true" class="has-header" delegate-handle="modalContent">
+        <ion-content overflow-scroll="true" padding="true" class="has-header" delegate-handle="modalContent" ng-show='!loadTimeout'>
 
             <ion-slide-box>
             <ion-slide ng-repeat="photo in currentProduct.photo_set">
