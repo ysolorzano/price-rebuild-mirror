@@ -80,7 +80,8 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
                 'category' : $rootScope.currentCategory ? $rootScope.currentCategory : '', //$rootScope.category
                 'page': $rootScope.page_no,
                 'show_by': '20',
-                'type' : $rootScope.currentGender ? $rootScope.currentGender : 'female' //$rootScope.gender
+                'type' : $rootScope.currentGender ? $rootScope.currentGender : 'female', //$rootScope.gender
+                'sort' : $rootScope.sortBy ? $rootScope.sortBy : '' //defaults to recently added
 
 
             }

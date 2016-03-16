@@ -44,7 +44,7 @@
             <h5 class="row">Browse Similar</h5>
 
             <div class="row">
-                <hscroller delegate-handle="suggestionScroller">
+                <hscroller delegate-handle="suggestionScroller"  pr-scroll-similar=true>
                     <hcard ng-repeat="item in currentSuggestions" index="{{$index}}" desc="{{item.title}}" image="{{item.url_medium}}" ng-click="openProduct(item)"></hcard>
                 </hscroller>
             </div>
@@ -53,13 +53,8 @@
 
 
         </ion-content>
-<<<<<<< HEAD
 
         <ion-footer-bar ng-click='buyNow(currentProduct)' class="bar-balanced">
-=======
-      </div>
-        <ion-footer-bar ng-click='buyNow()' class="bar-balanced">
->>>>>>> feature/product-details-timeout
           <p class="title buy-title">get it</p>
         </ion-footer-bar>
 
