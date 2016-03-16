@@ -35,7 +35,10 @@
             </div>
             <div class="simulation row">
     <!--             <div class="col col-50">Finding the best price...</div> -->
-                <div class="col">{{currentProduct.store_name}}</div>
+             <slick class="slick-slider" ng-attr-autoplay="true" draggable="false" infinite="false" mobile-first="true" speed="80" touch-move="false" vertical="true" autoplay-speed="80" on-after-change="checkSlider()">
+                <div class="col vendor-name" ng-repeat="vendor in vendors">{{vendor}}
+                </div>
+            </slick>
             </div>
         </div>
 

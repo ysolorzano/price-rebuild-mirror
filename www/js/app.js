@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.routes', 'app.services','app.directives','ngResource','LocalStorageModule','ionic.contrib.ui.hscrollcards','ngIOS9UIWebViewPatch','ngCordova','ti-segmented-control','rzModule'])
+angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.routes', 'app.services','app.directives','ngResource','LocalStorageModule','ionic.contrib.ui.hscrollcards','ngIOS9UIWebViewPatch','ngCordova','ti-segmented-control','rzModule','slick'])
 
 .run(function($ionicPlatform,$rootScope,localStorageService,$timeout) {
     
@@ -30,6 +30,10 @@ angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.rou
     
     $rootScope.hostUrl = 'http://staging12.getpriceapp.com';
     $rootScope.user = {};
+    $rootScope.products = [];
+    $rootScope.currentGender = 'female';
+    $rootScope.page_no = 0;
+    $rootScope.vendors = ['Oodle.com','Nordstroms.com','Cabelas.com','Amazon.com','SportsAuthority.com','Ebay.com','TheRealReal.com','Etsy.com','Overstock.com'];
 
     if(localStorageService.keys()) {
         $rootScope.user.photoUrl = localStorageService.get('photoUrl');
@@ -48,6 +52,7 @@ angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.rou
 }])
 .directive('prUtil',function($rootScope) {
     //insert common functions here
+    
     $rootScope.range = function(min, max, step) {
     step = step || 1;
     var input = [];
@@ -56,9 +61,8 @@ angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.rou
     }
     return input;
     };
+    
+    
 
-    $rootScope.products = [];
-
-    $rootScope.currentGender = 'female';
-    $rootScope.page_no = 1;
+    
 });

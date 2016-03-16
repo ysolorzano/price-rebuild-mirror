@@ -32,6 +32,8 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         $scope.canReload = true;
         $rootScope.products = [];
         $rootScope.currentGender = 'female';
+        $scope.vendorList = ['Oodle.com','Nordstroms.com','Cabelas.com','Amazon.com','SportsAuthority.com','Ebay.com','TheRealReal.com','Etsy.com','Overstock.com'];
+
 
            console.log('after enter...');
       Favs.getList();
@@ -48,7 +50,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
       loadModals();
 
   });
-
+  
 
     $scope.refresh = function()  {
 
@@ -180,6 +182,18 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
             animation: 'slide-in-up'
         });
     }
+    
+    $scope.slideCount = 0;
+    		    
+       		$scope.checkSlider = function() {
+           		$scope.slideCount++;
+           		if($scope.slideCount == $rootScope.vendors.length) {
+               	     $('.slick-slider').slick('slickPause');
+               	     $scope.slideCount = 0;
+               	     $('.vendor-name').text($rootScope.currentProduct.store_name);
+           		}
+    		}
+
 
     $scope.openCategories = function() {
         console.log('should open categories');
@@ -414,6 +428,7 @@ $scope.login = function(provider) {
   }
 
   $scope.openProduct = function(product) {
+    $('.slick-slider').slick('slickPlay');
     $scope.loadTimeout = false
 
     $ionicLoading.show();
