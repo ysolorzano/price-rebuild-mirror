@@ -207,8 +207,8 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         $scope.refresh();
     }
     $scope.selectedCategory = function(idx) {
-        console.log('selected category: ' + $scope.catNames[idx]);
-        $scope.setCategory($scope.catNames[idx]);
+        console.log('selected category: ' + $scope.catNames[idx].name);
+        $scope.setCategory($scope.catNames[idx].name);
     }
     $scope.openSharing = function(product){
       console.log('Sharing.....')

@@ -10,7 +10,7 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
     return {
         item: $resource('http://staging12.getpriceapp.com' + '/item-details/:id/'),
         items: items,
-        suggestions: $resource(hostUrl + '/item/similar-category/:id/'),
+        suggestions: $resource('http://staging12.getpriceapp.com' + '/item/similar-category/:id/'),
         suggestionstoo: function(id) { $http.get('http://staging12.getpriceapp.com' + '/item/similar-category/' + id + '/')
         },
         itemList: function() { $http( {
@@ -75,12 +75,12 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
             method: 'GET',
             url: 'http://staging12.getpriceapp.com' + '/item/list/',
             params: {
-                'price_min' : $rootScope.min_price,
-                'price_max' : $rootScope.max_price,
-                'category' : $rootScope.currentCategory, //$rootScope.category
+                'price_min' : $rootScope.min_price ? $rootScope.min_price : 0,
+                'price_max' : $rootScope.max_price ? $rootScope.max_price : '',
+                'category' : $rootScope.currentCategory ? $rootScope.currentCategory : '', //$rootScope.category
                 'page': page,
                 'show_by': '20',
-                'type' : $rootScope.currentGender //$rootScope.gender
+                'type' : $rootScope.currentGender ? $rootScope.currentGender : 'female' //$rootScope.gender
 
 
             }
