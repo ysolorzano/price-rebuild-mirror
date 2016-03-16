@@ -16,47 +16,10 @@
   margin: 0 auto 60% 0;
 }
 
-a {
-  text-decoration: none
-}
-
-.feed-ion .item {
-  border: none;
-  padding: 0 !important;
-  margin: 0 !important;
-}
-
-.feed-ion {
-  padding: 0 !important;
-  border: none;
-}
-
-.feed-ion .feed {
-  padding: 0 !important;
-  position: relative !important;
-  top: 5px !important;
-  left: 3% !important;
-  width: 90%;
-  overflow: hidden;
-}
-
-.feed-ion:nth-child(n+1) {
-  border-right: none;
-}
-
-.feed-heart {
-  font-size: 20px !important;
-  margin-left: -11px;
-}
-
-.ion-heart {
-
-}
-
 /**********************************
 global CSS
 **********************************/
-.modal{
+.modal {
   top: 0 ;
   bottom: 0 ;
   left: 0 ;
@@ -97,6 +60,24 @@ h1 .title {
 
 .cat-btn {
     z-index:1000;
+}
+
+
+a {
+  text-decoration: none
+}
+
+
+.item {
+  padding: 0;
+}
+
+.ion-record {
+  font-size: 10px;
+}
+
+.ion-item {
+  height: 250px !important;
 }
 
 
@@ -147,6 +128,79 @@ scroll/category CSS
 .has-scrollnav {
 	top: 135px !important;
 }
+
+
+/**********************************
+feed.html
+**********************************/
+/* ionic item */
+.feed-ion {
+  padding: 0 !important;
+  border: none;
+}
+
+.feed-ion .item {
+  border: none;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.feed-ion:nth-child(n+1) {
+  border-right: none;
+}
+
+
+/**********************************
+feed-item.html
+**********************************/
+/* div that the feed image is in */
+.feed-image {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+}
+
+.feed-image img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: auto;
+  width: 100%;
+  -webkit-transform: translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+          transform: translate(-50%,-50%);
+}
+
+/* content under the image */
+ .feed-content {
+  padding: 0 !important;
+  position: relative !important;
+  top: 10px !important;
+  left: 3% !important;
+  width: 90%;
+  overflow: hidden;
+  border: none;
+}
+
+/* text */
+.feed-content .ng-binding {
+  display: block;
+  margin: 0 0 auto 32px;
+  text-transform: uppercase;
+  font-size: 12px !important;
+/*  border-bottom: solid #999 1px;*/
+}
+
+
+/**********************************
+fave-heart.html
+**********************************/
+.feed-heart {
+  font-size: 20px !important;
+  margin-left: -11px;
+}
+
 /**********************************
 productDetails.html
 **********************************/
@@ -267,72 +321,6 @@ productDetails.html
   font-size: 2.1em !important;
   font-weight: 800 !important;
 }
-
-
-/**********************************
-feed.html
-**********************************/
-.feed-image {
-  position: relative;
-  width: 100%;
-  height: 175px;
-  overflow: hidden;
-}
-
-.feed-image img {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  height: auto;
-  width: 100%;
-  -webkit-transform: translate(-50%,-50%);
-      -ms-transform: translate(-50%,-50%);
-          transform: translate(-50%,-50%);
-}
-
-.feed p {
-  margin-left: 10px;
-  text-transform: uppercase;
-  font-size: 11px;
-}
-
-
-.ion-item {
-  height: 250px !important;
-}
-
-.feed .ng-binding {
-  display: block;
-  margin: 0 0 auto 32px;
-  text-transform: uppercase;
-  font-size: 12px !important;
-/*  border-bottom: solid #999 1px;*/
-}
-
-.feed {
-  border: solid #111 .75px;
-  margin: 5px 2.5px;
-}
-
-.feed-image, .feed {
-  border: none;
-  padding: 0;
-  overflow: hidden;
-}
-
-/*.item p {
-  margin-left: 45px;
-}*/
-
-.item {
-  padding: 0;
-}
-
-.ion-record {
-  font-size: 10px;
-}
-
-
 
 /**********************************
 account.html
