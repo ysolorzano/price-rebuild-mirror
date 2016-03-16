@@ -2,7 +2,7 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
 
 
 .factory('PriceAPI',function($resource,$rootScope,$http,lodash,Favs) {
-    var hostUrl = $rootScope.hostUrl;
+
     $rootScope.currentGender = 'female';
      var catImg = [];
     for(i = 0; i < 6; i++)
