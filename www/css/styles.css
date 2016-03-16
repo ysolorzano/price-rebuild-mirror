@@ -516,4 +516,8 @@ Heart animation CSS
 .social-btns .scroll{
   padding: 0 15px;
 }
-
+.bar-subheader{
+  top: 100px !important;
+}.collection-repeat-container{
+  margin-top: 61px;
+}
