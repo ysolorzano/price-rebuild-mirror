@@ -10,13 +10,13 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
             //user already logged in
         } else { 
             //set up some dummy data before for web dev
+            $state.go('signin'); //this is commented out to support web dev
 
 /*
             $rootScope.user.fullName = "RJ Jain";
             $rootScope.user.photoUrl = 'https://scontent.fsnc1-1.fna.fbcdn.net/hphotos-xla1/t31.0-8/12747354_10154146476332018_18157417964440176_o.jpg';
 */
     
-            $state.go('signin'); //this is commented out to support web dev
         }
     })
     
