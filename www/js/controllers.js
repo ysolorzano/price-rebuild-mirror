@@ -9,7 +9,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         
         if(localStorageService.get('accessToken')) {
             //user already logged in
-        } else if(Ionic.Platform.isIOS() || Ionic.Platform.isAndroid())  {
+        } else if(ionic.Platform.isIOS() || ionic.Platform.isAndroid())  {
 
             $state.go('signin'); //this is commented out to support web dev
 
@@ -111,38 +111,22 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     };
 
 
+    var filterButtons = [
+        { text: 'Most Expensive', value: 'expensive' },
+        { text: 'Least Expensive', value: 'inexpensive' },
+        { text: 'Most Popular', value: 'popular' },
+        { text: 'Biggest Savings', value: 'discount'},
+        { text: 'Most Recent', value: ''}];
 
-
-    $scope.openPriceFilters = function() {
+    $scope.openPriceFilters = function() { //this needs to be refactored 
         $ionicActionSheet.show({
-        buttons: [
-            {text: 'Most Expensive'},
-            {text: 'Least Expensive'},
-            {text: 'Most Popular'},
-            {text: 'Biggest Savings'}
-        ],
-        buttonClicked: function(index) {
+        buttons: filterButtons,
+        buttonClicked: function(index) { 
             console.log('clicked button');
-            switch(index) {
-                case 0: //above 300
-                    console.log('should set max price');
-                    $rootScope.min_price = '300';
-                    $rootScope.max_price = '';
-                    $scope.refresh();
-                    return true;
-                case 1 : // between 100-300
-                    $rootScope.min_price = '100';
-                    $rootScope.max_price = '300';
-                    $scope.refresh();
-                    return true;
-                case 2 : // below 100
-                    $rootScope.min_price = '';
-                    $rootScope.max_price = '100';
-                    $scope.refresh();
-                    return true;
-            }
+            $rootScope.sortBy = filterButtons[index].value;
+            $scope.refresh();
+            return true;
         }
-
     })};
 
     $scope.slider = {

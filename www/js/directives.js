@@ -60,7 +60,7 @@ angular.module('app.directives', ['app.controllers'])
     },
     controller: 'heartCtrl'
   }
-});
+})
 
 .directive('prScrollSimilar', function(){
   return{
