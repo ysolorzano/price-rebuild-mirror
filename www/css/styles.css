@@ -109,29 +109,38 @@ scroll/category CSS
 }
 
 .scroll-ti-a {
-	max-height: 75px !important;
-	min-height: 75px !important;
+	max-height: 70px !important;
+	min-height: 70px !important;
 	text-align: center;
 	margin: 0 auto;
-	width: 100%;
 }
 
 /* icon and background circles */
 .scroll-icon img {
-	height: 45px;
-	width: 45px;
+	height: 25px;
+	width: 25px;
+}
+
+.scroll-imgdiv {
+	height: 50px;
+	width: 50px;
 	background-color: #eee;
 	padding: 10px;
 	border-radius: 50px;
-	margin: 0 auto !important;
+	margin: 0 auto 10px auto !important;
 }
 
 .scroll-div {
 	padding: 0 !important;
+	width: 85% !important;
 }
 
-.scroll-div:active {
-	background-color: transparent !important;
+.scroll-div .active {
+	opacity: 1 !important;
+}
+
+.scroll-div .active img {
+	background-color: #555;
 }
 
 .has-scrollnav {
@@ -274,6 +283,7 @@ productDetails.html
 .slider-pager {
   bottom: 35px!important;
 }
+
 .slider-pager .slider-pager-page {
 	color: #fff;
 	width: 5px;
