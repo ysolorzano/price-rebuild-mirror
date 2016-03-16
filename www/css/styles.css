@@ -1,3 +1,12 @@
+@media screen and (max-device-width: 320px) and (max-device-height: 568px) { 
+	.feed-image {
+		height: 150px !important;
+}
+	 }
+@media screen and (max-device-width: 414px) and (max-device-height: 776px) { /* Insert styles here */ }
+
+
+
 .facebook-sign-in {
   background-color: #3B5998 !important;
   border: none !important;
@@ -118,7 +127,7 @@ scroll/category CSS
 }
 
 .scroll-div {
-/* 	width: 600px !important;  */
+	padding: 0 !important;
 }
 
 .scroll-div:active {
@@ -137,6 +146,7 @@ feed.html
 .feed-ion {
   padding: 0 !important;
   border: none! important;
+  height: 160px !important;
 }
 
 .feed-ion .item {
@@ -160,7 +170,9 @@ feed-item.html
   width: 100%;
   height: 160px;
   overflow: hidden;
-    border: none !important;
+  border: none !important;
+  z-index: -1;
+  
 }
 
 .feed-image img {
@@ -179,10 +191,12 @@ feed-item.html
  .feed-content {
   padding: 0 !important;
   position: relative !important;
+  top: -30px;
 /*   top: 5px !important; */
 /*   left: 3% !important; */
-  width: 100%;
+  width: 90%;
   overflow: hidden;
+  border: none !important
 /*   background-color: #eee !important; */
 }
 
@@ -190,9 +204,9 @@ feed-item.html
 .feed-content .ng-binding {
   display: block;
   margin: 0 32px auto 0;
-  padding: 6px 13px;
+  padding: 2px 13px;
   text-transform: uppercase;
-  font-size: 13px !important;
+  font-size: 12px !important;
   font-weight: 200;
 /*   background-color: #eee; */
 /*  border-bottom: solid #999 1px;*/
