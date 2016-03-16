@@ -16,11 +16,6 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
             $rootScope.user.fullName = "RJ Jain";
             $rootScope.user.photoUrl = 'https://scontent.fsnc1-1.fna.fbcdn.net/hphotos-xla1/t31.0-8/12747354_10154146476332018_18157417964440176_o.jpg';
 */
-    
-<<<<<<< HEAD
-=======
-            // $state.go('signin'); //this is commented out to support web dev
->>>>>>> ba48f5acf6dee442d88e50ff2d2fb86a81fe0dfc
         }
     })
     
@@ -414,8 +409,7 @@ $scope.login = function(provider) {
 
   $scope.openProduct = function(product) {
     $ionicLoading.show();
-    console.log(product)
-    var productId = product.itemID ? product.itemID : (product.id ? product.id : product.pk);
+    var productId = product.itemID ? product.itemID : product.id;
 
     console.log('opening product with id: ' + productId);
 
