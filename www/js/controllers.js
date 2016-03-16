@@ -112,9 +112,10 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     $scope.openPriceFilters = function() {
         $ionicActionSheet.show({
         buttons: [
-            {text: 'Above $300'},
-            {text: '$100 - 300'},
-            {text: 'Below $100'}
+            {text: 'Most Expensive'},
+            {text: 'Least Expensive'},
+            {text: 'Most Popular'},
+            {text: 'Biggest Savings'}
         ],
         buttonClicked: function(index) {
             console.log('clicked button');
@@ -231,10 +232,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     $scope.categories = PriceAPI.categories;
     console.log($scope.categories);
 
-    $scope.catNames = lodash.map(PriceAPI.categories[$rootScope.currentGender],function(cat) {
-        return cat.name;
-    });
-    $scope.catNames.splice(0,0,'all');
+    $scope.catNames = PriceAPI.categories[$rootScope.currentGender];    $scope.catNames.splice(0,0,{'name':'all','img':'img/test.png'});
 
 })
 .controller('heartCtrl',function($scope,$rootScope,Favs,lodash) {

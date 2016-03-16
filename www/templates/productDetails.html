@@ -32,14 +32,13 @@
                 <div class="actual col col-50" >Our Price:<br><h1>$<span  pr-numerator=true data-price='{{currentProduct.price}}' data-retail='{{currentProduct.price + currentProduct.amount_saved}}'>{{currentProduct.price | currency}}</span></h1></div>
                 <div class="savings col col-25"><div ng-show='currentProduct.amount_saved > 0'>Savings: <br>${{currentProduct.amount_saved}}</div></div>
             </div>
-
             <div class="simulation row">
     <!--             <div class="col col-50">Finding the best price...</div> -->
                 <div class="col">{{currentProduct.store_name}}</div>
             </div>
         </div>
 
-            <!-- <hr> -->
+            			<hr>
         <div class="browse-similar">
             <h5 class="row">Browse Similar</h5>
 

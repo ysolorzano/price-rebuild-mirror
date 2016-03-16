@@ -10,15 +10,15 @@
 
          <button class="stable button-icon icon ion-arrow-graph-up-right filter-btn" ng-click="openPriceFilters()"></button>
     </ion-nav-buttons>
-    <ion-scroll class="bar bar-subheader" direction="x">
+    <ion-scroll class="bar bar-subheader scroll-ion" direction="x">
             <ti-segmented-control on-select="selectedCategory($index)" style="width:680px;">
-                <ti-segmented-control-button ng-repeat="cat in catNames" class="button-positive" ng-attr-title="cat"></ti-segmented-control-button>
+                <ti-segmented-control-button ng-repeat="cat in catNames" class="button button-icon icon scroll-icon" ng-attr-title="cat"></ti-segmented-control-button>
             </ti-segmented-control>
         </ion-scroll>
 
-    <ion-content overflow-scroll="true" padding="false" class="has-header has-subheader">
+    <ion-content overflow-scroll="true" padding="false" class="has-header has-subheader has-scrollnav">
       <ion-refresher pulling-text="Pull to refresh" on-refresh="refresh()"></ion-refresher>
-      <ion-item collection-repeat="product in products" item-width="50%" item-height="225" class="feed-ion">
+      <ion-item collection-repeat="product in products" item-width="50%" item-height="200" class="feed-ion">
         <pr-feed-item item='product'></pr-feed-item>
       </ion-item>
         <ion-infinite-scroll
