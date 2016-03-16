@@ -1,4 +1,4 @@
-@media screen and (max-device-width: 320px) and (max-device-height: 568px) { 
+@media screen and (max-device-width: 320px) and (max-device-height: 568px) {
 	.feed-image {
 		height: 150px !important;
 }
@@ -153,7 +153,7 @@ feed.html
   padding: 0 !important;
   margin: 0 !important;
   border-right: none !important;
- 
+
 }
 
 .feed-ion:nth-child(n+1) {
@@ -172,7 +172,7 @@ feed-item.html
   overflow: hidden;
   border: none !important;
   z-index: -1;
-  
+
 }
 
 .feed-image img {
@@ -186,7 +186,7 @@ feed-item.html
   -webkit-transform: translate(-50%,-50%);
       -ms-transform: translate(-50%,-50%);
           transform: translate(-50%,-50%);
-          
+
 }
 
 /* content under the image */
@@ -516,4 +516,7 @@ Heart animation CSS
 .social-btns .scroll{
   padding: 0 15px;
 }
-
+.text-danger{
+	padding: 10px;
+	color: red;
+}

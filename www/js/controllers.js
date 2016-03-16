@@ -420,9 +420,12 @@ $scope.login = function(provider) {
     $scope.loadTimeout = false;
 
     setTimeout(function(){
-      if(!$scope.loadTimeout)
+      if(!$scope.itemLoaded){
         $scope.loadTimeout = true
-    }, 100);
+      }
+    }, 5000);
+    $scope.itemLoaded = false
+    $scope.loadTimeout = false
     $http.get($rootScope.hostUrl + '/item-details/' + productId+'/').then(function(res) {
       console.log('should get item data...');
       console.log(res);
@@ -430,7 +433,7 @@ $scope.login = function(provider) {
       $scope.currentProduct = res.data;
       resetProductModal();
       $scope.modal.show();
-      $scope.loadTimeout = false
+      $scope.itemLoaded = true
     })
 
 
