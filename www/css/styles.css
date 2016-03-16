@@ -105,17 +105,48 @@ scroll/category CSS
 **********************************/
 .scroll-ion {
   border: none;
-  margin: 10px 0 !important;
+  height: 85px !important;
+  margin-top: 10px! important;
 }
 
-.scroll-button {
-  border: none;
+/* ti controller stuff */
+.scroll-ti-p {
+	font-size: 10px;
+	text-transform: uppercase;
+	color: #222;
+	margin: -15px auto;
+	width: 100%;
 }
 
+.scroll-ti-a {
+	max-height: 75px !important;
+	min-height: 75px !important;
+	text-align: center;
+	margin: 0 auto;
+	width: 100%;
+}
+
+/* icon and background circles */
 .scroll-icon img {
-	height: 20px;
+	height: 45px;
+	width: 45px;
+	background-color: #eee;
+	padding: 10px;
+	border-radius: 50px;
+	margin: 0 auto !important;
 }
 
+.scroll-div {
+/* 	width: 600px !important;  */
+}
+
+.scroll-div:active {
+	background-color: transparent !important;
+}
+
+.has-scrollnav {
+	top: 135px !important;
+}
 /**********************************
 productDetails.html
 **********************************/

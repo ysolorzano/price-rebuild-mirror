@@ -7,7 +7,7 @@ angular.module('ti-segmented-control', []
         scope: {
             onSelect: "&"
         },
-        template: '<div class=\"buttons\"><div class=\"button-bar bar-light ti-segmented-control\" ng-transclude></div></div>',
+        template: '<div class=\"buttons\"><div class=\"scroll-div button-bar bar-light ti-segmented-control\" ng-transclude></div></div>',
 
         controller: function($scope){
             this.buttons = [];
@@ -16,9 +16,9 @@ angular.module('ti-segmented-control', []
             }
             var style = window.document.createElement('style');
             style.type = 'text/css';
-            style.innerHTML += '.button.button-outline.ti-segmented-control:first-child { border-top-left-radius: 5px;border-bottom-left-radius: 5px; }';
+//             style.innerHTML += '.button.button-outline.ti-segmented-control:first-child { border-top-left-radius: 5px;border-bottom-left-radius: 5px; }';
             style.innerHTML += '.button.button-outline.ti-segmented-control { line-height: 23px;max-height: 25px;min-height: 25px; }';
-            style.innerHTML += '.button.button-outline.ti-segmented-control:last-child { border-top-right-radius: 5px; border-bottom-right-radius: 5px; }';
+//             style.innerHTML += '.button.button-outline.ti-segmented-control:last-child { border-top-right-radius: 5px; border-bottom-right-radius: 5px; }';
             style.innerHTML += '.button.button-outline.ti-segmented-control.activated { color: #fafafa;box-shadow: none; }';
             window.document.getElementsByTagName('head')[0].appendChild(style);
         },
@@ -32,7 +32,7 @@ angular.module('ti-segmented-control', []
         scope: {
             title: '='
         },
-        template: '<a class=\"button button-outline ti-segmented-control\"><img ng-src="{{title}}"/></a>',
+        template: '<a class=\"button button-icon ti-segmented-control scroll-ti-a\"><img ng-src="{{title.img}}"/><p class="scroll-ti-p">{{title.name}}</p></a>',
         link: function(scope, element, attr, segmentedControlCtrl){
             segmentedControlCtrl.buttons.push(scope.title);
             if(attr.selected != undefined) element.addClass('active');

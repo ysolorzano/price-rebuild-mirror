@@ -161,10 +161,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     $scope.categories = PriceAPI.categories;
     console.log($scope.categories);
 
-    $scope.catNames = lodash.map(PriceAPI.categories[$rootScope.currentGender],function(cat) {
-        return cat.img;
-    });
-    $scope.catNames.splice(0,0,'all');
+    $scope.catNames = PriceAPI.categories[$rootScope.currentGender];    $scope.catNames.splice(0,0,{'name':'all','img':'img/test.png'});
 
 })
 .controller('heartCtrl',function($scope,$rootScope,Favs,lodash) {
