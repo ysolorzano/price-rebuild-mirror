@@ -521,3 +521,9 @@ Heart animation CSS
 }.collection-repeat-container{
   margin-top: 61px;
 }
+.item-icon-right .icon{
+  left: 0px;
+}
+.feed-content{
+  height: 25px;
+}
