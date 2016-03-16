@@ -89,7 +89,7 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
             console.log('got list data...');
             console.log(data);
             return lodash.map(data.data[0].products,function(product) {
-                product.fields.isFavorite = Favs.contains(product.fields.item_id);        
+                product.fields.isFavorite = Favs.contains(product.fields.itemID);        
                 return product.fields;
             });
 
