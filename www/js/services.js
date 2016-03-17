@@ -49,7 +49,7 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
                 }],
             male: [
                 {
-                    name: 'electronics',
+                    name: 'gadgets',
                     img: catImg[0]
                 },{
                     name: 'clothing',
@@ -61,7 +61,7 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
                     name: 'shoes',
                     img: catImg[3]
                 },{
-                    name: 'gear',
+                    name: 'outdoor',
                     img: catImg[4]
                 },{
                     name: 'sunglasses',
