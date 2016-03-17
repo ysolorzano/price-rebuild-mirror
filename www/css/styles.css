@@ -538,3 +538,11 @@ Heart animation CSS
 	color: red;
 }
 
+/* color selection blocks */
+
+.color-block {
+    width:30px;
+    height:30px;
+    padding: 15px;
+}
+

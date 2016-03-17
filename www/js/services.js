@@ -3,7 +3,7 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
 
 .factory('PriceAPI',function($resource,$rootScope,$http,lodash,Favs) {
 
-    $rootScope.currentGender = 'female';
+    $rootScope.currentGender = 'male';
      var catImg = [];
     for(i = 0; i < 6; i++)
         catImg.push('img/cats/' + $rootScope.currentGender + '/img' + (i+1).toString() + '.svg');
@@ -22,7 +22,7 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
                 'category' : $rootScope.currentCategory, //$rootScope.category
                 'page': $rootScope.page_no,
                 'show_by': 16,
-                'type' : 'female' //$rootScope.gender
+                'type' : 'male' //$rootScope.gender
 
             }
         })},
@@ -78,11 +78,11 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
                 'price_min' : $rootScope.min_price ? $rootScope.min_price : 0,
                 'price_max' : $rootScope.max_price ? $rootScope.max_price : '',
                 'category' : $rootScope.currentCategory ? $rootScope.currentCategory : '', //$rootScope.category
-                'page': $rootScope.page_no,
+                'page': $rootScope.page_no ? $rootScope.page_no : 1,
                 'show_by': '20',
-                'type' : $rootScope.currentGender ? $rootScope.currentGender : 'female', //$rootScope.gender
-                'sort' : $rootScope.sortBy ? $rootScope.sortBy : '' //defaults to recently added
-
+                'type' : 'male', //$rootScope.currentGender ? $rootScope.currentGender : 'female', //$rootScope.gender
+                'sort' : $rootScope.sortBy ? $rootScope.sortBy : ''
+                 //defaults to recently added
 
             }
         });
@@ -91,7 +91,7 @@ angular.module('app.services', ['ngResource','LocalStorageModule','ngLodash'])
             console.log(data);
             return lodash.map(data.data[0].products,function(product) {
                 product.fields.isFavorite = Favs.contains(product.fields.itemID);        
-                return product.fields;
+                return product.fields; // hardcoded to remove the first element to prevent bug
             });
 
             console.log($rootScope.products);

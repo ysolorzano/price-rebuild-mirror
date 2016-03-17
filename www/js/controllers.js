@@ -32,6 +32,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         $scope.canReload = true;
         $rootScope.products = [];
         $rootScope.currentGender = 'female';
+        $rootScope.page_no = 0;
 
            console.log('after enter...');
       Favs.getList();

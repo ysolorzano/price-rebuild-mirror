@@ -7,4 +7,8 @@
     rz-slider-model="slider.min"
     rz-slider-high="slider.max"
     rz-slider-options="slider.options"></rzslider>
+    
+    <div ng-repeat="color in ['black','white','brown','red','green','blue','yellow']">
+        <div class="color-block" style="background-color:{{color}}" ng-click="toggleColor(color)"></div>
+    </div>
 </ion-content>
