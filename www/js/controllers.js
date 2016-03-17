@@ -394,6 +394,10 @@ $scope.login = function(provider) {
 
   $scope.buyNow = function(product){
     console.log('Buying now...')
+    backImg = 'img/back.png'
+    if(ionic.Platform.isIOS())
+      backImg = 'img/back-ios.png'
+
     var browserOptions = {
       // Inappbrowser options for customization
       toolbar: {
@@ -405,7 +409,7 @@ $scope.login = function(provider) {
         staticText: 'BACK TO BROWSING'
       },
       closeButton: {
-        wwwImage: 'img/back.png',
+        wwwImage: backImg,
         wwwImageDensity: 1,
 
         imagePressed: 'close_pressed',
