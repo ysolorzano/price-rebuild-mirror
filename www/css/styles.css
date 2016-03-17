@@ -60,7 +60,8 @@ h1 .title {
 }
 
 .logo {
-  width: 70px;
+  width: 55px;
+  vertical-align: bottom !important;
 }
 
 .logo-title {
