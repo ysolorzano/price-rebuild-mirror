@@ -2,22 +2,17 @@
 <ion-view title="Welcome" hide-nav-bar="true">
   <ui-view name="Welcome">
     <ion-content scroll="false">
-    <div class="welcome-page">
-      <div class="top-content row">
-        <div class="app-copy col col-top">
-          <img class="welcome-logo" src="img/logoblack.png">
-          <p class="app-tagline">
-              <!-- This app helps you discover and buy amazing things all in one place. -->
+    <div class="container-fluid background_img">
+        <div class="login-container">
+            <img src="img/price-logo.png" class="price-logo">
+            <p class="tagline">Discover Incredible Products </br>at the best price </p>
+            <p class="" onclick="loginMethods.signinViaFacebook()">
+                <!-- <img src="img/fb-btn.png" style='width:170px;'> -->
+                <a class="facebook-sign-in" ng-click="loginFacebook()">Log in with Facebook
+                </a>
+                <div class="tagline tagline-bottom">We don't post anything to Facebook</div>
             </p>
         </div>
-      </div>
-      <div class="bottom-content row">
-        <div class="col col-bottom">
-          <a class="facebook-sign-in button button-block" ng-click="loginFacebook()">
-            Log in with Facebook
-          </a>
-        </div>
-      </div>
     </div>
     </ion-content>
   </ion-nav-view>

@@ -12,10 +12,62 @@
   border: none !important;
   color: #fff !important;
   top: 80% !important;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.background_img {
+    background-image: url(../img/welcome.png);
+    background-size: cover;
+    min-height: 100%;
+    min-height: 100vh;
+}
+
+.login-container {
+    position: absolute;
+    width: 200px;
+    height: 300px;
+    background: #fff;
+    padding: 20px;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border: 1px solid #3b3a3a;
+    border-radius: 10px;
+}
+
+.login-container .price-logo {
+    width: 100%
+}
+
+.login-container .tagline {
+    margin: 15px 0;
+    color: #000;
+    font-size: 13px;
+    padding: 5px 1px 0;
+    text-align: center;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.login-container .login-text {
+    margin: 15px 0 0 0;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    color: #000;
+    letter-spacing: 2px;
+}
+
+.login-container .tagline-bottom {
+    font-size: 9px;
+    margin-top: 5px;
 }
 
 .welcome-page {
-  background-image: url("../img/welcome.jpg") !important;
+  background-image: url("../img/welcome.png") !important;
   background-size: cover !important;
   height: 100% !important;
 }
