@@ -78,7 +78,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
     $scope.openProduct = function(product) {
         $ionicLoading.show();
-        var productId = product.itemID ? product.itemID : product.id;
+        var productId = product.itemID ? product.itemID : (product.id ? product.id : product.pk);
 
         console.log('opening product with id: ' + productId);
 
@@ -228,7 +228,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
      $scope.toggleFav = function(product) {
         console.log('should toggle fav');
-        id = product.itemID ? product.itemID : product.id;
+        id = product.itemID ? product.itemID : (product.id ? product.id : product.pk);
         var foundIt = Favs.contains(id);
         if(!foundIt) { //favorite not found; add it
             Favs.add(id);
@@ -420,8 +420,8 @@ $scope.login = function(provider) {
     $scope.loadTimeout = false
 
     $ionicLoading.show();
-    var productId = product.itemID ? product.itemID : product.id;
-
+    var productId = product.itemID ? product.itemID : (product.id ? product.id : product.pk);
+    console.log(product);
     console.log('opening product with id: ' + productId);
     $scope.loadTimeout = false;
 
