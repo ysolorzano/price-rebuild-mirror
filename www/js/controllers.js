@@ -30,13 +30,15 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
 
   });
-  $scope.testArray = ["poop",
-  "crap","feces"];
 
-  $scope.canReload = true;
-    $rootScope.products = [];
-    $rootScope.currentGender = 'female';
-    $scope.refresh = function()  {
+        $scope.pullRefresh = function() {
+            $scope.refresh();
+        }
+
+      $scope.canReload = true;
+      $rootScope.products = [];
+      $rootScope.currentGender = 'female';
+      $scope.refresh = function()  {
         
         $rootScope.pageNum = 0;
         $scope.loadNextPage();
