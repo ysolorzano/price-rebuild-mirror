@@ -35,6 +35,9 @@
         },
         "cordova-plugin-inappbrowser": {
             "PACKAGE_NAME": "com.LogicSquare.Price12"
+        },
+        "cordova-plugin-themeablebrowser": {
+            "PACKAGE_NAME": "com.LogicSquare.Price12"
         }
     },
     "dependent_plugins": {}

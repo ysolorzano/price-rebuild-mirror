@@ -6,7 +6,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
     $scope.$on('$ionicView.beforeEnter',function() {
         console.log('before enter...');
-        
+
         if(localStorageService.get('accessToken')) {
             //user already logged in
         } else if(ionic.Platform.isIOS() || ionic.Platform.isAndroid())  {
@@ -119,10 +119,10 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         { text: 'Biggest Savings', value: 'discount'},
         { text: 'Most Recent', value: ''}];
 
-    $scope.openPriceFilters = function() { //this needs to be refactored 
+    $scope.openPriceFilters = function() { //this needs to be refactored
         $ionicActionSheet.show({
         buttons: filterButtons,
-        buttonClicked: function(index) { 
+        buttonClicked: function(index) {
             console.log('clicked button');
             $rootScope.sortBy = filterButtons[index].value;
             $scope.refresh();
@@ -251,9 +251,9 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
 
 .controller('accountCtrl', function($scope,$cordovaFacebook,$state,localStorageService,$rootScope) {
-    
+
     $scope.numFavs = $rootScope.favs.length;
-    
+
     $scope.logout = function() {
         console.log('should logout...');
         $cordovaFacebook.logout().then(function(success) {
@@ -393,6 +393,52 @@ $scope.login = function(provider) {
   });
 
   $scope.buyNow = function(product){
+    console.log('Buying now...')
+    backImg = 'img/back.png'
+    if(ionic.Platform.isIOS())
+      backImg = 'img/back-ios.png'
+
+    var browserOptions = {
+      // Inappbrowser options for customization
+      toolbar: {
+        height: 44,
+        color: '#000000'
+      },
+      title: {
+        color: '#ffffff',
+        staticText: 'BACK TO BROWSING'
+      },
+      closeButton: {
+        wwwImage: backImg,
+        wwwImageDensity: 1,
+
+        imagePressed: 'close_pressed',
+        align: 'left',
+        event: 'closePressed'
+      },
+      backButtonCanClose: true
+    };
+    var ref = cordova.ThemeableBrowser.open(product.purchase_url, '_blank', browserOptions);
+    ref.addEventListener('loadstart', function(event) {
+        //console.log("loadstart" + event.url);
+    });
+    ref.addEventListener('loadstop', function(event) {
+      //console.log("loadstart" + event.url);
+      if ((event.url).indexOf('http://www.amazon.com/gp/buy/thankyou') === 0) {
+          setTimeout(function() {
+              ref.close(); // close inappbrowser 3seconds after purchase
+          }, 3000);
+
+      }
+    });
+    ref.addEventListener('closePressed', function(event) {
+        // Fix for back button in iOS
+        ref.close();
+    });
+
+  }
+
+  $scope.buyNow1 = function(product){
     console.log(product);
 
     var options = {

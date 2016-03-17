@@ -30,6 +30,10 @@
       },
       "locator": "src/Facebook",
       "id": "com.phonegap.plugins.facebookconnect"
+    },
+    {
+      "locator": "https://github.com/olexme/cordova-plugin-themeablebrowser.git",
+      "id": "cordova-plugin-themeablebrowser"
     }
   ],
   "cordovaPlatforms": [
