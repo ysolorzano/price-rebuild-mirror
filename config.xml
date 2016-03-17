@@ -25,6 +25,11 @@
     <icon density="hdpi" src="res/android/hdpi.png"/>
     <icon density="xhdpi" src="res/android/xhdpi.png"/>
     <icon density="xxhdpi" src="res/android/xxhdpi.png"/>
+    <splash src="resources/android/splash/drawable-land-ldpi-screen.png" density="land-ldpi"/>
+    <splash src="resources/android/splash/drawable-land-mdpi-screen.png" density="land-mdpi"/>
+    <splash src="resources/android/splash/drawable-port-ldpi-screen.png" density="port-ldpi"/>
+    <splash src="resources/android/splash/drawable-port-mdpi-screen.png" density="port-mdpi"/>
+    <splash src="resources/android/splash/drawable-port-hdpi-screen.png" density="port-hdpi"/>
   </platform>
   <platform name="ios">
     <icon height="180" src="res/ios/icon-60@3x.png" width="180"/>
