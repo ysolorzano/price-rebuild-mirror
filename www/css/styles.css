@@ -147,6 +147,14 @@ scroll/category CSS
 	top: 135px !important;
 }
 
+.has-fix {
+	margin-top: -50px !important;
+}
+
+.has-fix2 {
+	margin-top: -75px !important;
+}
+
 
 /**********************************
 feed.html
