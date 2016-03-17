@@ -31,7 +31,8 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         $ionicLoading.show();
         $scope.canReload = true;
         $rootScope.products = [];
-        $rootScope.currentGender = 'female';
+        $rootScope.currentGender = 'male';
+        $rootScope.page_no = 0;
 
            console.log('after enter...');
       Favs.getList();
@@ -220,7 +221,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     $scope.categories = PriceAPI.categories;
     console.log($scope.categories);
 
-    $scope.catNames = PriceAPI.categories[$rootScope.currentGender];    $scope.catNames.splice(0,0,{'name':'all','img':'img/test.png'});
+    $scope.catNames = PriceAPI.categories[$rootScope.currentGender];    $scope.catNames.splice(0,0,{'name':'all','img':'img/cats/all.svg'});
 
 })
 .controller('heartCtrl',function($scope,$rootScope,Favs,lodash) {
@@ -250,7 +251,9 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
 
 .controller('accountCtrl', function($scope,$cordovaFacebook,$state,localStorageService,$rootScope) {
-
+    
+    $scope.numFavs = $rootScope.favs.length;
+    
     $scope.logout = function() {
         console.log('should logout...');
         $cordovaFacebook.logout().then(function(success) {

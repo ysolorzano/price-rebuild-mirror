@@ -34,11 +34,16 @@
 			Color
 		</div>
 		<div class="item">
-			<ion-scroll class="bar bar-subheader scroll-ion has-fix" direction="x">
+    		 <div ng-repeat="color in ['black','white','brown','red','green','blue','yellow']">
+        <div class="color-block" style="background-color:{{color}}" ng-click="toggleColor(color)"></div>
+    </div>
+		<!--
+	<ion-scroll class="bar bar-subheader scroll-ion has-fix" direction="x">
 	            <ti-segmented-control on-select="selectedCategory($index)" style="width:680px;">
 	            	<ti-segmented-control-button ng-repeat="cat in catNames" class="button button-icon icon scroll-icon" ng-attr-title="cat"></ti-segmented-control-button>
 	            </ti-segmented-control>
 	        </ion-scroll>			
+-->
 		</div>
 		
 		<div class="item item-divider">
@@ -58,6 +63,10 @@
   </label>
 		</div>
 </div>
+
+<!--
+   
+-->
     
 	    
 <!--
@@ -106,3 +115,4 @@
 	   	</div>
 -->
 </ion-content>
+

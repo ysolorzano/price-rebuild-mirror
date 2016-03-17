@@ -132,7 +132,7 @@ scroll/category CSS
 
 .scroll-div {
 	padding: 0 !important;
-	width: 85% !important;
+	width: 100% !important;
 }
 
 .scroll-div .active {
@@ -544,5 +544,13 @@ Heart animation CSS
 .text-danger{
 	padding: 10px;
 	color: red;
+}
+
+/* color selection blocks */
+
+.color-block {
+    width:30px;
+    height:30px;
+    padding: 15px;
 }
 
