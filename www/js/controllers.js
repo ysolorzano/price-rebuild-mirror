@@ -11,14 +11,14 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
             //user already logged in
         } else if(ionic.Platform.isIOS() || ionic.Platform.isAndroid())  {
 
-            $state.go('signin'); //this is commented out to support web dev
+            // $state.go('signin'); //this is commented out to support web dev
 
 /*            //set up some dummy data before for web dev
             $rootScope.user.fullName = "RJ Jain";
             $rootScope.user.photoUrl = 'https://scontent.fsnc1-1.fna.fbcdn.net/hphotos-xla1/t31.0-8/12747354_10154146476332018_18157417964440176_o.jpg';
 */
 
-            $state.go('signin'); //this is commented out to support web dev
+            // $state.go('signin'); //this is commented out to support web dev
         }
     })
 
@@ -78,7 +78,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
     $scope.openProduct = function(product) {
         $ionicLoading.show();
-        var productId = product.itemID ? product.itemID : product.id;
+        var productId = product.itemID ? product.itemID : (product.id ? product.id : product.pk);
 
         console.log('opening product with id: ' + productId);
 
@@ -228,7 +228,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
      $scope.toggleFav = function(product) {
         console.log('should toggle fav');
-        id = product.itemID ? product.itemID : product.id;
+        id = product.itemID ? product.itemID : (product.id ? product.id : product.pk);
         var foundIt = Favs.contains(id);
         if(!foundIt) { //favorite not found; add it
             Favs.add(id);
@@ -466,8 +466,8 @@ $scope.login = function(provider) {
     $scope.loadTimeout = false
 
     $ionicLoading.show();
-    var productId = product.itemID ? product.itemID : product.id;
-
+    var productId = product.itemID ? product.itemID : (product.id ? product.id : product.pk);
+    console.log(product);
     console.log('opening product with id: ' + productId);
     $scope.loadTimeout = false;
 

@@ -73,4 +73,80 @@ angular.module('app.directives', ['app.controllers'])
       });
     }
   }
+})
+.directive('prStoreNumerator', function () {
+    return {
+        restrict: 'A', //E = element, A = attribute, C = class, M = comment
+        link: function ($scope, element, attrs) {
+          console.log('Store...')
+          $scope.$watch('currentProduct', function(newVal, oldVal){
+            if (newVal !== oldVal) {
+              factor = 150;
+              store_name = $scope.currentProduct.store_name;
+              setTimeout(function() {
+                $(element).text('Oodle.com');
+              }, 1 * factor);
+              setTimeout(function() {
+                  $(element).text('Nordtroms.com')
+
+              },  2 * factor);
+              setTimeout(function() {
+                  $(element).text('Cabelas.com')
+
+              }, 3 * factor);
+              setTimeout(function() {
+                  $(element).text('Sportsauthority.com')
+
+              }, 4  * factor);
+              setTimeout(function() {
+                  $(element).text('Ebay.com')
+              }, 5  * factor);
+              setTimeout(function() {
+                  $(element).text('TheRealReal.com')
+
+              }, 6 * factor);
+              setTimeout(function() {
+                  $(element).text('Etsy.com')
+
+              }, 7 * factor);
+              setTimeout(function() {
+                  $(element).text('Overstock.com')
+
+              }, 8 * factor);
+              setTimeout(function() {
+                $(element).text('Oodle.com');
+              }, 9 * factor);
+              setTimeout(function() {
+                  $(element).text('Nordtroms.com')
+
+              },  10 * factor);
+              setTimeout(function() {
+                  $(element).text('Cabelas.com')
+
+              }, 11 * factor);
+              setTimeout(function() {
+                  $(element).text('Sportsauthority.com')
+
+              }, 12  * factor);
+              setTimeout(function() {
+                  $(element).text('Ebay.com')
+              }, 13  * factor);
+              setTimeout(function() {
+                  $(element).text('TheRealReal.com')
+
+              }, 14 * factor);
+              setTimeout(function() {
+                  $(element).text('Etsy.com')
+
+              }, 15 * factor);
+              
+              setTimeout(function() {
+                  $scope.currentProduct.store_name = store_name
+
+              }, 9 * factor);
+            }
+          });
+
+        } //DOM manipulation
+    }
 });
