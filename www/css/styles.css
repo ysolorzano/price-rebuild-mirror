@@ -139,12 +139,20 @@ scroll/category CSS
 	opacity: 1 !important;
 }
 
-.scroll-div .active img {
+.scroll-div .active .scroll-imgdiv {
 	background-color: #555;
 }
 
 .has-scrollnav {
 	top: 135px !important;
+}
+
+.has-fix {
+	margin-top: -50px !important;
+}
+
+.has-fix2 {
+	margin-top: -75px !important;
 }
 
 

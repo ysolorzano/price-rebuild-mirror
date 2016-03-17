@@ -26,6 +26,38 @@ angular.module('app.routes', [])
       controller: 'ShippingCtrl'
 
     })
+    
+/*
+      .state('filterprice', {
+      url: '/filterprice',
+      templateUrl: 'templates/filter-price.html',
+      controller: 'fPriceCtrl'
+    })
+    
+      .state('filtersize', {
+      url: '/filtersize',
+      templateUrl: 'templates/filter-size.html',
+      controller: 'fSizeCtrl'
+    })
+    
+      .state('filtercategory', {
+      url: '/filtercategory',
+      templateUrl: 'templates/filter-category.html',
+      controller: 'fCatCtrl'
+    })
+    
+      .state('filtercolor', {
+      url: '/filtercolor',
+      templateUrl: 'templates/filter-color.html',
+      controller: 'fColorCtrl'
+    })
+    
+      .state('filtercondition', {
+      url: '/filtercondition',
+      templateUrl: 'templates/filter-condition.html',
+      controller: 'fCondCtrl'
+    })
+*/
 
   .state('tabs', {
     url: '/',
