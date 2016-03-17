@@ -50,23 +50,9 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
   });
 
-<<<<<<< HEAD
         $scope.pullRefresh = function() {
             $scope.refresh();
         }
-
-      $scope.canReload = true;
-      $rootScope.products = [];
-      $rootScope.currentGender = 'female';
-      $scope.refresh = function()  {
-        
-        $rootScope.pageNum = 0;
-        $scope.loadNextPage();
-        $scope.canReload = false;
-        $timeout(function() {
-            $scope.canReload = true;
-        },1000);
-=======
 
     $scope.refresh = function()  {
 
@@ -78,7 +64,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
           $scope.canReload = true;
       },1000);
 
->>>>>>> master
+
     };
     $scope.loadNextPage = function() {
         console.log('should load next page');
