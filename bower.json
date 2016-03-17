@@ -11,7 +11,8 @@
   "dependencies": {
     "angular-resource": "^1.5.0",
     "angular-stripe": "^4.2.11",
-    "ti-segmented-control": "^0.0.2"
-    "jquery": "^2.2.1"
+    "ti-segmented-control": "^0.0.2",
+    "jquery": "^2.2.1",
+    "angularjs-slider": "^2.10.3"
   }
 }

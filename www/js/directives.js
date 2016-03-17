@@ -23,7 +23,7 @@ angular.module('app.directives', ['app.controllers'])
       product: '=item'
     },
     templateUrl: 'templates/feed-item.html',
-    controller: 'feedCtrl'
+    controller: 'feedItemCtrl'
   }
 })
 .directive('prNumerator', function () {
@@ -59,5 +59,18 @@ angular.module('app.directives', ['app.controllers'])
     link: function($scope, element, attrs){
     },
     controller: 'heartCtrl'
+  }
+})
+
+.directive('prScrollSimilar', function(){
+  return{
+    restrict: 'A',
+    link: function($scope, element, attrs) {
+      $scope.$watch('currentProduct', function(newVal, oldVal){
+        if (newVal !== oldVal) {
+            $(element).scrollLeft(0);
+        }
+      });
+    }
   }
 });

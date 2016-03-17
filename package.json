@@ -1,6 +1,6 @@
 {
   "name": "price",
-  "version": "1.1.1",
+  "version": "1.2",
   "description": "price: An Ionic project",
   "dependencies": {
     "gulp": "^3.5.6",
@@ -22,6 +22,7 @@
     "cordova-plugin-statusbar",
     "ionic-plugin-keyboard",
     "cordova-plugin-inappbrowser",
+    "cordova-plugin-x-socialsharing",
     {
       "variables": {
         "APP_ID": "584320658404604",
@@ -32,6 +33,7 @@
     }
   ],
   "cordovaPlatforms": [
-    "ios"
+    "ios",
+    "android"
   ]
 }

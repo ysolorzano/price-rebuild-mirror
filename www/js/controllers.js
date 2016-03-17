@@ -1,36 +1,56 @@
 
-angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9UIWebViewPatch','ngCordova','app.directives'])  
-.controller('feedCtrl', function($scope,$rootScope,$stateParams,$location,$state,$ionicModal,$q,$filter,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$anchorScroll,$ionicScrollDelegate,$http,localStorageService,$timeout,$ionicLoading,Favs) {
-    
+angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9UIWebViewPatch','ngCordova','app.directives'])
+.controller('feedCtrl', function($scope,$rootScope,$state,$ionicModal,$q,$filter,lodash,$ionicPlatform,PriceAPI,$ionicActionSheet,$ionicScrollDelegate,$http,localStorageService,$timeout,$ionicLoading,Favs) {
+
+    console.log('loaded feed controller...');
+
     $scope.$on('$ionicView.beforeEnter',function() {
-        $ionicLoading.show();        
-    })
-    
-    $scope.$on('$ionicView.afterEnter', function(){
-        //for some reason...
-        //Favs.getList() doesn't work here...
-         $http.get('http://staging12.getpriceapp.com' + '/favourites/list?user=76').then(function(res) {
-          console.log('got favs...');
-          console.log(res);
-          $rootScope.favs = res.data;
-          // the feed is loaded after the favs
-          // because each item in the feed
-          // is compared to the favs
-          // to add the isFavorite property
-          // someday we'll do it a better way...
-          $scope.refresh();
-      },function(err) {
-          console.log(err);
-      });
-
-    });
-    
-    $ionicPlatform.ready(function(){
+        console.log('before enter...');
         
+        if(localStorageService.get('accessToken')) {
+            //user already logged in
+        } else if(ionic.Platform.isIOS() || ionic.Platform.isAndroid())  {
 
+            $state.go('signin'); //this is commented out to support web dev
+
+/*            //set up some dummy data before for web dev
+            $rootScope.user.fullName = "RJ Jain";
+            $rootScope.user.photoUrl = 'https://scontent.fsnc1-1.fna.fbcdn.net/hphotos-xla1/t31.0-8/12747354_10154146476332018_18157417964440176_o.jpg';
+*/
+
+            $state.go('signin'); //this is commented out to support web dev
+        }
+    })
+
+    $scope.$on('$ionicView.afterEnter', function(){
+
+     });
+
+    $ionicPlatform.ready(function(){
+        console.log('platform ready...');
+        $ionicLoading.show();
+        $scope.canReload = true;
+        $rootScope.products = [];
+        $rootScope.currentGender = 'male';
+        $rootScope.page_no = 0;
+
+           console.log('after enter...');
+      Favs.getList();
+      $scope.shouldRefresh = true;
+      $rootScope.$watch('favs', function(newVal, oldVal){
+        if (newVal !== oldVal) {
+            if($scope.shouldRefresh){
+                console.log('trying to refresh again');
+              $scope.refresh();
+              $scope.shouldRefresh = false;
+            }
+          }
+      });
+      loadModals();
 
   });
 
+<<<<<<< HEAD
         $scope.pullRefresh = function() {
             $scope.refresh();
         }
@@ -46,26 +66,37 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         $timeout(function() {
             $scope.canReload = true;
         },1000);
+=======
+
+    $scope.refresh = function()  {
+
+      $rootScope.page_no = 0;
+
+      $scope.loadNextPage();
+      $scope.canReload = false;
+      $timeout(function() {
+          $scope.canReload = true;
+      },1000);
+
+>>>>>>> master
     };
     $scope.loadNextPage = function() {
         console.log('should load next page');
-        $rootScope.pageNum++;
-        PriceAPI.items($rootScope.pageNum).then(function(res) {
+        $rootScope.page_no++;
+        PriceAPI.items($rootScope.page_no).then(function(res) {
             console.log(res);
-            if($rootScope.pageNum == 1)
+            if($rootScope.page_no == 1)
                 $rootScope.products = [];
             $rootScope.products = lodash.concat($rootScope.products,res);
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
         $ionicLoading.hide();
         })
-
     }
-
 
     $scope.openProduct = function(product) {
         $ionicLoading.show();
-        var productId = product.item_id ? product.item_id : product.pk;
+        var productId = product.itemID ? product.itemID : product.id;
 
         console.log('opening product with id: ' + productId);
 
@@ -74,16 +105,19 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
             console.log(res);
             // $rootScope.currentProduct = res.data;
             $scope.currentProduct = res.data;
+            $scope.currentProduct.isFavorite = Favs.contains($scope.currentProduct.id);
             resetProductModal();
             $scope.modal.show();
 
         })
 
 
-        PriceAPI.item.get({id: productId},function(data) {
+   /*
+     PriceAPI.item.get({id: productId},function(data) {
 
         });
-        
+*/
+
         $http.get($rootScope.hostUrl + '/item/similar-category/' + productId + '/').then(function(data) {
             // $rootScope.currentSuggestions = data.data;
             $scope.currentSuggestions = data.data;
@@ -93,84 +127,78 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
             console.log(e);
         });
 
-
-/*
-        PriceAPI.suggestions.get({id: product.id}, function(data) {
-            console.log('suggestions...');
-            console.log(data);
-        });
-*/
-
-
     };
 
-    if(localStorageService.get('accessToken')) {
-        //user already logged in
-    } else if(ionic.Platform.isIOS() || ionic.Platform.isAndroid()) {
-        $rootScope.user.fullName = "RJ Jain";
-        $rootScope.user.photoUrl = 'https://scontent.fsnc1-1.fna.fbcdn.net/hphotos-xla1/t31.0-8/12747354_10154146476332018_18157417964440176_o.jpg';
-        
-//         $state.go('signin');
-    }
 
+    var filterButtons = [
+        { text: 'Most Expensive', value: 'expensive' },
+        { text: 'Least Expensive', value: 'inexpensive' },
+        { text: 'Most Popular', value: 'popular' },
+        { text: 'Biggest Savings', value: 'discount'},
+        { text: 'Most Recent', value: ''}];
 
-    $scope.openFilters = function() {
+    $scope.openPriceFilters = function() { //this needs to be refactored 
         $ionicActionSheet.show({
-        buttons: [
-            {text: 'Above $300'},
-            {text: '$100 - 300'},
-            {text: 'Below $100'}
-        ],
-        buttonClicked: function(index) {
+        buttons: filterButtons,
+        buttonClicked: function(index) { 
             console.log('clicked button');
-            switch(index) {
-                case 0: //above 300
-                    console.log('should set max price');
-                    $rootScope.min_price = '300';
-                    $rootScope.max_price = '';
-                    $scope.refresh();
-                    return true;
-                case 1 : // between 100-300
-                    $rootScope.min_price = '100';
-                    $rootScope.max_price = '300';
-                    $scope.refresh();
-                    return true;
-                case 2 : // below 100
-                    $rootScope.min_price = '';
-                    $rootScope.max_price = '100';
-                    $scope.refresh();
-                    return true;
-            }
+            $rootScope.sortBy = filterButtons[index].value;
+            $scope.refresh();
+            return true;
         }
-
     })};
 
- /*
-   $scope.addFavorite = function(product) {
-        $http({
-            method:'POST',
-            url: $rootScope.hostUrl + 'favourites/add',
-            data: {
-                user:$rootScope.
-            }
+    $scope.slider = {
+        min: 5,
+        max: 1000,
+        options: {
+            floor: 5,
+            ceil: 1000,
+            step: 5
         }
-*/
+    };
+    $rootScope.min_price = 5;
+    $rootScope.max_price = 1000;
 
+    $scope.applyFilters = function() {
+        $scope.filtersModal.hide();
+        $rootScope.min_price = $scope.slider.min;
+        $rootScope.max_price = $scope.slider.max;
+        $scope.refresh();
 
+    }
 
-    $ionicModal.fromTemplateUrl('templates/productDetails.html', function($ionicModal) {
-        $scope.modal = $ionicModal;
-    }, {
-        scope: $scope,
-        animation: 'slide-in-up'
-    });
+    $scope.cancelFilters = function() {
+        $scope.slider.min = $rootScope.min_price;
+        $scope.slider.max = $rootScope.max_price;
+        $scope.filtersModal.hide();
+    }
 
-    $ionicModal.fromTemplateUrl('templates/categories.html', function($ionicModal) {
-        $scope.catModal = $ionicModal;
-    }, {
-        scope: $scope,
-        animation: 'slide-in-up'
-    });
+    function loadModals() {
+        $ionicModal.fromTemplateUrl('templates/categories.html', function($ionicModal) {
+            $scope.catModal = $ionicModal;
+        }, {
+            scope: $scope,
+            animation: 'slide-in-up'
+        });
+
+        $ionicModal.fromTemplateUrl('templates/filters.html',function($ionicModal) {
+            $scope.filtersModal = $ionicModal;
+        }, {
+            scope: $scope,
+            animation: 'slide-in-down'
+        });
+        $scope.openFilters = function() {
+            $scope.filtersModal.show();
+        }
+
+        $ionicModal.fromTemplateUrl('templates/share.html', function($ionicModal) {
+            $scope.shareModal = $ionicModal;
+        }, {
+            scope: $scope,
+            animation: 'slide-in-up'
+        });
+    }
 
     $scope.openCategories = function() {
         console.log('should open categories');
@@ -186,51 +214,54 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
         $scope.refresh();
     }
     $scope.selectedCategory = function(idx) {
-        console.log('selected category: ' + $scope.catNames[idx]);
-        $scope.setCategory($scope.catNames[idx]);
+        console.log('selected category: ' + $scope.catNames[idx].name);
+        $scope.setCategory($scope.catNames[idx].name);
     }
+    $scope.openSharing = function(product){
+      console.log('Sharing.....')
+      $scope.shareModal.show();
+    };
 
-    $scope.$on('modal.shown', function(event) {
-//         resetProductModal();
-    });
-
-    function resetProductModal() {
-        $ionicScrollDelegate.$getByHandle('modalContent').scrollTop(true);
-        $scope.activeSlide = 1;
-        $ionicScrollDelegate.$getByHandle('suggestionScroller').scrollTo(0,0,false);
-    }
+    $scope.facebookShare = function(product){
+      console.log('Sharing to fb...');
+      window.plugins.socialsharing.shareViaFacebook(product.title, product.photo_set[0].url_large, null /* url */, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})
+    };
+    $scope.twitterShare = function(product){
+      window.plugins.socialsharing.shareViaTwitter(product.title, product.photo_set[0].url_large, null /* url */, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})
+    };
+    $scope.instagramShare = function(product){
+      window.plugins.socialsharing.shareViaInstagram(product.title, product.photo_set[0].url_large, null /* url */, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})
+    };
+    $scope.pintrestShare = function(product){
+      window.plugins.socialsharing.shareViaPinterest(product.title, product.photo_set[0].url_large, null /* url */, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})
+    };
 
     $scope.categories = PriceAPI.categories;
     console.log($scope.categories);
-   
- $scope.catNames = lodash.map(PriceAPI.categories[$rootScope.currentGender],function(cat) {
-        return cat.name;
-    });
-    $scope.catNames.splice(0,0,'all');
+
+    $scope.catNames = PriceAPI.categories[$rootScope.currentGender];    $scope.catNames.splice(0,0,{'name':'all','img':'img/cats/all.svg'});
 
 })
 .controller('heartCtrl',function($scope,$rootScope,Favs,lodash) {
-    
+
      $scope.toggleFav = function(product) {
         console.log('should toggle fav');
-//         console.log($rootScope.favs);
-
-        var foundIt = Favs.contains(product);
+        id = product.itemID ? product.itemID : product.id;
+        var foundIt = Favs.contains(id);
         if(!foundIt) { //favorite not found; add it
-            console.log('should add fav');
-            Favs.add(product);
+            Favs.add(id);
         } else { //favorite found; delete it
-            console.log('should remove fav');
-            Favs.remove(product);
+            Favs.remove(id);
         }
         product.isFavorite = !foundIt;
-        Favs.getList();
+
     };
-    
+
 })
 
 .controller('favoritesCtrl', function($scope, Favs) {
-    $scope.$on('$ionicView.beforeEnter', function(){ 
+    $scope.$on('$ionicView.beforeEnter', function(){
+        console.log('shoud get favs...');
         Favs.getList();
     });
     console.log('loaded fav controller!');
@@ -238,7 +269,9 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
 
 .controller('accountCtrl', function($scope,$cordovaFacebook,$state,localStorageService,$rootScope) {
-
+    
+    $scope.numFavs = $rootScope.favs.length;
+    
     $scope.logout = function() {
         console.log('should logout...');
         $cordovaFacebook.logout().then(function(success) {
@@ -255,7 +288,7 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
     }
 })
 
-.controller('itemViewCtrl',['$stateParams',function($scope,$stateParams,stripe) {
+.controller('itemViewCtrl',['$stateParams',function($scope,$stateParams) {
     $scope.card = {
         number: '4242424242424242',
         cvc: '123',
@@ -265,9 +298,8 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 
     $scope.buyNow = function() {
         console.log('buying now!');
-    }
+    };
     console.log('loaded item view controller');
-
 }])
 
 .controller('WelcomeCtrl',function($rootScope,$scope,$state,localStorageService,$cordovaFacebook,$http) {
@@ -353,7 +385,6 @@ $scope.login = function(provider) {
       console.log(response);
   }
 
-
 })
 .controller('ShippingCtrl',function($rootScope,$scope,$state) {
 
@@ -367,3 +398,84 @@ $scope.login = function(provider) {
     }
 
 })
+
+.controller('feedItemCtrl',function($rootScope,$scope,$state,$ionicLoading,$scope,$http,PriceAPI,$ionicModal,$ionicScrollDelegate, $cordovaInAppBrowser) {
+
+  console.log('loaded feedItemCtrl...');
+  $scope.loadTimeout = false;
+  $ionicModal.fromTemplateUrl('templates/productDetails.html', function($ionicModal) {
+      $scope.modal = $ionicModal;
+  }, {
+      scope: $scope,
+      animation: 'slide-in-up'
+  });
+
+  $scope.buyNow = function(product){
+    console.log(product);
+
+    var options = {
+      location: 'yes',
+      clearcache: 'yes',
+      toolbar: 'yes',
+      title: product.title
+    };
+    $cordovaInAppBrowser.open(product.purchase_url, '_blank', options)
+    .then(function(event) {
+      // success
+    })
+    .catch(function(event) {
+      // error
+    });
+
+  }
+  function resetProductModal() {
+      $ionicScrollDelegate.$getByHandle('modalContent').scrollTop(true);
+      $rootScope.activeSlide = 1;
+      $ionicScrollDelegate.$getByHandle('suggestionScroller').scrollTo(0,0,false);
+  }
+
+  $scope.openProduct = function(product) {
+    $scope.loadTimeout = false
+
+    $ionicLoading.show();
+    var productId = product.itemID ? product.itemID : product.id;
+
+    console.log('opening product with id: ' + productId);
+    $scope.loadTimeout = false;
+
+    setTimeout(function(){
+      if(!$scope.itemLoaded){
+        $scope.loadTimeout = true
+      }
+    }, 5000);
+    $scope.itemLoaded = false
+    $scope.loadTimeout = false
+    $http.get($rootScope.hostUrl + '/item-details/' + productId+'/').then(function(res) {
+      console.log('should get item data...');
+      console.log(res);
+      // $rootScope.currentProduct = res.data;
+      $scope.currentProduct = res.data;
+      resetProductModal();
+      $scope.modal.show();
+      $scope.itemLoaded = true
+    })
+
+
+    PriceAPI.item.get({id: productId},function(data) {
+    });
+
+    $http.get($rootScope.hostUrl + '/item/similar-category/' + productId + '/').then(function(data) {
+        // $rootScope.currentSuggestions = data.data;
+        $scope.currentSuggestions = data.data;
+        console.log(data.data);
+        $ionicLoading.hide();
+    },function(e) {
+        console.log(e);
+    });
+
+  }
+})
+
+.controller('shareCtrl',['$scope',function($scope) {
+
+}])

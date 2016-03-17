@@ -1,21 +1,21 @@
 <ion-view title="Account">
-    <ion-content overflow-scroll="true" padding="true" class="has-header">
+    <ion-content overflow-scroll="true" padding="false" class="has-header">
 
-    <div class="row profile-photo">
+    <div class="row account-photo">
     	<img ng-src="{{user.photoUrl}}">
     </div>
 
-	<div class="user">
-	    <div class="row user-info">
-	    	<div class="col"><h2>{{user.fullName}}</h2><p>{{user.sex}} // {{user.city}}</p></div>
+	<div class="account-userdiv">
+	    <div class="row account-userinfo">
+	    	<div class="col"><h2>{{user.fullName}}</h2><p>Male{{user.city}}</p></div>
 	    </div>
 
-		<div class="row user-stats">
-			<div class="user-likes">
-				<h3>{{user.likes}}</h3><p>Likes</p>
+		<div class="row account-userstats">
+			<div class="account-userlikes">
+				<h3>{{numFavs}}</h3><p>Likes</p>
 			</div>
-			<div class="user-buys">
-				<h3>{{user.buys}}</h3><p>Buys</p>
+			<div class="account-userbuys">
+				<h3>0</h3><p>Buys</p>
 			</div>
 		</div>
 	</div>
@@ -23,7 +23,7 @@
 
 
 
-	<div class="list user-list">
+	<div class="list account-userlist">
 	  <div class="item item-divider">
 	    Recents
 	  </div>

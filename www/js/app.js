@@ -5,10 +5,32 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.routes', 'app.services','app.directives','ngResource','LocalStorageModule','ionic.contrib.ui.hscrollcards','ngIOS9UIWebViewPatch','ngCordova','ti-segmented-control','jett.ionic.scroll.sista'])
 
-.run(function($ionicPlatform,$rootScope,localStorageService) {
+
+angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.routes', 'app.services','app.directives','ngResource','LocalStorageModule','ionic.contrib.ui.hscrollcards','ngIOS9UIWebViewPatch','ngCordova','ti-segmented-control','rzModule','jett.ionic.scroll.sista'])
+
+
+.run(function($ionicPlatform,$rootScope,localStorageService,$timeout) {
+    
+    console.log('ran run function in app');
   $ionicPlatform.ready(function() {
+      console.log('platform ready under app...');
+      init();
+  
+    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+    // for form inputs)
+  
+  });
+  
+  function init() {
+    if(window.cordova && window.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+    }
+    if(window.StatusBar) {
+      // org.apache.cordova.statusbar required
+      StatusBar.styleDefault();
+    }
+    
     $rootScope.hostUrl = 'http://staging12.getpriceapp.com';
     $rootScope.user = {};
 
@@ -19,16 +41,7 @@ angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.rou
         $rootScope.user.fullName = localStorageService.get('fullName');
     }
 
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if(window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    }
-    if(window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
-    }
-  });
+  }
 })
 .config(['$resourceProvider', function($resourceProvider) {
   // Don't strip trailing slashes from calculated URLs

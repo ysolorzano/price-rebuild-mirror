@@ -1,3 +1,12 @@
+@media screen and (max-device-width: 320px) and (max-device-height: 568px) {
+	.feed-image {
+		height: 150px !important;
+}
+	 }
+@media screen and (max-device-width: 414px) and (max-device-height: 776px) { /* Insert styles here */ }
+
+
+
 .facebook-sign-in {
   background-color: #3B5998 !important;
   border: none !important;
@@ -16,35 +25,10 @@
   margin: 0 auto 60% 0;
 }
 
-a {
-  text-decoration: none
-}
-
-.feed-ion .item {
-  border: none;
-}
-
-.feed-ion .feed {
-  padding: 0;
-}
-
-.feed-ion:nth-child(n+1) {
-  border-right: none;
-}
-
-.feed-heart {
-  font-size: 20px !important;
-  margin-left: -11px;
-}
-
-.ion-heart {
-
-}
-
 /**********************************
 global CSS
 **********************************/
-.modal{
+.modal {
   top: 0 ;
   bottom: 0 ;
   left: 0 ;
@@ -81,13 +65,192 @@ h1 .title {
 
 .logo-title {
   position: absolute !important;
-  top: 30% !important;
 }
 
 .cat-btn {
     z-index:1000;
 }
 
+
+a {
+  text-decoration: none
+}
+
+
+.item {
+  padding: 0;
+}
+
+.ion-record {
+  font-size: 10px;
+}
+
+.ion-item {
+  height: 250px !important;
+}
+
+
+/**********************************
+scroll/category CSS
+**********************************/
+.scroll-ion {
+  border: none;
+  height: 85px !important;
+  margin-top: 10px! important;
+}
+
+/* ti controller stuff */
+.scroll-ti-p {
+	font-size: 10px;
+	text-transform: uppercase;
+	color: #222;
+	margin: -15px auto;
+	width: 100%;
+}
+
+.scroll-ti-a {
+	max-height: 70px !important;
+	min-height: 70px !important;
+	text-align: center;
+	margin: 0 auto;
+}
+
+/* icon and background circles */
+.scroll-icon img {
+	height: 25px;
+	width: 25px;
+}
+
+.scroll-imgdiv {
+	height: 50px;
+	width: 50px;
+	background-color: #eee;
+	padding: 10px;
+	border-radius: 50px;
+	margin: 0 auto 10px auto !important;
+}
+
+.scroll-div {
+	padding: 0 !important;
+	width: 100% !important;
+}
+
+.scroll-div .active {
+	opacity: 1 !important;
+}
+
+.scroll-div .active .scroll-imgdiv {
+	background-color: #555;
+}
+
+.has-scrollnav {
+	top: 135px !important;
+}
+
+.has-fix {
+	margin-top: -50px !important;
+}
+
+.has-fix2 {
+	margin-top: -75px !important;
+}
+
+
+/**********************************
+feed.html
+**********************************/
+/* ionic item */
+.feed-ion {
+  padding: 0 !important;
+  border: none! important;
+  height: 200px !important;
+}
+
+.feed-ion .item {
+  padding: 0 !important;
+  margin: 0 !important;
+  border-right: none !important;
+
+}
+
+.feed-ion:nth-child(n+1) {
+  border-right: none !important;
+}
+
+
+/**********************************
+feed-item.html
+**********************************/
+/* div that the feed image is in */
+.feed-image {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+  border: none !important;
+  z-index: -1;
+
+}
+
+.feed-image img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  filter: contrast(1);
+  -webkit-filter: contrast(1);
+  height: auto;
+  width: 100%;
+  -webkit-transform: translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+          transform: translate(-50%,-50%);
+
+}
+
+/* content under the image */
+ .feed-content {
+  padding: 0 !important;
+  position: relative !important;
+/*   top: 5px !important; */
+/*   left: 3% !important; */
+  width: 100%;
+  overflow: hidden;
+  border: none !important
+/*   background-color: #eee !important; */
+}
+
+/* text */
+.feed-content .ng-binding {
+  display: block;
+  margin: 0 32px auto 0;
+  padding: 0 5px;
+  text-transform: uppercase;
+  font-size: 11px !important;
+  font-weight: 300;
+/*   background-color: #eee; */
+/*  border-bottom: solid #999 1px;*/
+}
+
+
+/**********************************
+fave-heart.html
+**********************************/
+.feed-heart {
+  font-size: 23px !important;
+  margin-right: -10px;
+  font-weight: 600;
+}
+
+/**********************************
+favorites.html
+**********************************/
+.favorites-ion {
+	border: none !important;
+}
+
+.favorites-item {
+	padding: 0 !important;
+	border: none !important;
+}
 
 
 /**********************************
@@ -115,6 +278,8 @@ productDetails.html
 
 .photo-image img {
   position: absolute;
+   filter: contrast(2);
+  -webkit-filter: contrast(2);
   left: 50%;
   top: 50%;
   height: auto;
@@ -126,6 +291,7 @@ productDetails.html
 .slider-pager {
   bottom: 35px!important;
 }
+
 .slider-pager .slider-pager-page {
 	color: #fff;
 	width: 5px;
@@ -145,9 +311,8 @@ productDetails.html
 
 /* prices/productInfo */
 .product-info {
-  background-color: #f1f1f1;
+/*   background-color: #f1f1f1; */
   padding: 10px 0;
-  margin-bottom: 20px;
   margin-top: -15px;
 }
 
@@ -211,76 +376,11 @@ productDetails.html
   font-weight: 800 !important;
 }
 
-
-/**********************************
-feed.html
-**********************************/
-.feed-image {
-  position: relative;
-  width: 100%;
-  height: 175px;
-  overflow: hidden;
-}
-
-.feed-image img {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  height: auto;
-  width: 100%;
-  -webkit-transform: translate(-50%,-50%);
-      -ms-transform: translate(-50%,-50%);
-          transform: translate(-50%,-50%);
-}
-
-.feed p {
-  margin-left: 10px;
-  text-transform: uppercase;
-  font-size: 11px;
-}
-
-
-.ion-item {
-  height: 250px !important;
-}
-
-.feed .ng-binding {
-  display: block;
-  margin: 0 0 auto 32px;
-  text-transform: uppercase;
-  font-size: 12px !important;
-/*  border-bottom: solid #999 1px;*/
-}
-
-.feed {
-  border: solid #111 .75px;
-  margin: 5px 2.5px;
-}
-
-.feed-image, .feed {
-  border: none;
-  padding: 0;
-  overflow: hidden;
-}
-
-/*.item p {
-  margin-left: 45px;
-}*/
-
-.item {
-  padding: 0;
-}
-
-.ion-record {
-  font-size: 10px;
-}
-
-
-
 /**********************************
 account.html
 **********************************/
-.profile-photo {
+
+.account-photo {
   position: relative;
   width: 100%;
   height: 35%;
@@ -288,10 +388,10 @@ account.html
   background-color: #000;
 }
 
-.profile-photo img {
+.account-photo img {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 90%;
   opacity: 0.7;
   height: auto;
   width: 100%;
@@ -300,36 +400,36 @@ account.html
           transform: translate(-50%,-50%);
 }
 
-.user {
+.account-userdiv {
   position: absolute;
   top: 10%;
 }
 
-.user-info {
+.account-userinfo {
   text-transform: uppercase;
 }
 
-.user-info h2, .user-info p {
+.account-userinfo h2, .account-userinfo p {
   color: #fff;
 }
 
-.user-info h2 {
+.account-userinfo h2 {
   margin: 0;
   padding: 0;
   font-size: 1.8em;
 }
 
-.user-stats div {
+.account-userstats div {
   margin: 0 15px;
 }
 
-.user-likes h3, .user-buys h3,
-.user-likes p, .user-buys p {
+.account-userlikes h3, .account-userbuys h3,
+.account-userlikes p, .account-userbuys p {
   margin: 0;
   color: #fff;
 }
 
-.user-list {
+.account-userlist {
   height: 100%;
 }
 
@@ -420,3 +520,37 @@ Heart animation CSS
     transform: scale3d(1, 1, 1);
   }
 }
+
+
+
+.filters-modal {
+    background-color: white;
+}
+
+.social-btns{
+  padding-top: 60px!important;
+  border-bottom: 2px solid #000;
+}
+.social-btns .scroll{
+  padding: 0 15px;
+}
+
+.bar-subheader{
+  top: 100px !important;
+}.collection-repeat-container{
+  margin-top: 61px;
+}
+
+.text-danger{
+	padding: 10px;
+	color: red;
+}
+
+/* color selection blocks */
+
+.color-block {
+    width:30px;
+    height:30px;
+    padding: 15px;
+}
+

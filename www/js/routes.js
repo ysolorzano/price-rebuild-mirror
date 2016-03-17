@@ -7,7 +7,7 @@ angular.module('app.routes', [])
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
   $stateProvider
-    
+
   .state('signin', {
       url: 'signin',
       templateUrl: 'templates/welcome.html',
@@ -24,15 +24,47 @@ angular.module('app.routes', [])
       url: '/shipping',
       templateUrl: 'templates/shipping.html',
       controller: 'ShippingCtrl'
-      
+
     })
-  
+    
+/*
+      .state('filterprice', {
+      url: '/filterprice',
+      templateUrl: 'templates/filter-price.html',
+      controller: 'fPriceCtrl'
+    })
+    
+      .state('filtersize', {
+      url: '/filtersize',
+      templateUrl: 'templates/filter-size.html',
+      controller: 'fSizeCtrl'
+    })
+    
+      .state('filtercategory', {
+      url: '/filtercategory',
+      templateUrl: 'templates/filter-category.html',
+      controller: 'fCatCtrl'
+    })
+    
+      .state('filtercolor', {
+      url: '/filtercolor',
+      templateUrl: 'templates/filter-color.html',
+      controller: 'fColorCtrl'
+    })
+    
+      .state('filtercondition', {
+      url: '/filtercondition',
+      templateUrl: 'templates/filter-condition.html',
+      controller: 'fCondCtrl'
+    })
+*/
+
   .state('tabs', {
     url: '/',
     templateUrl: 'templates/price.html',
     abstract:true
   })
-  
+
   .state('tabs.feed', {
     url: 'feed',
     views: {
@@ -67,12 +99,12 @@ angular.module('app.routes', [])
       url: 'product',
       templateUrl: 'templates/productDetails.html',
       controller: 'itemViewCtrl'
-    });
-  
+    })
+
 
 
 $urlRouterProvider.otherwise('feed')
 
-  
+
 
 });
