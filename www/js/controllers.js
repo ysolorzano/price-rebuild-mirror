@@ -271,6 +271,8 @@ angular.module('app.controllers', ['app.services','ngLodash','truncate','ngIOS9U
 })
 
 .controller('itemViewCtrl',['$stateParams',function($scope,$stateParams) {
+
+
     $scope.card = {
         number: '4242424242424242',
         cvc: '123',
@@ -384,6 +386,8 @@ $scope.login = function(provider) {
 .controller('feedItemCtrl',function($rootScope,$scope,$state,$ionicLoading,$scope,$http,PriceAPI,$ionicModal,$ionicScrollDelegate, $cordovaInAppBrowser) {
 
   console.log('loaded feedItemCtrl...');
+  $scope.getItReady = false
+  
   $scope.loadTimeout = false;
   $ionicModal.fromTemplateUrl('templates/productDetails.html', function($ionicModal) {
       $scope.modal = $ionicModal;
@@ -440,6 +444,8 @@ $scope.login = function(provider) {
 
   $scope.buyNow1 = function(product){
     console.log(product);
+    if(!$scope.getItReady)
+      return;
 
     var options = {
       location: 'yes',
@@ -464,7 +470,7 @@ $scope.login = function(provider) {
 
   $scope.openProduct = function(product) {
     $scope.loadTimeout = false
-
+    $scope.getItReady = false
     $ionicLoading.show();
     var productId = product.itemID ? product.itemID : (product.id ? product.id : product.pk);
     console.log(product);
@@ -486,6 +492,10 @@ $scope.login = function(provider) {
       resetProductModal();
       $scope.modal.show();
       $scope.itemLoaded = true
+
+      setTimeout(function(){
+        $scope.getItReady = true    
+      },3000)
     })
 
 
